@@ -1,0 +1,138 @@
+﻿
+
+/*Login Page css Design */
+
+.LoginPageContainer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #405189 50%, #0ab39c);
+}
+.LoginPageInnerContainer{
+    width: 70%;
+    height: 65vh;
+    border-radius: 7px;
+    display: flex;
+    justify-content: space-between;
+    animation: Slide-in-from-down 1s ease-in-out;
+
+}
+@keyframes Slide-in-from-down{
+    0%{
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+.LpI1 {
+    width: 50%;
+    height: 100%;
+    border-radius: 7px 0px 0px 7px;
+    background: url('../images/loginbackground.jpg');
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+.LpI2{
+    width: 50%;
+    height: 100%;
+    background-color:white;
+    border-radius: 0px 7px 7px 0px;
+    padding: 3rem;
+    
+}
+.LpI2 h1 {
+    font-family: Poppins, sans-serif;
+    color: #405189;
+    font-size: 1.02rem;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+.LpI2 p {
+    color: #878a99;
+    margin-bottom: 1rem;
+}
+.LpI1 form{
+    width: 100%;
+}
+.LpFormInput {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+    .LpFormInput input {
+        width: 100%;
+        padding: .5rem .9rem;
+        font-size: .8125rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+.LpBaseInput{
+    display: flex;
+    justify-content: space-between;
+}
+    .LpBaseInput a {
+        color: #878a99;
+    }
+
+.LpI2 button {
+    cursor: pointer;
+    background-color: #0ab39c;
+    color: #fff;
+    line-height: 1.5;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 0.8rem;
+    padding: .9rem .5rem;
+    text-align: center;
+    width: 100%;
+    margin: 3rem 0;
+}
+.LoginOverlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: .9;
+    border-radius: 7px 0px 0px 7px;
+    background: linear-gradient(to right, #364574, #405189 )
+}
+.LoginOverlayContent{
+    position:relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.LoginOverlayContent1{
+    display: flex;
+    column-gap: 0.5rem;
+    align-items: center;
+
+}
+.LoginOverlayContent1 img{
+    width: 70px;
+    height: 70px;
+}
+.LoginOverlayContent1 h1 {
+        color: white;
+        font-size: 1.5rem;
+        letter-spacing: 0.15px;
+        font-weight: 600;
+}

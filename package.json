@@ -1,0 +1,14 @@
+{
+  "name": "shiftsolutions",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  },
+  "scripts": {
+    "dev:css": "tailwindcss -i ./ShiftSolutions.web/wwwroot/css/app.css -o ./ShiftSolutions.web/wwwroot/css/site.css --watch",
+    "build:css": "tailwindcss -i ./ShiftSolutions.web/wwwroot/css/app.css -o ./ShiftSolutions.web/wwwroot/css/site.css --minify"
+  }
+}

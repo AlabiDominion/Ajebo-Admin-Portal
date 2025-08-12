@@ -1,0 +1,93 @@
+﻿
+<header class="TopBarContainer ">
+    <div class="flex ">
+        <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+
+        <form class="app-search d-none d-md-block">
+            <div class="position-relative">
+                <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
+                <span class="mdi mdi-magnify search-widget-icon"></span>
+                <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
+            </div>
+            
+        </form>
+    </div>
+    <div class="flex items-center gap-4">
+
+        <!-- Quick Add -->
+        <div class="relative icon-dropdown-container">
+            <button class="p-2 rounded-full hover:bg-gray-100" data-icon-button>
+                <!-- Plus Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+            </button>
+            <div class="icon-dropdown hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Add Merchant</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Add Apartment</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Add User</a>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="relative icon-dropdown-container">
+            <button class="p-2 rounded-full hover:bg-gray-100 relative" data-icon-button>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.64 5.36 6 7.92 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5" />
+                </svg>
+                <span class="absolute top-1 right-1 inline-flex items-center justify-center px-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">3</span>
+            </button>
+            <div class="icon-dropdown hidden absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <p class="px-4 py-2 text-sm text-gray-500">You have 3 notifications</p>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">New merchant registered</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Payment received</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Server backup completed</a>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="relative icon-dropdown-container">
+            <button class="p-2 rounded-full hover:bg-gray-100 relative" data-icon-button>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8a9 9 0 110-18 9 9 0 010 18z" />
+                </svg>
+                <span class="absolute top-1 right-1 inline-flex items-center justify-center px-1 text-xs font-bold leading-none text-white bg-green-500 rounded-full">5</span>
+            </button>
+            <div class="icon-dropdown hidden absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <p class="px-4 py-2 text-sm text-gray-500">You have 5 messages</p>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">New inquiry from John</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Admin: Check report</a>
+            </div>
+        </div>
+
+        <!-- Profile Menu -->
+        <div class="relative icon-dropdown-container">
+            <button class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100" data-icon-button>
+                <img src="~/images/ajebo-logo.png" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                <span class="hidden md:block text-sm font-medium text-gray-700">Admin</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div class="icon-dropdown hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Profile</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Settings</a>
+                <div class="border-t my-1"></div>
+                <form asp-controller="Auth" asp-action="Logout" method="post" class="w-full">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-50 text-red-600 TpBtn">Logout</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    
+</header>

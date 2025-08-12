@@ -1,0 +1,44 @@
+# Build outputs
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# VS/IDE
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Packages / tooling
+packages/
+*.nupkg
+.nuget/
+.vscode/
+
+# ASP.NET artifacts
+App_Data/
+*.Publish.xml
+*.pubxml
+*.pubxml.user
+
+# Logs/temp
+*.log
+[Tt]emp/
+[Ll]ogs/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Other
+*.DS_Store
+Thumbs.db

@@ -1,0 +1,171 @@
+﻿<div class="sideMenuContainer">
+    <div class="sideMenuLogo">
+        <img src="~/images/ajebo-logo.png" alt="logo" />
+        <span>AJEBO</span>
+    </div>
+
+    <div class="sideMenus">
+        @* Merchants section: SuperAdmin or Ops *@
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Ops")){
+        <p>General</p>
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                    <i class="ri-dashboard-2-line"></i>
+                    Dashboard</span>
+                    
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Overview</a>
+                
+            </div>
+        </div>
+
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                        <i class='ri-team-line'></i>
+                    Staff
+                </span>
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- All Staff</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Add New Staff</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Department</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Roles</a>
+            </div>
+        </div>
+
+        <p>Administration</p>
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                    <i class='bx bx-bar-chart'></i>
+                    Merchants
+                </span>
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- All Merchants</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Approvals Queue</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Contracts & Share</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Activity Logs</a>
+            </div>
+        </div>
+
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                    <i class='bx bx-user-circle'></i>
+                    Admin
+                </span>
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Users</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Role & Permissions</a>
+            </div>
+        </div>
+
+        <p>Assets</p>
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                    <i class='bx bxs-bank'></i>
+                    Finance
+                </span>
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Transactions</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Refunds</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Disputes</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Subscriptions & Billing</a>
+            </div>
+        </div>
+
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                    <i class='bx bx-command'></i>
+                    Inventory
+                </span>
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Listings / Units</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Bookings</a>
+            </div>
+        </div>
+
+        <p>Others</p>
+        <div class="sideMenusLinks" data-dropdown>
+            <!-- Trigger -->
+            <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                <span>
+                    <i class='bx bx-street-view'></i>
+                    Insights
+                </span>
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Menu -->
+            <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Metrics</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Failed Events</a>
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Reports</a>
+            </div>
+        </div>
+        }
+    </div>
+
+</div>
+
+

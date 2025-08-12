@@ -1,0 +1,350 @@
+﻿@import "tailwindcss";
+
+/* Sidebar collapsed mode */
+.sidebar-collapsed #appSidebar {
+    transform: translateX(-100%);
+}
+.sideMenuContainer {
+    width: 20%;
+    height: 100vh;
+    position: fixed;
+    padding: 0 0 calc(70px + 25px) 0;
+    background-color: #405189;
+    box-shadow: 0px 2px 4px rgba(15, 34, 58, 0.12);
+    animation: slide-in-from-left 1s ease;
+}
+@keyframes slide-in-from-left{
+    0%{
+        opacity: 0;
+        transform: translateX(-50px)
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0)
+    }
+}
+.sideMenuLogo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.5rem;
+    height: 70px;
+    width:100%;
+
+}
+.sideMenuLogo img{
+    width:40px;
+    height: 40px;
+
+}
+.sideMenuLogo span{
+    font-size: 1.2rem;
+    color: white;
+}
+
+.sideMenus {
+    height: 100%;
+    position: relative;
+}
+    .sideMenus p {
+        padding: 12px 20px;
+        color: #838fb9;
+        letter-spacing: .05em;
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+.sideMenusLinks button{
+    width: 100%;
+    display: flex;
+    font-size: .9375rem;
+    align-items: center;
+    justify-content: space-between;
+    color: #abb9e8;
+    padding: .625rem 1.5rem;
+    font-family: hkgrotesk, sans-serif;
+    transition: all 0.2s ease;
+    
+}
+    .sideMenusLinks button:focus{
+        color: #fff;
+    }
+    .sideMenusLinks button span {
+        display: flex;
+        align-items: center;
+        column-gap: 0.3rem;
+        letter-spacing: 0.2px;
+    }
+    .sideMenusLinks button svg {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+.sideMenusLinks div{
+    flex-direction: column;
+}
+.sideMenuHiddenLink {
+    padding: .55rem 2.5rem;
+    color: #abb9e8;
+    position: relative;
+    font-size: .813rem;
+    font-family: Poppins, sans-serif;
+    transition: all 0.5s ease;
+}
+.sideMenuHiddenLink:hover{
+    color: #fff;
+}
+    .sideMenuHiddenLink:focus {
+        color: #fff;
+    }
+@media (min-width: 1024px) {
+    .sidebar-collapsed #appSidebar {
+        width: 4rem;
+        transform: none;
+    }
+
+        .sidebar-collapsed #appSidebar nav span {
+            display: none;
+        }
+}
+
+/*Topbar Container*/
+.TopBarContainer {
+    width: 80%;
+    height: 70px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    animation: slide-in-from-top 1s 0.2s ease-in;
+    z-index: 1100;
+}
+
+@keyframes slide-in-from-top{
+    0%{
+        opacity: 0;
+        transform: translateY(-50px)
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+.icon-dropdown-container button img{
+    width:20px;
+}
+
+.icon-dropdown-container button span {
+    top: -5px;
+    right: 1px;
+    background-color: #099885;
+    border-radius: 100%;
+    font-size: 11px;
+}
+.icon-dropdown-container button{
+    transition: all 0.5s ease;
+}
+.icon-dropdown-container button:hover {
+    background-color: gray;
+    border-radius: 100%;
+    transform: scale(1);
+    color: white;
+}
+.icon-dropdown-container:last-child button:hover{
+    background-color: lightgray;
+    border-radius: 5px;
+    transform: scale(1.2);
+    color: white;
+}
+    .icon-dropdown-container div {
+        width: 150px;
+        left: -100px;
+        border-radius: 5px;
+    }
+.TpBtn:hover{
+    transform: scale(0.8);
+}
+/*Page content*/
+        .page-content {
+            padding: 72px 0 0;
+            width: 80%;
+            margin-left: auto;
+            animation: slide-from-under 1s 0.4s ease;
+        }
+@keyframes slide-from-under{
+    0%{
+        opacity: 0;
+        transform: translateY(50px)
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+.pageTitleBox {
+    padding: 10px 1.5rem;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
+    display: flex;
+    
+}
+    .pageTitleBox h4 {
+        font-weight: 700;
+        font-size: 15px;
+        text-transform: uppercase;
+        font-family: Poppins, sans-serif;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+    }
+    .pageTitleBox p {
+        color: #212529;
+        display: flex;
+        column-gap: 1rem;
+        align-items: center;
+        margin-bottom: 0;
+    }
+        .pageTitleBox p span:first-child {
+            font-family: "Material Design Icons";
+            font-size: 15px;
+            line-height: 20px;
+            color: #878a99;
+
+        }
+        .pageTitleBox p span:last-child {
+            color: #878a99;
+        }
+
+.liveDot {
+    position: relative;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+}
+
+    .liveDot::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background: #34d399;
+        opacity: .75;
+        animation: live-ping 1s cubic-bezier(0,0,.2,1) infinite;
+    }
+
+    .liveDot::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background: #10b981;
+    }
+.liveDot1 {
+    position: relative;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+}
+
+    .liveDot1::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background: #f42d46;
+        opacity: .75;
+        animation: live-ping 1s cubic-bezier(0,0,.2,1) infinite;
+    }
+
+    .liveDot1::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background-color: red;
+    }
+
+@keyframes live-ping {
+    75%,100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+/*Graph Section*/
+.graphSection{
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+.CardFrame:nth-of-type(1){
+    width: 23%;
+    height: 500px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.CardHeader {
+    border-bottom: 1px solid #f3f3f9;
+    padding: 1rem;
+}
+.cardBody{
+    padding: 1rem;
+    
+}
+.CardFrame2{
+    width: 30%;
+    height: 500px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.CardFrame3 {
+    width: 45%;
+    height: 500px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+/*Dahboard Table*/
+.DashboardTableContainer{
+    width: 48%;
+    background-color: white;
+    
+    height: 400px;
+    border-radius:5px;
+
+}
+.DashboardTableContainer:nth-of-type(2) {
+    width: 30%;
+    background-color: white;
+    height: 400px;
+    border-radius: 5px;
+}
+.DashboardTableContainer:nth-of-type(3) {
+    width: 30%;
+    background-color: white;
+    height: 400px;
+    border-radius: 5px;
+}
+.DTH {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f3f9;
+}
+
+.DTHMain {
+    background-color: #f3f6f9;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+}
+    

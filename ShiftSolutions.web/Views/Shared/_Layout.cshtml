@@ -1,0 +1,67 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@(ViewData["Title"] ?? "Admin") · ShiftSolutions</title>
+
+    
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/icons.min.css" />
+    <link rel="stylesheet" href="~/css/app.min.css" />
+    <link rel="stylesheet" href="~/css/custom.min.css" />
+    <link href="~/css/baseSytle.css" rel="stylesheet" />
+    <link href="~/css/app.css" rel="stylesheet" />
+    <script src="~/js/layout.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @RenderSection("Head", required: false)
+</head>
+
+<body class="w-[100%]">
+    <!--Loader Screen-->
+   
+    
+
+    <!-- Sidebar -->
+    @await Html.PartialAsync("_Sidebar")
+
+    <!-- Main content wrapper from the template -->
+    <div>
+        <!-- Topbar -->
+        @await Html.PartialAsync("_Topbar")
+
+        <!-- Page Content (your views render here) -->
+        <div class="page-content">
+            <div>
+                @RenderBody()
+            </div>
+        </div>
+
+        @await Html.PartialAsync("_Footer")
+    </div>
+    
+                                              
+<!-- Core / Vendor -->
+<script src="~/libs/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+<script src="~/libs/simplebar/simplebar.min.js" defer></script>
+<script src="~/libs/node-waves/waves.min.js" defer></script>
+<script src="~/libs/feather-icons/feather.min.js" defer></script>
+
+<script src="~/js/pages/plugins/lord-icon-2.1.0.js"></script>
+<script src="~/js/plugins.js"></script>
+
+
+<!-- Sliders -->
+<script src="~/libs/swiper/swiper-bundle.min.js" defer></script>
+
+<!-- App init for global behaviors -->
+<script src="~/js/app.js" defer></script>
+<script src="~/js/pages/animation-aos.init.js"></script>
+<script src="~/js/app.init.js" asp-append-version="true"></script>
+
+@RenderSection("Scripts", required: false)
+
+</body>
+
+
+<!-- Mirrored from themesbrand.com/velzon/html/default/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 07 Oct 2023 21:46:42 GMT -->
+</html>

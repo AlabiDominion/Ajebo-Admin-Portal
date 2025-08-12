@@ -1,0 +1,370 @@
+﻿<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
+    <h4>Overview</h4>
+    <p>Dashboards <span>></span> <span>Overview</span></p>
+</div>
+
+<div class="p-4 mt-1">
+    <!--Section 1-->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card crm-widget">
+                    <div class="card-body p-0">
+                        <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-1 g-0">
+                            <div class="col">
+                                <div class="py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Total Merchants <i class="ri-line-chart-line fs-18 float-end align-middle"></i></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                        <i class="ri-team-line display-6 text-muted"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h2 class="mb-0"><span class="counter-value" data-target="197">0</span></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mt-3 mt-md-0 py-4 px-3">
+                                    <h5 class="text-muted text-uppercase fs-13">Listed Apartment <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                        <i class="ri-building-4-line display-6 text-muted"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h2 class="mb-0"><span class="counter-value" data-target="489.4">0</span></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mt-3 mt-md-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Customers <i class="ri-group-line fs-18 float-end align-middle"></i></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                        <i class="ri-user-3-line display-6 text-muted"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h2 class="mb-0"><span class="counter-value" data-target="32.89">0</span></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mt-3 mt-lg-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Pending Approvals <i class="liveDot1 fs-18 float-end align-middle"></i></h5>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                        <i class="ri-file-list-3-line display-6 text-muted"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h2 class="mb-0"><span class="counter-value" data-target="1596.5">0</span></h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col">
+                            <div class="mt-3 mt-lg-0 py-4 px-3">
+                                <h5 class="text-muted text-uppercase fs-13">Live Active users <i class="liveDot fs-18 float-end align-middle"></i></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <i class="ri-radio-line display-6 text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h2 class="mb-0"><span class="counter-value" data-target="1596.5">0</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!--Section 2-->
+    <div class="flex justify-content-between graphSection">
+        <!-- Apartment Occupancy Rate Card -->
+            <div class="CardFrame">
+                <div class="CardHeader">
+                    <h5 class="mb-0">Apartment Occupancy Rate</h5>
+                </div>
+                <div class="cardBody">
+                    <div class="cardBodyInner" id="apartmentOccupancyChart"></div>
+                </div>
+            </div>
+        
+        <!-- Merchant Request vs Approval -->
+
+        <div class="CardFrame2">
+            <div class="CardHeader">
+                    <h5 class="mb-0">Merchant Requests vs Approval</h5>
+            </div>
+            <div class="cardBody">
+                    <div id="merchantReqApprovalChart"></div>
+            </div>
+        </div>
+        
+        <!-- Merchant Registrations (per month) vs Revenue (per month)-->
+        
+            <div class="CardFrame3">
+            <div class="CardHeader d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0">Merchant Overview</h5>
+
+                    <!-- Small KPI strip -->
+                    <div class="d-flex gap-4 text-muted">
+                        <div><span class="fw-semibold text-primary" id="kpiRevenue">$584k</span> <span>Revenue</span></div>
+                        <div><span class="fw-semibold" id="kpiMerchants">2,659</span> <span>Registrations</span></div>
+                        <div><span class="fw-semibold" id="kpiRatio">3.6%</span> <span>Conv. Ratio</span></div>
+                    </div>
+                </div>
+
+                <div class="cardBody">
+                    <div id="merchantRevenueTrend"></div>
+                </div>
+            </div>
+
+        
+
+
+    </div>
+
+    <!--Section 3-->
+    <div class="flex justify-content-between">
+        <!-- Merchant Request vs Approval -->
+       
+            <div class="DashboardTableContainer">
+                <div class="DTH">
+                    <h5 class="mb-0">Pending Merchant Reviews</h5>
+                </div>
+               
+                    <table class="w-full">
+                        
+                        <tr class="DTHMain">
+                                <th>Apartment</th>
+                                <th>Date Submitted</th>
+                                <th>Merchant</th>
+                                <th>Review</th>
+                        </tr>
+                        
+
+                    </table>
+                
+            </div>
+        <div class="DashboardTableContainer">
+            <div class="DTH">
+                <h5 class="mb-0">Occupied -> Ending Soon </h5>
+            </div>
+
+            <table class="w-full">
+
+                <tr class="DTHMain">
+                    <th>Apartment</th>
+                    <th>Tenant</th>
+                    <th>Time Left</th>
+                    
+                </tr>
+
+
+            </table>
+
+        </div>
+
+        
+
+    </div>
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+<!-- JS for the chart -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        var aocoptions = {
+            series: [
+                { name: 'Occupied', data: [45] },
+                { name: 'Soon Available', data: [10] },
+                { name: 'Vacant', data: [15] }
+            ],
+            chart: {
+                type: 'bar',
+                height: 300,
+                toolbar: {
+                    show: false
+                }
+            },
+            plotOptions: { bar: { columnWidth: '55%', endingShape: 'rounded' } },
+            dataLabels: { enabled: true },
+            stroke: { show: true, width: 2, colors: ['transparent'] },
+            xaxis: { categories: ['Apartments'] },
+            yaxis: { title: { text: '%' } },
+            fill: { opacity: 1, colors: ['#10b981', '#f59e0b', '#ef4444'] },
+            legend: { position: 'bottom' }
+        };
+        var aocchart = new ApexCharts(document.querySelector("#apartmentOccupancyChart"), aocoptions);
+        aocchart.render();
+
+    </script>
+    <script>
+        // ---- Replace these with values from C# later ----
+        const totals = {
+            requests: 120,
+            approved: 85,
+            pending: 15,
+            declined: 20
+        };
+
+        // Percent of requests for each ring
+        const pct = {
+            requests: 100,
+            approved: Math.round((totals.approved / totals.requests) * 100),
+            pending: Math.round((totals.pending / totals.requests) * 100),
+            declined: Math.round((totals.declined / totals.requests) * 100)
+        };
+
+        const series = [pct.requests, pct.approved, pct.pending, pct.declined];
+        const labels = ["Requests", "Approved", "Pending", "Declined"];
+
+        const macoptions = {
+            series: series,
+            labels: labels,
+            chart: {
+                type: 'radialBar',
+                height: 360,
+                toolbar: { show: false }
+            },
+            // Custom angles to get that "open ring / custom arc" look
+            plotOptions: {
+                radialBar: {
+                    startAngle: -120,
+                    endAngle: 240,          // 360° span with a small gap
+                    hollow: { size: '28%' }, // inner hole
+                    track: {
+                        background: '#eef2f7', // light gray tracks
+                        strokeWidth: '100%'
+                    },
+                    dataLabels: {
+                        name: { show: false },
+                        value: {
+                            show: true,
+                            fontSize: '14px',
+                            formatter: (val) => `${Math.round(val)}%`
+                        }
+                    }
+                }
+            },
+            colors: [
+                '#475569', // Requests (slate)
+                '#10b981', // Approved (emerald/green)
+                '#f59e0b', // Pending (amber)
+                '#ef4444'  // Declined (red)
+            ],
+            legend: {
+                show: true,
+                position: 'left',
+                offsetX: 20,
+                formatter: function (seriesName, opts) {
+                    const idx = opts.seriesIndex;
+                    const counts = [totals.requests, totals.approved, totals.pending, totals.declined];
+                    return `${seriesName}: ${counts[idx]}`;
+                },
+                markers: { width: 10, height: 10, radius: 12 }
+            },
+            stroke: { lineCap: 'round' }
+        };
+
+        const macchart = new ApexCharts(document.querySelector("#merchantReqApprovalChart"), macoptions);
+        macchart.render();
+
+    </script>
+    
+  <script>
+    // --- demo data (replace later with ViewBag / JSON) ---
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const revenueMonthly   = [18,22,26,30,28,35,48,65,82,96,120,145]; // $k
+    const merchantsMonthly = [12,14,16,15,18,22,28,32,35,40,52,60];   // count
+
+    // simple derived KPIs ()
+    document.getElementById('kpiRevenue').textContent  = `$${revenueMonthly.reduce((a,b)=>a+b,0)}k`;
+    document.getElementById('kpiMerchants').textContent = merchantsMonthly.reduce((a,b)=>a+b,0).toLocaleString();
+    const ratio = Math.round((merchantsMonthly.reduce((a,b)=>a+b,0) / (revenueMonthly.reduce((a,b)=>a+b,0) || 1)) * 1000) / 10;
+    document.getElementById('kpiRatio').textContent = `${ratio}%`;
+
+    const options = {
+      series: [
+        { name: "Revenue",   type: "area", data: revenueMonthly },
+        { name: "Registrations", type: "line", data: merchantsMonthly }
+      ],
+      chart: {
+        height: 360,
+        type: "line",
+        toolbar: { show: false },
+        zoom: { enabled: false }
+      },
+      stroke: {
+        width: [3, 3],
+        curve: "smooth"
+      },
+      fill: {
+        type: ["gradient","solid"],
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.35,
+          opacityTo: 0.05,
+          stops: [0, 90, 100]
+        }
+      },
+      colors: ["#10b981", "#f97316"], // teal for revenue, orange for registrations
+      dataLabels: { enabled: false },
+      markers: { size: 0, hover: { sizeOffset: 4 } },
+      xaxis: {
+        categories: months,
+        axisBorder: { show: false },
+        axisTicks: { show: false }
+      },
+      yaxis: [
+        {
+          title: { text: "$k" },
+          tickAmount: 6,
+          labels: {
+            formatter: (val) => `$${val}k`
+          }
+        }
+      ],
+      grid: {
+        borderColor: "#eef2f7",
+        strokeDashArray: 4
+      },
+      legend: {
+        position: "bottom",
+        markers: { radius: 12 }
+      },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: [
+          { formatter: (val) => `$${val}k` },
+          { formatter: (val) => `${val} merchants` }
+        ]
+      }
+    };
+
+    const chart = new ApexCharts(
+      document.querySelector("#merchantRevenueTrend"),
+      options
+    );
+    chart.render();
+  </script>
+}
+
+    
+}
