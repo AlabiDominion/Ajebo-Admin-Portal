@@ -1,0 +1,38 @@
+﻿<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
+    <h4>All Staff</h4>
+    <p>Staff <span>></span> <span>All Staff</span></p>
+</div>
+
+
+<div class="p-4 mt-2">
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-sm-4">
+                    <div class="search-box">
+                        <input type="text" class="form-control" id="searchMemberList" placeholder="Search for name or designation...">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+                <!--end col-->
+                <div class="col-sm-auto ms-auto">
+                    <div class="list-grid-nav hstack gap-1">
+                        <button type="button" id="grid-view-button" class="btn btn-soft-info nav-link btn-icon fs-14 active filter-button"><i class="ri-grid-fill"></i></button>
+                        <button type="button" id="list-view-button" class="btn btn-soft-info nav-link  btn-icon fs-14 filter-button"><i class="ri-list-unordered"></i></button>
+                        <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-soft-info btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                            <li><a class="dropdown-item" href="#">All</a></li>
+                            <li><a class="dropdown-item" href="#">Last Week</a></li>
+                            <li><a class="dropdown-item" href="#">Last Month</a></li>
+                            <li><a class="dropdown-item" href="#">Last Year</a></li>
+                        </ul>
+                        <button asp-controller="Staff" asp-action="NewStaff" class="btn btn-success addMembers-modal" data-bs-toggle="modal" data-bs-target="#addmemberModal"><i class="ri-add-fill me-1 align-bottom"></i> Add Members</button>
+                    </div>
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+        </div>
+    </div>
+</div>
+
