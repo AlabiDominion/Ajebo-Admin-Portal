@@ -29,13 +29,12 @@
                 </svg>
             </button>
             <div class="icon-dropdown hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Add Merchant</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Add Apartment</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Add User</a>
+                <a asp-controller="Staff" asp-action="NewStaff" class="block px-4 py-2 hover:bg-gray-50">Add Staff</a>
+                
             </div>
         </div>
 
-        <!-- Notifications -->
+        <!-- Alert -->
         <div class="relative icon-dropdown-container">
             <button class="p-2 rounded-full hover:bg-gray-100 relative" data-icon-button>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,11 +42,69 @@
                 </svg>
                 <span class="absolute top-1 right-1 inline-flex items-center justify-center px-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">3</span>
             </button>
-            <div class="icon-dropdown hidden absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <p class="px-4 py-2 text-sm text-gray-500">You have 3 notifications</p>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">New merchant registered</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Payment received</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Server backup completed</a>
+            <div class="icon-dropdown NotificationIcon hidden absolute right-0 mt-2">
+                <div class="NI1">
+                    <div class="flex NI11">
+                        <h5>Alerts</h5>
+                        <p>3 New</p>
+                    </div>
+                    <div class="NI12">
+                        <p>All (3)</p>
+                    </div>
+                </div>
+                <div class="NI2">
+                    <div class="p-4 NI21">
+                        <div class="NI211 flex">
+                            <div>
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                                Dominion
+                            </div>
+
+                            <div>
+                                <i class="mdi mdi-clock-outline"></i>
+                                 30 SEC AGO
+                                <button type="button" class="btn-close"></button>
+                            </div>
+                        </div>
+                        <p class="mt-2">Dominion just joined as a merchant</p>
+                    </div>
+                    <div class="p-4 NI21">
+                        <div class="NI211 flex">
+                            <div>
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                                Dominion
+                            </div>
+
+                            <div>
+                                <i class="mdi mdi-clock-outline"></i>
+                                30 SEC AGO
+                                <button type="button" class="btn-close"></button>
+                            </div>
+                        </div>
+                        <p class="mt-2">Dominion just joined as a merchant</p>
+                    </div>
+                    <div class="p-4 NI21">
+                        <div class="NI211 flex">
+                            <div>
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                                Dominion
+                            </div>
+
+                            <div>
+                                <i class="mdi mdi-clock-outline"></i>
+                                30 SEC AGO
+                                <button type="button" class="btn-close"></button>
+                            </div>
+                        </div>
+                        <p class="mt-2">Dominion just joined as a merchant</p>
+                    </div>
+                   
+                    
+                   
+                 
+
+                </div>
+
             </div>
         </div>
 
@@ -59,10 +116,75 @@
                 </svg>
                 <span class="absolute top-1 right-1 inline-flex items-center justify-center px-1 text-xs font-bold leading-none text-white bg-green-500 rounded-full">5</span>
             </button>
-            <div class="icon-dropdown hidden absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                <p class="px-4 py-2 text-sm text-gray-500">You have 5 messages</p>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">New inquiry from John</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Admin: Check report</a>
+            <div class="icon-dropdown NotificationIcon hidden absolute right-0 mt-2">
+                <div class="NI1">
+                    <div class="flex NI11">
+                        <h5>Notifications</h5>
+                        <p>5 New</p>
+                    </div>
+                    <div class="NI12">
+                        <p>All (5)</p>
+                    </div>
+                </div>
+                <div class="NI2">
+                    <div class="p-4 NI21">
+                        <div class="flex">
+                            <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            <p>Answered to your comment on the cash flow forecast's graph</p>
+                            <input type="checkbox" name="Read" value="" />
+                        </div>
+                        <span>
+                            <i class="mdi mdi-clock-outline"></i>
+                            JUST 30 SEC AGO
+                        </span>
+                    </div>
+                    <div class="p-4 NI21">
+                        <div class="flex">
+                            <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            <p>Answered to your comment on the cash flow forecast's graph</p>
+                            <input type="checkbox" name="Read" value="" />
+                        </div>
+                        <span>
+                            <i class="mdi mdi-clock-outline"></i>
+                            JUST 30 SEC AGO
+                        </span>
+                    </div>
+                    <div class="p-4 NI21">
+                        <div class="flex">
+                            <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            <p>Answered to your comment on the cash flow forecast's graph</p>
+                            <input type="checkbox" name="Read" value="" />
+                        </div>
+                        <span>
+                            <i class="mdi mdi-clock-outline"></i>
+                            JUST 30 SEC AGO
+                        </span>
+                    </div>
+                    <div class="p-4 NI21">
+                        <div class="flex">
+                            <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            <p>Answered to your comment on the cash flow forecast's graph</p>
+                            <input type="checkbox" name="Read" value="" />
+                        </div>
+                        <span>
+                            <i class="mdi mdi-clock-outline"></i>
+                            JUST 30 SEC AGO
+                        </span>
+                    </div>
+                    <div class="p-4 NI21">
+                        <div class="flex">
+                            <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            <p>Answered to your comment on the cash flow forecast's graph</p>
+                            <input type="checkbox" name="Read" value="" />
+                        </div>
+                        <span>
+                            <i class="mdi mdi-clock-outline"></i>
+                            JUST 30 SEC AGO
+                        </span>
+                    </div>
+
+                </div>
+                
             </div>
         </div>
 

@@ -17,22 +17,259 @@
                 <!--end col-->
                 <div class="col-sm-auto ms-auto">
                     <div class="list-grid-nav hstack gap-1">
-                        <button type="button" id="grid-view-button" class="btn btn-soft-info nav-link btn-icon fs-14 active filter-button"><i class="ri-grid-fill"></i></button>
-                        <button type="button" id="list-view-button" class="btn btn-soft-info nav-link  btn-icon fs-14 filter-button"><i class="ri-list-unordered"></i></button>
-                        <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-soft-info btn-icon fs-14"><i class="ri-more-2-fill"></i></button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                            <li><a class="dropdown-item" href="#">All</a></li>
-                            <li><a class="dropdown-item" href="#">Last Week</a></li>
-                            <li><a class="dropdown-item" href="#">Last Month</a></li>
-                            <li><a class="dropdown-item" href="#">Last Year</a></li>
-                        </ul>
-                        <button asp-controller="Staff" asp-action="NewStaff" class="btn btn-success addMembers-modal" data-bs-toggle="modal" data-bs-target="#addmemberModal"><i class="ri-add-fill me-1 align-bottom"></i> Add Members</button>
+                        <button type="button" id="list-view-button"
+                                class="btn btn-soft-info nav-link btn-icon fs-14 active filter-button">
+                            <i class="ri-list-unordered"></i>
+                        </button>
+                        <a asp-controller="Staff" asp-action="NewStaff" class="btn btn-success addMembers-modal">
+                            <i class="ri-add-fill me-1 align-bottom"></i> Add Members
+                        </a>
                     </div>
                 </div>
+
                 <!--end col-->
             </div>
-            <!--end row-->
-        </div>
+            
     </div>
 </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Staff</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Visit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>    
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
+                            </div>
+                            <div class="flex-grow-1">
+                                Alabi Dominion
+                            </div>
+                        </div>
+                    </td>
+                    <td>Manager</td>
+                    <td>Administrator</td>
+                    <td>alabidominion@gmail.com</td>
+                    <td>07061061211</td>
+                    <td>Active</td>
+                    <td>
+                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                            <button class="btn btn-outline-success btn-border">Visit</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>  
+        </table>
+    </div>
+    
+
 

@@ -18,7 +18,7 @@
                                         <i class="ri-team-line display-6 text-muted"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h2 class="mb-0"><span class="counter-value" data-target="197">0</span></h2>
+                                            <h2 class="mb-0"><span class="counter" data-target="197">0</span></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                                         <i class="ri-building-4-line display-6 text-muted"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h2 class="mb-0"><span class="counter-value" data-target="489.4">0</span></h2>
+                                            <h2 class="mb-0"><span class="counter" data-target="489.4">0</span></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
                                         <i class="ri-user-3-line display-6 text-muted"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h2 class="mb-0"><span class="counter-value" data-target="32.89">0</span></h2>
+                                            <h2 class="mb-0"><span class="counter" data-target="32.89">0</span></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -57,7 +57,7 @@
                                         <i class="ri-file-list-3-line display-6 text-muted"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h2 class="mb-0"><span class="counter-value" data-target="1596.5">0</span></h2>
+                                            <h2 class="mb-0"><span class="counter" data-target="1596.5">0</span></h2>
                                         </div>
                                     </div>
                                 </div>
@@ -70,7 +70,7 @@
                                         <i class="ri-radio-line display-6 text-muted"></i>
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h2 class="mb-0"><span class="counter-value" data-target="1596.5">0</span></h2>
+                                        <h2 class="mb-0"><span class="counter" data-target="1596.5">0</span></h2>
                                     </div>
                                 </div>
                             </div>
@@ -436,7 +436,49 @@
     );
     chart.render();
   </script>
+    <script>
+        (function () {
+            const easeOut = t => 1 - Math.pow(1 - t, 3); // smooth easing
+
+            function animateCounter(el) {
+                const target = parseFloat(el.dataset.target || "0");
+                const duration = parseInt(el.dataset.duration || "1000", 10);
+                const decimals = (el.dataset.decimals !== undefined)
+                    ? parseInt(el.dataset.decimals, 10)
+                    : ((el.dataset.target || "").split(".")[1]?.length || 0);
+
+                const start = performance.now();
+                function tick(now) {
+                    const p = Math.min((now - start) / duration, 1);
+                    const value = target * easeOut(p);
+                    el.textContent = value.toLocaleString(undefined, {
+                        minimumFractionDigits: decimals,
+                        maximumFractionDigits: decimals
+                    });
+                    if (p < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            // Start when visible
+            const counters = document.querySelectorAll('.counter[data-target]');
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateCounter(entry.target);
+                            io.unobserve(entry.target); // run once
+                        }
+                    });
+                }, { threshold: 0.3 });
+                counters.forEach(c => io.observe(c));
+            } else {
+                // fallback: animate immediately
+                counters.forEach(animateCounter);
+            }
+        })();
+    </script>
 }
 
     
-}
+
