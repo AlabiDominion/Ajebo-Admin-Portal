@@ -3,6 +3,131 @@
     <p>Staff <span>></span> <span>Add New Staff</span></p>
 </div>
 
-<div>
+<div class="AddNewStaff">
+    <h1 class="mb-2">Add New Staff</h1>
+    <form action="/" method="post" class="NewStaffInputField flex">
+        <div class="NSIF1">
+            <div class="avatarUploader">
+                <div class="mainavatar">
+                    <svg viewBox="0 0 128 128" aria-hidden="true">
+                        <circle cx="64" cy="64" r="62" fill="#F5F7FA" stroke="#E5EAF0" />
+                        <circle cx="64" cy="50" r="22" fill="none" stroke="#B8C2CC" stroke-width="6" />
+                        <path d="M25,108c9-18,25-28,39-28s30,10,39,28" fill="none" stroke="#B8C2CC" stroke-width="6" stroke-linecap="round" />
+                    </svg>
+                    <img id="avatarPreview" alt="Avatar preview" />
+                </div>
+
+                <label class="uploadBtn">
+                    <input type="file" id="avatarInput" accept="image/*" hidden />
+                    Upload Image
+                </label>
+            </div>
+            <h4>Deparment & Role</h4>
+            <div class="flex flex-column NSIF11">
+                <label>Deparment</label>
+                <select>
+                    <option>Administration</option>
+                    <option>Finance</option>
+                    <option>Consultant</option>
+                </select>
+            </div>
+            <div class="flex flex-column NSIF11">
+                <label>Role</label>
+                <select>
+                    <option>Manager</option>
+                    <option>Developer</option>
+                    
+                </select>
+            </div>
+            <div class="flex flex-column NSIF11">
+                <label>Date Joined</label>
+                <input type="date" name="name" value="" />
+                
+            </div>
+            <button type="button" class=" mt-2 btn btn-success custom-toggle" data-bs-toggle="button">
+                <span class="icon-on"><i class="ri-thumb-up-line align-bottom me-1"></i> Submit</span>
+
+            </button>
+
+        </div>
+
+
+        <!--second side-->
+        <div class="NSIF2">
+            <h4>Personal Information</h4>
+            <div class="flex column-gap-2">
+                <div class="flex flex-column NSIF11">
+                    <label>First Name</label>
+                    <input type="text" name="name" value="" placeholder="Input First Name.." />
+
+                </div>
+                <div class="flex flex-column NSIF11">
+                    <label>Last Name</label>
+                    <input type="text" name="name" value="" placeholder="Input Last Name.."/>
+
+                </div>
+            </div>
+            <div class="flex flex-column NSIF11">
+                <label>Email</label>
+                <input type="email" name="name" value="" placeholder="ajebo@example.com" />
+
+            </div>
+            <div class="flex flex-column NSIF11">
+                <label>Phone</label>
+                <input type="text" name="name" value="" placeholder="(123) 456-7890" />
+
+            </div>
+
+            <h4>Login Credentials</h4>
+            <div class="flex flex-column NSIF11">
+                <label>Username</label>
+                <input type="text" name="name" value="" placeholder="Enter Username" autocomplete="new-username" />
+
+            </div>
+            <div class="flex flex-column NSIF11">
+                <label>Password</label>
+                <input type="password" name="name" value="" placeholder="Enter Password" autocomplete="new-password" />
+
+            </div>
+            <div class="flex flex-column NSIF11">
+                <label>Confirm Password</label>
+                <input type="password" name="name" value="" placeholder="Confirm Password" autocomplete="off" />
+
+            </div>
+            
+        </div>
+       
+    </form>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    const input = document.getElementById('avatarInput');
+    const preview = document.getElementById('avatarPreview');
+
+    input.addEventListener('change', () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      preview.src = url;
+      preview.style.display = 'block';
+
+      // Hide the SVG placeholder once image is loaded
+      preview.onload = () => {
+        preview.previousElementSibling.style.display = 'none';
+        URL.revokeObjectURL(url);
+      };
+    });
+</script>

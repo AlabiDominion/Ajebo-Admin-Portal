@@ -1,0 +1,649 @@
+﻿<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
+    <h4>Orders / Bookings</h4>
+    <p>Staff <span>></span> <span>Orders / Bookings</span></p>
+</div>
+<!-- ORDERS / BOOKINGS — LIST -->
+
+
+<div class="p-4 mb-4">
+    <div class="DashboardTableContainerE ">
+        <!-- FILTERS -->
+        <div class="DTFilters">
+            <div class="DTFilterRow">
+                <div class="DTField">
+                    <label>Search</label>
+                    <input type="text" id="obSearch" placeholder="Order ID, merchant, apartment, customer…" />
+                </div>
+
+                <div class="DTField">
+                    <label>Type</label>
+                    <select id="obType">
+                        <option value="">All</option>
+                        <option>Order</option>
+                        <option>Booking</option>
+                    </select>
+                </div>
+
+                <div class="DTField">
+                    <label>Status</label>
+                    <select id="obStatus">
+                        <option value="">All</option>
+                        <option>Paid</option>
+                        <option>Pending</option>
+                        <option>Cancelled</option>
+                        <option>Refunded</option>
+                        <option>Failed</option>
+                    </select>
+                </div>
+
+                <div class="DTField">
+                    <label>From</label>
+                    <input type="date" id="obFrom" />
+                </div>
+
+                <div class="DTField">
+                    <label>To</label>
+                    <input type="date" id="obTo" />
+                </div>
+
+                <div class="DTButtons">
+                    <button type="button" id="obApply" class="btn btn-primary">Apply</button>
+                    <button type="button" id="obReset" class="btn btn-light">Reset</button>
+                    <button type="button" id="obExport" class="btn btn-soft-info">Export CSV</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="DTTableWrap">
+            <table class="DTTable w-full">
+                <thead>
+                    <tr class="DTHMain">
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Merchant</th>
+                        <th>Apartment</th>
+                        <th>Customer</th>
+                        <th>Stay</th>
+                        <th>Price</th>  <!-- compact stacked -->
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th class="DTActionCol">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="obTbody">
+                    <!-- Row 1 -->
+                    <tr class="DTClickable" data-href="/OpTransaction/OrdersDetailes">
+                        <td>ORD-12001</td>
+                        <td>Booking</td>
+                        <td>Stellar Apartments</td>
+                        <td>Unit A12</td>
+                        <td>Adewale O.</td>
+                        <td class="muted">12 Aug → 15 Aug</td>
+
+                        <!-- Compact price cell -->
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦210,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦245,000</span></div>
+                            <div class="PLine">
+                                <span class="PLabel">Margin</span>
+                                <span class="PValue green">+16.7% <i class="dot dot-green"></i></span>
+                            </div>
+                        </td>
+
+                        <td><span class="chip chip-paid">Paid</span></td>
+                        <td class="muted">2025‑08‑12 14:21</td>
+
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12001">View</a></li>
+                                    <li><button class="dd-item" type="button">Refund</button></li>
+                                    <li><button class="dd-item" type="button">Add to settlement</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Row 2 -->
+                    <tr class="DTClickable" data-href="/transactions/orders/ORD-12002">
+                        <td>ORD-12002</td>
+                        <td>Order</td>
+                        <td>Green Valley Condos</td>
+                        <td>Studio 2B</td>
+                        <td>Ngozi K.</td>
+                        <td class="muted">—</td>
+
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦180,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦192,000</span></div>
+                            <div class="PLine"><span class="PLabel">Margin</span><span class="PValue amber">+6.7%</span></div>
+                        </td>
+
+                        <td><span class="chip chip-pending">Pending</span></td>
+                        <td class="muted">2025‑08‑12 11:04</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12002">View</a></li>
+                                    <li><button class="dd-item" type="button">Cancel</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Row 3 -->
+                    <tr class="DTClickable" data-href="/transactions/orders/ORD-12003">
+                        <td>ORD-12003</td>
+                        <td>Booking</td>
+                        <td>Urban Estates</td>
+                        <td>Loft C9</td>
+                        <td>Chioma A.</td>
+                        <td class="muted">20 Aug → 24 Aug</td>
+
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦260,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦300,000</span></div>
+                            <div class="PLine"><span class="PLabel">Margin</span><span class="PValue green">+15.4% <i class="dot dot-green"></i></span></div>
+                        </td>
+
+                        <td><span class="chip chip-refunded">Refunded</span></td>
+                        <td class="muted">2025‑08‑11 09:15</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12003">View</a></li>
+                                    <li><button class="dd-item" type="button">Audit</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                     <tr class="DTClickable" data-href="/transactions/orders/ORD-12003">
+                        <td>ORD-12003</td>
+                        <td>Booking</td>
+                        <td>Urban Estates</td>
+                        <td>Loft C9</td>
+                        <td>Chioma A.</td>
+                        <td class="muted">20 Aug → 24 Aug</td>
+
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦260,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦300,000</span></div>
+                            <div class="PLine"><span class="PLabel">Margin</span><span class="PValue green">+15.4% <i class="dot dot-green"></i></span></div>
+                        </td>
+
+                        <td><span class="chip chip-refunded">Refunded</span></td>
+                        <td class="muted">2025‑08‑11 09:15</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12003">View</a></li>
+                                    <li><button class="dd-item" type="button">Audit</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                     <tr class="DTClickable" data-href="/transactions/orders/ORD-12003">
+                        <td>ORD-12003</td>
+                        <td>Booking</td>
+                        <td>Urban Estates</td>
+                        <td>Loft C9</td>
+                        <td>Chioma A.</td>
+                        <td class="muted">20 Aug → 24 Aug</td>
+
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦260,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦300,000</span></div>
+                            <div class="PLine"><span class="PLabel">Margin</span><span class="PValue green">+15.4% <i class="dot dot-green"></i></span></div>
+                        </td>
+
+                        <td><span class="chip chip-refunded">Refunded</span></td>
+                        <td class="muted">2025‑08‑11 09:15</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12003">View</a></li>
+                                    <li><button class="dd-item" type="button">Audit</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                     <tr class="DTClickable" data-href="/transactions/orders/ORD-12003">
+                        <td>ORD-12003</td>
+                        <td>Booking</td>
+                        <td>Urban Estates</td>
+                        <td>Loft C9</td>
+                        <td>Chioma A.</td>
+                        <td class="muted">20 Aug → 24 Aug</td>
+
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦260,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦300,000</span></div>
+                            <div class="PLine"><span class="PLabel">Margin</span><span class="PValue green">+15.4% <i class="dot dot-green"></i></span></div>
+                        </td>
+
+                        <td><span class="chip chip-refunded">Refunded</span></td>
+                        <td class="muted">2025‑08‑11 09:15</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12003">View</a></li>
+                                    <li><button class="dd-item" type="button">Audit</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="DTClickable" data-href="/transactions/orders/ORD-12003">
+                        <td>ORD-12003</td>
+                        <td>Booking</td>
+                        <td>Urban Estates</td>
+                        <td>Loft C9</td>
+                        <td>Chioma A.</td>
+                        <td class="muted">20 Aug → 24 Aug</td>
+
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦260,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦300,000</span></div>
+                            <div class="PLine"><span class="PLabel">Margin</span><span class="PValue green">+15.4% <i class="dot dot-green"></i></span></div>
+                        </td>
+
+                        <td><span class="chip chip-refunded">Refunded</span></td>
+                        <td class="muted">2025‑08‑11 09:15</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12003">View</a></li>
+                                    <li><button class="dd-item" type="button">Audit</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <!--Row 4-->
+                    <tr class="DTClickable" data-href="/transactions/orders/ORD-12001">
+                        <td>ORD-12001</td>
+                        <td>Booking</td>
+                        <td>Stellar Apartments</td>
+                        <td>Unit A12</td>
+                        <td>Adewale O.</td>
+                        <td class="muted">12 Aug → 15 Aug</td>
+
+                        <!-- Compact price cell -->
+                        <td class="PCell">
+                            <div class="PLine"><span class="PLabel">Base</span><span class="PValue">₦210,000</span></div>
+                            <div class="PLine"><span class="PLabel">Selling</span><span class="PValue strong">₦245,000</span></div>
+                            <div class="PLine">
+                                <span class="PLabel">Margin</span>
+                                <span class="PValue green">+16.7% <i class="dot dot-green"></i></span>
+                            </div>
+                        </td>
+
+                        <td><span class="chip chip-paid">Paid</span></td>
+                        <td class="muted">2025‑08‑12 14:21</td>
+
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu" role="menu">
+                                    <li><a class="dd-item" href="/transactions/orders/ORD-12001">View</a></li>
+                                    <li><button class="dd-item" type="button">Refund</button></li>
+                                    <li><button class="dd-item" type="button">Add to settlement</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="Footer flex justify-center">
+    <p>
+        <script>document.write(new Date().getFullYear())</script>
+        &copy; Ajebo
+    </p>
+
+
+</div>
+
+
+
+<!--Styles-->
+
+<style>
+    /* ---------- container & header ---------- */
+    .DashboardTableContainerE {
+        margin-top: 12px; 
+        height: 700px;
+    }
+
+    .DTH {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 4px 10px;
+    }
+
+        .DTH h5 {
+            margin: 0;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+    /* ---------- filter bar ---------- */
+    .DTFilters {
+        padding: 12px 16px;
+        background: #fff;
+        border: 1px solid #e9edf4;
+        border-radius: 10px;
+        margin-bottom: 12px;
+    }
+
+    .DTFilterRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-end;
+    }
+
+    .DTField {
+        display: flex;
+        flex-direction: column;
+        min-width: 190px;
+    }
+
+        .DTField label {
+            font-size: 12px;
+            color: #667085;
+            margin-bottom: 6px;
+        }
+
+        .DTField input, .DTField select {
+            height: 36px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            padding: 0 10px;
+            font-size: 14px;
+        }
+
+    .DTButtons {
+        margin-left: auto;
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn {
+        height: 36px;
+        border-radius: 8px;
+        padding: 0 14px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: #4f46e5;
+        color: #fff;
+        border: 1px solid #4f46e5;
+    }
+
+    .btn-light {
+        background: #fff;
+        color: #344054;
+        border: 1px solid #d0d5dd;
+    }
+
+    .btn-soft-info {
+        background: #e6f2ff;
+        color: #1d4ed8;
+        border: 1px solid #cfe4ff;
+    }
+
+    /* ---------- table ---------- */
+    .DTTableWrap {
+        background: #fff;
+        border: 1px solid #e9edf4;
+        border-radius: 10px;
+        overflow: auto;
+        height: 550px;
+    }
+
+    .DTTable {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+        .DTTable th, .DTTable td {
+            padding: 12px 14px;
+            white-space: nowrap;
+        }
+
+        .DTTable thead tr {
+            background: #f8fafc;
+            color: #667085;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+        }
+
+        .DTTable tbody tr {
+            border-top: 1px solid #f1f4f9;
+            cursor: pointer;
+        }
+
+            .DTTable tbody tr:hover {
+                background: #f9fbff;
+            }
+
+    .muted {
+        color: #64748b;
+    }
+
+    /* ---------- compact price cell ---------- */
+    .PCell {
+        min-width: 240px;
+    }
+
+    .PLine {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        line-height: 1.15;
+        margin: 2px 0;
+    }
+
+    .PLabel {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .PValue {
+        color: #0f172a;
+        font-size: 14px;
+    }
+
+        .PValue.strong {
+            font-weight: 700;
+        }
+
+        .PValue.green {
+            color: #117B34;
+            font-weight: 600;
+        }
+
+        .PValue.amber {
+            color: #B45309;
+            font-weight: 600;
+        }
+
+    .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        vertical-align: middle;
+    }
+
+    .dot-green {
+        background: #10b981;
+    }
+
+    /* ---------- chips ---------- */
+    .chip {
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .chip-paid {
+        background: #E6F4FF;
+        color: #1D4ED8;
+    }
+
+    .chip-pending {
+        background: #FFF4E5;
+        color: #B45309;
+    }
+
+    .chip-refunded {
+        background: #FEE2E2;
+        color: #B91C1C;
+    }
+
+    /* ---------- actions dropdown ---------- */
+    .DTActionCol {
+        width: 1%;
+    }
+
+    .icon-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        line-height: 24px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .manual-dropdown {
+        position: relative;
+        display: inline-block
+    }
+
+        .manual-dropdown .dd-menu {
+            position: absolute;
+            right: 0;
+            top: 110%;
+            min-width: 9rem;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,.08);
+            display: none;
+            z-index: 50
+        }
+
+            .manual-dropdown .dd-menu.show {
+                display: block
+            }
+
+        .manual-dropdown .dd-item {
+            display: block;
+            padding: .5rem .75rem;
+            color: #334155;
+            text-decoration: none;
+            width: 100%;
+            text-align: left;
+            background: #fff;
+            border: 0
+        }
+
+            .manual-dropdown .dd-item:hover {
+                background: #f8fafc
+            }
+</style>
+
+
+
+<!--Javascript codes--> 
+<script>
+    // Row click → navigate to details (ignore clicks from action cell)
+    document.addEventListener('click', (e) => {
+        const row = e.target.closest('tr.DTClickable');
+        if (row && !e.target.closest('.DTActionCol')) {
+            const href = row.getAttribute('data-href');
+            if (href) window.location.href = href;
+        }
+    });
+
+    // Dropdown open/close
+    (function () {
+        function closeAll(except) {
+            document.querySelectorAll('.manual-dropdown .dd-menu.show').forEach(m => {
+                if (!except || m !== except) { m.classList.remove('show'); }
+            });
+        }
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-dd-button], .icon-dot');
+            if (btn) {
+                const wrap = btn.closest('.manual-dropdown');
+                const menu = wrap.querySelector('.dd-menu');
+                const open = menu.classList.contains('show');
+                closeAll();
+                if (!open) { menu.classList.add('show'); }
+                e.stopPropagation();
+            } else if (!e.target.closest('.manual-dropdown')) {
+                closeAll();
+            }
+        });
+        document.addEventListener('keydown', e => e.key === 'Escape' && closeAll());
+    })();
+
+    // Filter hooks (wire to backend later)
+    document.getElementById('obApply').addEventListener('click', () => {
+        const q = document.getElementById('obSearch').value.trim();
+        const type = document.getElementById('obType').value;
+        const status = document.getElementById('obStatus').value;
+        const from = document.getElementById('obFrom').value;
+        const to = document.getElementById('obTo').value;
+        console.log('Apply OB filters', { q, type, status, from, to });
+        // TODO: fetch with these params and rebuild tbody
+    });
+    document.getElementById('obReset').addEventListener('click', () => {
+        ['obSearch', 'obType', 'obStatus', 'obFrom', 'obTo'].forEach(id => document.getElementById(id).value = '');
+        // TODO: reload default dataset
+    });
+    document.getElementById('obExport').addEventListener('click', () => {
+        console.log('Export CSV with current filters');
+        // TODO: server-side CSV export
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

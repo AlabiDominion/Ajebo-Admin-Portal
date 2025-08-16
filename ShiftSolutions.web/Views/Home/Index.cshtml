@@ -12,7 +12,7 @@
                         <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-1 g-0">
                             <div class="col">
                                 <div class="py-4 px-3">
-                                <h5 class="text-muted text-uppercase fs-13">Total Merchants <i class="ri-line-chart-line fs-18 float-end align-middle"></i></h5>
+                                <h5 class="text-muted text-uppercase fs-13">Total Transactions (count) <i class="ri-line-chart-line fs-18 float-end align-middle"></i></h5>
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
                                         <i class="ri-team-line display-6 text-muted"></i>
@@ -25,7 +25,7 @@
                             </div>
                             <div class="col">
                                 <div class="mt-3 mt-md-0 py-4 px-3">
-                                    <h5 class="text-muted text-uppercase fs-13">Listed Apartment <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
+                                    <h5 class="text-muted text-uppercase fs-13">Total Merchant sales  <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
                                         <i class="ri-building-4-line display-6 text-muted"></i>
@@ -38,7 +38,7 @@
                             </div>
                             <div class="col">
                                 <div class="mt-3 mt-md-0 py-4 px-3">
-                                <h5 class="text-muted text-uppercase fs-13">Customers <i class="ri-group-line fs-18 float-end align-middle"></i></h5>
+                                <h5 class="text-muted text-uppercase fs-13">Total Platform Revenue <i class="ri-group-line fs-18 float-end align-middle"></i></h5>
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
                                         <i class="ri-user-3-line display-6 text-muted"></i>
@@ -51,7 +51,7 @@
                             </div>
                             <div class="col">
                                 <div class="mt-3 mt-lg-0 py-4 px-3">
-                                <h5 class="text-muted text-uppercase fs-13">Pending Approvals <i class="liveDot1 fs-18 float-end align-middle"></i></h5>
+                                <h5 class="text-muted text-uppercase fs-13">Pending Settlements <i class="liveDot1 fs-18 float-end align-middle"></i></h5>
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
                                         <i class="ri-file-list-3-line display-6 text-muted"></i>
@@ -64,7 +64,7 @@
                             </div>
                         <div class="col">
                             <div class="mt-3 mt-lg-0 py-4 px-3">
-                                <h5 class="text-muted text-uppercase fs-13">Live Active users <i class="liveDot fs-18 float-end align-middle"></i></h5>
+                                <h5 class="text-muted text-uppercase fs-13">Live Active Merchants <i class="liveDot fs-18 float-end align-middle"></i></h5>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <i class="ri-radio-line display-6 text-muted"></i>
@@ -104,25 +104,24 @@
                     <div id="merchantReqApprovalChart"></div>
             </div>
         </div>
-        
-        <!-- Merchant Registrations (per month) vs Revenue (per month)-->
-        
-            <div class="CardFrame3">
+
+        <!-- Revenue vs Merchant Base Price -->
+        <div class="CardFrame3">
             <div class="CardHeader d-flex align-items-center justify-content-between">
-                    <h5 class="card-title mb-0">Merchant Overview</h5>
+                <h5 class="card-title mb-0">Revenue vs Merchant Base Price</h5>
 
-                    <!-- Small KPI strip -->
-                    <div class="d-flex gap-4 text-muted">
-                        <div><span class="fw-semibold text-primary" id="kpiRevenue">$584k</span> <span>Revenue</span></div>
-                        <div><span class="fw-semibold" id="kpiMerchants">2,659</span> <span>Registrations</span></div>
-                        <div><span class="fw-semibold" id="kpiRatio">3.6%</span> <span>Conv. Ratio</span></div>
-                    </div>
-                </div>
-
-                <div class="cardBody">
-                    <div id="merchantRevenueTrend"></div>
+                <!-- Small KPI strip -->
+                <div class="d-flex gap-4 text-muted">
+                    <div><span class="fw-semibold text-primary" id="kpiRevenue">$715k</span> <span>Revenue</span></div>
+                    <div><span class="fw-semibold" id="kpiBasePrice">$580k</span> <span>Merchant Base Price</span></div>
+                    <div><span class="fw-semibold" id="kpiProfitMargin">+23%</span> <span>Profit Margin</span></div>
                 </div>
             </div>
+
+            <div class="cardBody">
+                <div id="revenueBasePriceChart"></div>
+            </div>
+        </div>
 
         
 
@@ -220,24 +219,159 @@
 
         </div>
     </div>
+    <!-- Section 3: Transactions -->
     <div class="DashboardTableContainerE">
         <div class="DTH">
-            <h5 class="mb-0">Available (Unoccupied) </h5>
+            <h5 class="mb-0">Total Transactions</h5>
         </div>
 
-        <table class="w-full">
+        <!-- FILTER BAR -->
+        <div class="DTFilters">
+            <div class="DTFilterRow">
+                <div class="DTField">
+                    <label>Search</label>
+                    <input type="text" id="txSearch" placeholder="Order ID, apartment, merchant…" />
+                </div>
 
-            <tr class="DTHMain">
-                <th>Apartment</th>
-                <th>Location</th>
-                <th>Price</th>
-                <th>Merchant</th>
-            </tr>
+                <div class="DTField">
+                    <label>Date From</label>
+                    <input type="date" id="dateFrom" />
+                </div>
 
+                <div class="DTField">
+                    <label>Date To</label>
+                    <input type="date" id="dateTo" />
+                </div>
 
-        </table>
+                <div class="DTField">
+                    <label>Merchant</label>
+                    <select id="merchantSelect">
+                        <option value="">All</option>
+                        <option>Stellar Apartments</option>
+                        <option>Green Valley Condos</option>
+                        <option>Urban Estates</option>
+                    </select>
+                </div>
 
+                <div class="DTField">
+                    <label>Status</label>
+                    <select id="statusSelect">
+                        <option value="">All</option>
+                        <option>Paid</option>
+                        <option>Pending</option>
+                        <option>Refunded</option>
+                        <option>Failed</option>
+                    </select>
+                </div>
+
+                <div class="DTField">
+                    <label>Margin</label>
+                    <select id="marginBand">
+                        <option value="">All</option>
+                        <option value="lt5">&lt; 5%</option>
+                        <option value="5to10">5–10%</option>
+                        <option value="10to20">10–20%</option>
+                        <option value="gt20">&gt; 20%</option>
+                    </select>
+                </div>
+
+                <div class="DTButtons">
+                    <button type="button" id="applyFilters" class="btn btn-primary">Apply</button>
+                    <button type="button" id="resetFilters" class="btn btn-light">Reset</button>
+                    <button type="button" id="exportCsv" class="btn btn-soft-info">Export CSV</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="DTTableWrap">
+            <table class="DTTable w-full">
+                <thead>
+                    <tr class="DTHMain">
+                        <th>Transaction Id</th>
+                        <th>Merchant Name</th>
+                        <th>Apartment</th>
+                        <th>Merchant Price</th>
+                        <th>Selling Price</th>
+                        <th>Profit Margin</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <!-- OPTIONAL: Quick Actions column -->
+                        <th class="DTActionCol">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="txTbody">
+                    <!-- Example rows (make rows clickable with data-href) -->
+                    <tr class="DTClickable" data-href="/OpTransaction/OrdersDetailes">
+                        <td>ORD-93421</td>
+                        <td>Stellar Apartments</td>
+                        <td>Unit A12</td>
+                        <td>₦210,000</td>
+                        <td>₦245,000</td>
+                        <td><span class="badge badge-green">+16.7%</span></td>
+                        <td><span class="badge badge-paid">Paid</span></td>
+                        <td>2025-08-12</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu">
+                                    <li><a class="dd-item" href="/Transactions/Details/ORD-93421">View</a></li>
+                                    <li><button class="dd-item" type="button">Refund</button></li>
+                                    <li><button class="dd-item" type="button">Settle</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="DTClickable" data-href="/Transactions/Details/ORD-93422">
+                        <td>ORD-93422</td>
+                        <td>Green Valley Condos</td>
+                        <td>Studio 2B</td>
+                        <td>₦180,000</td>
+                        <td>₦192,000</td>
+                        <td><span class="badge badge-amber">+6.7%</span></td>
+                        <td><span class="badge badge-pending">Pending</span></td>
+                        <td>2025-08-12</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu">
+                                    <li><a class="dd-item" href="/Transactions/Details/ORD-93422">View</a></li>
+                                    <li><button class="dd-item" type="button">Refund</button></li>
+                                    <li><button class="dd-item" type="button">Settle</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="DTClickable" data-href="/Transactions/Details/ORD-93423">
+                        <td>ORD-93423</td>
+                        <td>Urban Estates</td>
+                        <td>Loft C9</td>
+                        <td>₦260,000</td>
+                        <td>₦300,000</td>
+                        <td><span class="badge badge-green">+15.4%</span></td>
+                        <td><span class="badge badge-refunded">Refunded</span></td>
+                        <td>2025-08-11</td>
+                        <td class="DTActionCol">
+                            <div class="manual-dropdown">
+                                <button class="icon-dot" data-dd-button aria-haspopup="true" aria-expanded="false">⋯</button>
+                                <ul class="dd-menu">
+                                    <li><a class="dd-item" href="/Transactions/Details/ORD-93423">View</a></li>
+                                    <li><button class="dd-item" type="button">Refund</button></li>
+                                    <li><button class="dd-item" type="button">Settle</button></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+     
+
 
     
 </div>
@@ -358,84 +492,82 @@
         macchart.render();
 
     </script>
-    
-  <script>
-    // --- demo data (replace later with ViewBag / JSON) ---
-    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const revenueMonthly   = [18,22,26,30,28,35,48,65,82,96,120,145]; // $k
-    const merchantsMonthly = [12,14,16,15,18,22,28,32,35,40,52,60];   // count
 
-    // simple derived KPIs ()
-    document.getElementById('kpiRevenue').textContent  = `$${revenueMonthly.reduce((a,b)=>a+b,0)}k`;
-    document.getElementById('kpiMerchants').textContent = merchantsMonthly.reduce((a,b)=>a+b,0).toLocaleString();
-    const ratio = Math.round((merchantsMonthly.reduce((a,b)=>a+b,0) / (revenueMonthly.reduce((a,b)=>a+b,0) || 1)) * 1000) / 10;
-    document.getElementById('kpiRatio').textContent = `${ratio}%`;
+    <script>
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    const options = {
-      series: [
-        { name: "Revenue",   type: "area", data: revenueMonthly },
-        { name: "Registrations", type: "line", data: merchantsMonthly }
-      ],
-      chart: {
-        height: 360,
-        type: "line",
-        toolbar: { show: false },
-        zoom: { enabled: false }
-      },
-      stroke: {
-        width: [3, 3],
-        curve: "smooth"
-      },
-      fill: {
-        type: ["gradient","solid"],
-        gradient: {
-          shadeIntensity: 1,
-          opacityFrom: 0.35,
-          opacityTo: 0.05,
-          stops: [0, 90, 100]
-        }
-      },
-      colors: ["#10b981", "#f97316"], // teal for revenue, orange for registrations
-      dataLabels: { enabled: false },
-      markers: { size: 0, hover: { sizeOffset: 4 } },
-      xaxis: {
-        categories: months,
-        axisBorder: { show: false },
-        axisTicks: { show: false }
-      },
-      yaxis: [
-        {
-          title: { text: "$k" },
-          tickAmount: 6,
-          labels: {
-            formatter: (val) => `$${val}k`
-          }
-        }
-      ],
-      grid: {
-        borderColor: "#eef2f7",
-        strokeDashArray: 4
-      },
-      legend: {
-        position: "bottom",
-        markers: { radius: 12 }
-      },
-      tooltip: {
-        shared: true,
-        intersect: false,
-        y: [
-          { formatter: (val) => `$${val}k` },
-          { formatter: (val) => `${val} merchants` }
-        ]
-      }
-    };
+        // Example data — will replace with C# values later
+        const revenueMonthly = [20, 25, 30, 38, 40, 48, 55, 65, 72, 80, 92, 105]; // Final selling price
+        const basePriceMonthly = [15, 20, 22, 30, 32, 40, 44, 52, 58, 63, 70, 78]; // Merchant base price
 
-    const chart = new ApexCharts(
-      document.querySelector("#merchantRevenueTrend"),
-      options
-    );
-    chart.render();
-  </script>
+        // KPI calculations
+        const totalRevenue = revenueMonthly.reduce((a, b) => a + b, 0);
+        const totalBasePrice = basePriceMonthly.reduce((a, b) => a + b, 0);
+        const profitMargin = ((totalRevenue - totalBasePrice) / totalBasePrice) * 100;
+
+        document.getElementById('kpiRevenue').textContent = `$${totalRevenue}k`;
+        document.getElementById('kpiBasePrice').textContent = `$${totalBasePrice}k`;
+        document.getElementById('kpiProfitMargin').textContent = `${profitMargin.toFixed(1)}%`;
+
+        // ApexCharts config
+        const options = {
+            series: [
+                { name: "Revenue", data: revenueMonthly },
+                { name: "Merchant Base Price", data: basePriceMonthly }
+            ],
+            chart: {
+                height: 360,
+                type: "line",
+                toolbar: { show: false },
+                zoom: { enabled: false }
+            },
+            stroke: {
+                width: [3, 3],
+                curve: "smooth"
+            },
+            colors: ["#10b981", "#3b82f6"], // green for revenue, blue for base price
+            dataLabels: { enabled: false },
+            markers: { size: 0, hover: { sizeOffset: 4 } },
+            xaxis: {
+                categories: months,
+                axisBorder: { show: false },
+                axisTicks: { show: false }
+            },
+            yaxis: {
+                title: { text: "$k" },
+                tickAmount: 6,
+                labels: {
+                    formatter: (val) => `$${val}k`
+                }
+            },
+            grid: {
+                borderColor: "#eef2f7",
+                strokeDashArray: 4
+            },
+            legend: {
+                position: "bottom",
+                markers: { radius: 12 }
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: [
+                    { formatter: (val) => `$${val}k` },
+                    { formatter: (val) => `$${val}k` }
+                ]
+            }
+        };
+
+        const chart = new ApexCharts(
+            document.querySelector("#revenueBasePriceChart"),
+            options
+        );
+        chart.render();
+    </script>
+
+
+
+
     <script>
         (function () {
             const easeOut = t => 1 - Math.pow(1 - t, 3); // smooth easing
@@ -478,6 +610,71 @@
             }
         })();
     </script>
+
+    <!--Javascript for transaction table filter-->
+    <script>
+        // Row click → navigate to details
+        document.addEventListener('click', (e) => {
+            const row = e.target.closest('tr.DTClickable');
+            // ignore clicks that came from the actions cell
+            if (row && !e.target.closest('.DTActionCol')) {
+                const href = row.getAttribute('data-href');
+                if (href) window.location.href = href;
+            }
+        });
+
+        // Manual dropdown (open/close)
+        (function () {
+            function closeAll(except) {
+                document.querySelectorAll('.manual-dropdown .dd-menu.show').forEach(m => {
+                    if (!except || m !== except) {
+                        m.classList.remove('show');
+                        m.parentElement.querySelector('[data-dd-button]')?.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-dd-button], .icon-dot');
+                if (btn) {
+                    const wrap = btn.closest('.manual-dropdown');
+                    const menu = wrap.querySelector('.dd-menu');
+                    const isOpen = menu.classList.contains('show');
+                    closeAll();
+                    if (!isOpen) { menu.classList.add('show'); btn.setAttribute('aria-expanded', 'true'); }
+                    e.stopPropagation();
+                } else if (!e.target.closest('.manual-dropdown')) {
+                    closeAll();
+                }
+            });
+            document.addEventListener('keydown', e => e.key === 'Escape' && closeAll());
+        })();
+
+        // Filter hooks (wire to your backend later)
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            const query = {
+                q: document.getElementById('txSearch').value.trim(),
+                from: document.getElementById('dateFrom').value,
+                to: document.getElementById('dateTo').value,
+                merchant: document.getElementById('merchantSelect').value,
+                status: document.getElementById('statusSelect').value,
+                margin: document.getElementById('marginBand').value
+            };
+            // TODO: call your endpoint with these params and re-render tbody
+            console.log('Apply filters', query);
+        });
+
+        document.getElementById('resetFilters').addEventListener('click', () => {
+            ['txSearch', 'dateFrom', 'dateTo', 'merchantSelect', 'statusSelect', 'marginBand']
+                .forEach(id => document.getElementById(id).value = '');
+            // TODO: reload default dataset
+        });
+
+        document.getElementById('exportCsv').addEventListener('click', () => {
+            // TODO: implement server-side export using current filters
+            console.log('Export CSV with current filters');
+        });
+    </script>
+
 }
 
     

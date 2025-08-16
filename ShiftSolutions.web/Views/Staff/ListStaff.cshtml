@@ -65,7 +65,7 @@
                     <td>Active</td>
                     <td>
                         <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
+                            <button id="DisplayPopup" class="btn btn-outline-success btn-border">Visit</button>
                         </div>
                     </td>    
                 </tr>
@@ -282,3 +282,412 @@
 
 
 </div>
+
+<!--Pop ups-->
+
+<div id="StaffProfilePopUP" class="StaffProfile hidden">
+    <div class="StaffProfileInner">
+        <div class="SPI1">
+            <img src="~/images/users/avatar-3.jpg" alt="" />
+            <div class="SPI11">
+                <h2>Thomas Anderson</h2>
+                <p class="mb-0">Senior Sales Associate</p>
+                <p class="mb-0">Real Estate</p>
+            </div>
+        </div>
+        <p>
+            <i class='bx bxs-envelope'></i>
+            ajebo@example.comm
+        </p>
+        <p>
+            <i class='bx bx-phone-call'></i>
+            (234) 456-7890
+        </p>
+        <div>
+            <button id="OpenStaffEdit" class="btn btn-primary btn-border">Edit Staff</button>
+            <button id="deleteStaffBtn" class="btn btn-outline-danger btn-border">Delete Staff</button>
+            <button id="closeProfile"  class="btn btn-soft-dark btn-border">Close</button>
+        </div>
+    </div>
+
+    <div class="StaffProfileInner2">
+        <h3>Merchants</h3>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>Stella Apartments</td>
+                    <td>Ajebo@example.com</td>
+                    <td>(234) 456 7890</td>
+                </tr>
+                <tr>
+                    <td>Stella Apartments</td>
+                    <td>Ajebo@example.com</td>
+                    <td>(234) 456 7890</td>
+                </tr>
+                <tr>
+                    <td>Stella Apartments</td>
+                    <td>Ajebo@example.com</td>
+                    <td>(234) 456 7890</td>
+                </tr>
+                <tr>
+                    <td>Stella Apartments</td>
+                    <td>Ajebo@example.com</td>
+                    <td>(234) 456 7890</td>
+                </tr>
+                <tr>
+                    <td>Stella Apartments</td>
+                    <td>Ajebo@example.com</td>
+                    <td>(234) 456 7890</td>
+                </tr>
+                <tr>
+                    <td>Stella Apartments</td>
+                    <td>Ajebo@example.com</td>
+                    <td>(234) 456 7890</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+<div id="StaffEditpage" class="StaffProfileEdit hidden">
+  <div class="spe-card">
+    <h1 class="spe-title">Edit Staff</h1>
+
+    <form class="spe-form" action="#" method="post" autocomplete="off">
+      <!-- Avatar -->
+      <div class="spe-avatar">
+        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=240&h=240&fit=crop"
+             alt="Staff photo">
+      </div>
+
+      <!-- Two-column fields -->
+      <div class="spe-grid">
+        <div class="spe-field">
+          <label for="firstName">First Name</label>
+          <input id="firstName" name="FirstName" type="text" value="Sarah">
+        </div>
+
+        <div class="spe-field">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" name="LastName" type="text" value="Holland">
+        </div>
+
+        <div class="spe-field">
+          <label for="email">Email Address</label>
+          <input id="email" name="Email" type="email" value="sarah@example.com" autocomplete="new-password">
+        </div>
+
+        <div class="spe-field">
+          <label for="phone">Phone Number</label>
+          <input id="phone" name="Phone" type="tel" value="(405) 555-0123">
+        </div>
+
+        <div class="spe-field">
+          <label for="department">Department</label>
+          <div class="spe-select">
+            <select id="department" name="Department">
+              <option>Marketing</option>
+              <option>Operations</option>
+              <option>Sales</option>
+              <option>Support</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="spe-field">
+          <label for="role">Role</label>
+          <div class="spe-select">
+            <select id="role" name="Role">
+              <option>Team Lead</option>
+              <option>Manager</option>
+              <option>Analyst</option>
+              <option>Associate</option>
+            </select>
+          </div>
+        </div>
+
+                <div class="spe-field">
+                    <label for="Status">Status</label>
+                    <div class="spe-select">
+                        <select name="Status">
+                            <option>Active</option>
+                            <option>Inactive</option>
+                            <option>On Leave</option>
+                        </select>
+                    </div>
+                </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="spe-actions">
+        <button type="submit" class="spe-btn spe-btn-primary">Save Changes</button>
+        <a id="CloseEdit" href="#" class="spe-btn spe-btn-ghost" role="button">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="dc-overlay" id="dcOverlay" aria-hidden="true">
+    <div class="dc-modal" role="dialog" aria-modal="true" aria-labelledby="dcTitle" aria-describedby="dcDesc">
+        <button class="dc-close" type="button" aria-label="Close" id="dcClose">×</button>
+
+        <div class="dc-icon">
+            <!-- warning icon -->
+            <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true">
+                <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                      fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+
+        <h3 class="dc-title" id="dcTitle">Delete Staff?</h3>
+        <p class="dc-desc" id="dcDesc">
+            This action cannot be undone. The staff member and any related assignments will be removed.
+        </p>
+
+        
+        <form id="deleteForm" action="/Staff/Delete/123" method="post" class="dc-actions">
+           
+            <input type="hidden" name="StaffId" value="123" />
+
+            <button type="submit" class="dc-btn dc-btn-danger" id="dcConfirm">Yes, Delete</button>
+            <button type="button" class="dc-btn dc-btn-ghost" id="dcCancel">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+<style>
+
+
+.StaffProfileEdit {
+  --spe-bg: #ffffff;
+  --spe-card: #ffffff;
+  --spe-border: #e5e7eb;
+  --spe-muted: #64748b;
+  --spe-text: #0f172a;
+  --spe-input-bg: #fff;
+  --spe-input-bd: #d0d5dd;
+  --spe-ring: #94a3b8;
+  --spe-primary: #0ea5e9;   /* teal/blue */
+  --spe-primary-dark: #0284c7;
+  --spe-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+
+  padding: 12px;
+  background: var(--spe-bg);
+  color: var(--spe-text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+position: absolute;
+top: 300px;
+right: 200px;
+}
+
+.StaffProfileEdit .spe-card{
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--spe-card);
+  border: 1px solid var(--spe-border);
+  border-radius: 14px;
+  box-shadow: var(--spe-shadow);
+  padding: 28px 28px 22px;
+}
+
+.StaffProfileEdit .spe-title{
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  margin: 4px 0 18px;
+}
+
+.StaffProfileEdit .spe-form{
+  display: grid;
+  gap: 18px;
+}
+
+/* Avatar */
+.StaffProfileEdit .spe-avatar{
+  display: grid;
+  place-items: center;
+  margin: 6px 0 6px;
+}
+.StaffProfileEdit .spe-avatar img{
+  width: 104px;
+  height: 104px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 4px solid #f1f5f9;
+  box-shadow: 0 4px 14px rgba(15,23,42,.12);
+}
+
+/* Grid */
+.StaffProfileEdit .spe-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 16px;
+}
+
+
+/* Field */
+.StaffProfileEdit .spe-field label{
+  display:block;
+  font-size: 13px;
+  color: var(--spe-muted);
+  margin: 0 0 6px;
+}
+.StaffProfileEdit input[type="text"],
+.StaffProfileEdit input[type="email"],
+.StaffProfileEdit input[type="tel"],
+.StaffProfileEdit select{
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--spe-input-bg);
+  border: 1px solid var(--spe-input-bd);
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--spe-text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.StaffProfileEdit input:focus,
+.StaffProfileEdit select:focus{
+  border-color: var(--spe-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--spe-primary) 20%, transparent);
+}
+
+/* Custom select wrapper (for clean corners) */
+.StaffProfileEdit .spe-select{
+  position: relative;
+}
+
+
+/* Actions */
+.StaffProfileEdit .spe-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top: 8px;
+}
+.StaffProfileEdit .spe-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width: 160px;
+  height: 42px;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid var(--spe-border);
+  background: #fff;
+  color: var(--spe-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .15s ease, background .15s ease;
+}
+.StaffProfileEdit .spe-btn:hover{ background:#f8fafc; }
+.StaffProfileEdit .spe-btn:active{ transform: translateY(1px); }
+
+.StaffProfileEdit .spe-btn-primary{
+  background: var(--spe-primary);
+  border-color: var(--spe-primary);
+  color:#fff;
+}
+.StaffProfileEdit .spe-btn-primary:hover{ background: var(--spe-primary-dark); border-color: var(--spe-primary-dark); }
+
+.StaffProfileEdit .spe-btn-ghost{
+  background:#fff;
+}
+
+/* Reduce iOS autofill yellow */
+.StaffProfileEdit input:-webkit-autofill,
+.StaffProfileEdit input:-webkit-autofill:focus,
+.StaffProfileEdit select:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+  -webkit-text-fill-color: var(--spe-text) !important;
+}
+</style>
+
+
+
+
+<!--javascript-->
+<script>
+    let Popup = document.getElementById('StaffProfilePopUP')
+    let DisplayPopup = document.getElementById('DisplayPopup')
+    let Closeprofile = document.getElementById('closeProfile')
+
+    let EditPage = document.getElementById('StaffEditpage')
+    let DisplayEdit = document.getElementById('OpenStaffEdit')
+    let CloseEdit = document.getElementById('CloseEdit')
+
+    function ShowPopUp(){
+        Popup.classList.remove('hidden')
+    }
+    function HidePopUp() {
+        Popup.classList.toggle('hidden')
+    }
+    function ShowEdit() {
+        EditPage.classList.remove('hidden')
+    }
+    function CloseEditPage() {
+        EditPage.classList.toggle('hidden')
+    }
+
+    DisplayPopup.addEventListener('click', () => ShowPopUp())
+    Closeprofile.addEventListener('click', () => HidePopUp())
+    DisplayEdit.addEventListener('click', () => ShowEdit())
+    CloseEdit.addEventListener('click', () => CloseEditPage())
+</script>
+<script>
+    (function () {
+        const overlay = document.getElementById('dcOverlay');
+        const openBtn = document.getElementById('deleteStaffBtn');
+        const closeBtn = document.getElementById('dcClose');
+        const cancelBtn = document.getElementById('dcCancel');
+
+        function openModal() {
+            overlay.classList.add('show');
+            overlay.removeAttribute('aria-hidden');
+            // Move focus into modal for accessibility
+            document.getElementById('dcConfirm').focus();
+            // Prevent body scroll (optional)
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            overlay.classList.remove('show');
+            overlay.setAttribute('aria-hidden', 'true');
+            // Restore focus to trigger
+            openBtn.focus();
+            document.body.style.overflow = '';
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Click outside to close
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+
+        // Escape to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('show')) closeModal();
+        });
+
+        // Optional: disable confirm after submit to prevent double-post
+        const form = document.getElementById('deleteForm');
+        form?.addEventListener('submit', () => {
+            const btn = document.getElementById('dcConfirm');
+            btn.setAttribute('disabled', 'disabled');
+            btn.textContent = 'Deleting…';
+        });
+    })();
+</script>

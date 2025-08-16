@@ -12,5 +12,9 @@ namespace ShiftSolutions.web.Controllers
         {
             return View();
         }
+        public IActionResult StaffProfile()
+        {
+            return View();
+        }
     }
 }

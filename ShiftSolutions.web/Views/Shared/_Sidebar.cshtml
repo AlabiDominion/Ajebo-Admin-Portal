@@ -23,8 +23,7 @@
 
             <!-- Menu -->
             <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
-                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Overview</a>
-                
+                <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Transaction Overview</a>
             </div>
         </div>
 
@@ -140,6 +139,55 @@
                 <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Bookings</a>
             </div>
         </div>
+            <p>Operations</p>
+            <div class="sideMenusLinks" data-dropdown>
+                <!-- Trigger -->
+                <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                    <span>
+                        <i class='bx bx-dollar-circle'></i>
+                        Transactions
+                    </span>
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <!-- Menu -->
+                <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                    <a asp-controller="OpTransaction" asp-action="OrdersBooking" class="sideMenuHiddenLink" role="menuitem">- Orders / Bookings</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Settlements / Payouts</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Adjustments & Refunds</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Pricing Rules (Markup)</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Fees & Taxes</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Audit Log / Exports</a>
+                </div>
+            </div>
+            <div class="sideMenusLinks" data-dropdown>
+                <!-- Trigger -->
+                <button type="button" data-dropdown-button aria-expanded="false" aria-haspopup="true">
+                    <span>
+                        <i class='bx bx-target-lock'></i>
+                        Promotions
+                    </span>
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <!-- Menu -->
+                <div class="hidden" role="menu" tabindex="-1" data-dropdown-menu>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Campaigns</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Promo Codes / Vouchers</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Applied Discounts</a>
+                    <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Promotion Analytics</a>
+                    
+                </div>
+            </div>
+
 
         <p>Others</p>
         <div class="sideMenusLinks" data-dropdown>
