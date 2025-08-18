@@ -110,27 +110,31 @@
                 </div>
             </div>
 
-            <!-- Photos / Carousel -->
-            <div class="card" id="merchantPhotosCard">
-                <div class="card-h">
-                    <h3 class="mb-0">Merchant Photos</h3>
-                    <span class="muted" id="mpcCount">0 images</span>
-                </div>
+           
 
-                <div class="mp-carousel" id="mpCarousel" aria-roledescription="carousel">
-                    <div class="mpc-viewport">
-                        <div class="mpc-track" id="mpcTrack" role="list"></div>
+        </div>
+    </div>
+</div>
 
-                        <!-- Prev / Next -->
-                        <button class="mpc-nav mpc-prev" id="mpcPrev" aria-label="Previous image">‹</button>
-                        <button class="mpc-nav mpc-next" id="mpcNext" aria-label="Next image">›</button>
-                    </div>
+<div class="MerchantPictureUnder">
+    <!-- Photos / Carousel -->
+    <div class="card" id="merchantPhotosCard">
+        <div class="card-h">
+            <h3 class="mb-0">Merchant Photos</h3>
+            <span class="muted" id="mpcCount">0 images</span>
+        </div>
 
-                    <!-- Dots -->
-                    <div class="mpc-dots" id="mpcDots" role="tablist" aria-label="Carousel Pagination"></div>
-                </div>
+        <div class="mp-carousel" id="mpCarousel" aria-roledescription="carousel">
+            <div class="mpc-viewport">
+                <div class="mpc-track" id="mpcTrack" role="list"></div>
+
+                <!-- Prev / Next -->
+                <button class="mpc-nav mpc-prev" id="mpcPrev" aria-label="Previous image">‹</button>
+                <button class="mpc-nav mpc-next" id="mpcNext" aria-label="Next image">›</button>
             </div>
 
+            <!-- Dots -->
+            <div class="mpc-dots" id="mpcDots" role="tablist" aria-label="Carousel Pagination"></div>
         </div>
     </div>
 </div>
@@ -229,7 +233,11 @@
   --shadow-1: 0 8px 24px rgba(15, 23, 42, .08);
   --shadow-2: 0 16px 40px rgba(2, 6, 23, .12);
 }
-
+.MerchantPictureUnder{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 /* ---------- Utilities ---------- */
 .muted { color: var(--muted); }
 .fw-bold { font-weight: 700; }
