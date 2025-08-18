@@ -1,0 +1,429 @@
+﻿<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
+    <h4>Merchant Profile</h4>
+    <p>Administration <span>›</span> Merchants <span>›</span> Profile</p>
+</div>
+
+<div class="MP">
+    <!-- Header -->
+    <div class="MPHead card">
+        <div class="mph-left">
+            <img class="mph-avatar" src="/images/users/avatar-7.jpg" alt="">
+            <div>
+                <div class="mph-name">Urban Estates</div>
+                <div class="mph-sub muted">MER-1002 • urbanestates@example.com • +234 801 777 8888</div>
+                <div class="mph-badges">
+                    <span class="chip chip-pending" id="mpStatus">Pending</span>
+                    <span class="chip">Created: 2025-08-12</span>
+                    <span class="chip">City: Abuja</span>
+                </div>
+            </div>
+        </div>
+        <div class="mph-actions">
+            <button class="btn btn-light" onclick="history.back()">Back</button>
+            <button class="btn btn-danger" id="openDecline">Decline</button>
+            <button class="btn btn-primary" id="openApprove">Approve</button>
+        </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="MPGrid">
+        <!-- Review Information -->
+        <div class="card">
+            <div class="card-h"><h3>Review Information</h3></div>
+            <div class="mp-info">
+                <div class="mp-row">
+                    <div class="mp-key">Business Name</div>
+                    <div class="mp-val">Urban Estates</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">RC / CAC Number</div>
+                    <div class="mp-val">RC-4482219</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">Contact Person</div>
+                    <div class="mp-val">Chioma Ade • +234 801 990 5511</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">Email</div>
+                    <div class="mp-val">urbanestates@example.com</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">Address</div>
+                    <div class="mp-val">Plot 12, Garki II, Abuja, Nigeria</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">Bank</div>
+                    <div class="mp-val">GTBank • 0022334455 • Urban Estates Ltd</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">Apartment Count</div>
+                    <div class="mp-val">9 listed</div>
+                </div>
+                <div class="mp-row">
+                    <div class="mp-key">Notes</div>
+                    <div class="mp-val muted">KYC looks valid. Confirm CAC doc clarity before approval.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documents -->
+        <div class="card">
+            <div class="card-h"><h3>Documents</h3></div>
+            <div class="mp-docs">
+                <!-- Repeat .doc-tile as needed -->
+                <div class="doc-tile">
+                    <div class="doc-ico pdf">PDF</div>
+                    <div class="doc-meta">
+                        <div class="doc-name">CAC Certificate.pdf</div>
+                        <div class="doc-sub muted">Uploaded 12 Aug • 420 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                        <a class="btn btn-light" href="#">View</a>
+                        <a class="btn btn-soft-info" href="#">Download</a>
+                    </div>
+                </div>
+
+                <div class="doc-tile">
+                    <div class="doc-ico img">IMG</div>
+                    <div class="doc-meta">
+                        <div class="doc-name">Government ID.jpg</div>
+                        <div class="doc-sub muted">Uploaded 12 Aug • 1.2 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                        <a class="btn btn-light" href="#">View</a>
+                        <a class="btn btn-soft-info" href="#">Download</a>
+                    </div>
+                </div>
+
+                <div class="doc-tile">
+                    <div class="doc-ico pdf">PDF</div>
+                    <div class="doc-meta">
+                        <div class="doc-name">Bank Statement.pdf</div>
+                        <div class="doc-sub muted">Uploaded 12 Aug • 860 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                        <a class="btn btn-light" href="#">View</a>
+                        <a class="btn btn-soft-info" href="#">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity / Timeline (optional) -->
+        <div class="card">
+            <div class="card-h"><h3>Activity</h3></div>
+            <ul class="timeline">
+                <li>
+                    <span class="tl-dot tl-ok"></span><div class="tl-block">
+                        <div class="tl-title">Merchant submitted application</div>
+                        <div class="tl-sub muted">2025-08-12 11:04</div>
+                    </div>
+                </li>
+                <li>
+                    <span class="tl-dot"></span><div class="tl-block">
+                        <div class="tl-title">Ops viewing documents</div>
+                        <div class="tl-sub muted">2025-08-12 14:21</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Assign Staff & Approve Modal -->
+<div class="obd-overlay" id="approveModal" aria-hidden="true">
+    <div class="obd-modal" role="dialog" aria-modal="true" aria-labelledby="apTitle">
+        <button class="modal-close" data-close>✕</button>
+        <h3 id="apTitle" class="mb-2">Assign Staff & Approve</h3>
+        <p class="muted mb-2">Choose a staff member who will manage this merchant after approval.</p>
+
+        <form id="approveForm" class="rf-form">
+            <div class="rf-row">
+                <label class="fw-bold">Staff <span class="muted">(required)</span></label>
+                <select id="apStaff" required>
+                    <option value="">Select staff…</option>
+                    <option value="STF-001">Dominion – Ops Lead</option>
+                    <option value="STF-002">Adaobi – Onboarding</option>
+                    <option value="STF-003">Samuel – Verification</option>
+                </select>
+            </div>
+            <div class="rf-row">
+                <label>Note (optional)</label>
+                <input id="apNote" placeholder="Internal note">
+            </div>
+
+            <div class="rf-actions">
+                <button type="button" class="btn btn-light" data-close>Cancel</button>
+                <button type="submit" class="btn btn-primary">Approve</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Decline Reason Modal -->
+<div class="obd-overlay" id="declineModal" aria-hidden="true">
+    <div class="obd-modal" role="dialog" aria-modal="true" aria-labelledby="dcTitle">
+        <button class="modal-close" data-close>✕</button>
+        <h3 id="dcTitle" class="mb-2">Decline Merchant</h3>
+        <p class="muted mb-2">Provide a reason for declining this merchant. This can be shared with the submitter.</p>
+
+        <form id="declineForm" class="rf-form">
+            <div class="rf-row">
+                <label class="fw-bold">Reason <span class="muted">(required)</span></label>
+                <textarea id="dcReason" rows="4" placeholder="Why is this application being declined?" required></textarea>
+            </div>
+            <div class="rf-actions">
+                <button type="button" class="btn btn-light" data-close>Cancel</button>
+                <button type="submit" class="btn btn-danger">Decline</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* =========================================================
+   Merchant Profile – FULL CSS (standalone)
+   ========================================================= */
+
+/* ---------- Tokens ---------- */
+:root {
+  --ink: #0f172a;          /* primary text */
+  --muted: #64748b;        /* secondary text */
+  --line: #e5eaf2;         /* borders */
+  --line-2: #dbe4ef;       /* stronger borders */
+
+  --bg: #ffffff;           /* surfaces */
+  --bg-soft: #fbfdff;
+
+  --primary: #0ea5e9;      /* blue-500 */
+  --primary-600: #0284c7;  /* blue-600 */
+  --danger: #dc2626;       /* red-600 */
+  --danger-700: #b91c1c;   /* red-700 */
+  --info-soft: #eef6ff;    /* soft blue bg */
+
+  --success: #16a34a;      /* green-600 */
+  --warning: #f59e0b;      /* amber-600 */
+  --slate: #94a3b8;        /* neutral for icons */
+
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  --shadow-1: 0 8px 24px rgba(15, 23, 42, .08);
+  --shadow-2: 0 16px 40px rgba(2, 6, 23, .12);
+}
+
+/* ---------- Utilities ---------- */
+.muted { color: var(--muted); }
+.fw-bold { font-weight: 700; }
+.mb-0 { margin-bottom: 0; }
+.mb-2 { margin-bottom: .5rem; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.gap-6 { gap: .375rem; }
+.gap-8 { gap: .5rem; }
+.gap-12 { gap: .75rem; }
+.gap-14 { gap: .875rem; }
+.gap-16 { gap: 1rem; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 38px; padding: 0 14px;
+  border: 1px solid var(--line); border-radius: var(--radius-md);
+  background: #fff; color: var(--ink); font-weight: 700;
+  cursor: pointer; transition: background .15s ease, border-color .15s ease, transform .06s ease;
+}
+.btn:hover { background: #f8fafc; }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
+
+.btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+.btn-danger:hover { background: var(--danger-700); border-color: var(--danger-700); }
+
+.btn-light { background: #fff; color: var(--ink); border-color: var(--line); }
+.btn-soft-info { background: var(--info-soft); color: #1d4ed8; border-color: #d7e9ff; }
+
+/* Icon-only small button (3 dots etc.) */
+.icon-dot {
+  width: 32px; height: 32px; line-height: 30px; text-align: center;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer;
+}
+.icon-dot:hover { background: #f1f5f9; }
+
+/* ---------- Chips (status) ---------- */
+.chip {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .275rem .65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #334155; font-weight: 800; font-size: .75rem;
+}
+.chip-paid     { background: #e8fff1; border-color: #ccf3db; color: #117b34; }
+.chip-pending  { background: #fff8e6; border-color: #ffe4b3; color: #a16207; }
+.chip-failed   { background: #ffe8e8; border-color: #ffcfcf; color: #b91c1c; }
+.chip-open     { background: #eef6ff; border-color: #d7e9ff; color: #1d4ed8; }
+
+/* ---------- Page wrapper ---------- */
+.MP { display: grid; gap: 14px; }
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: 14px;
+}
+.card-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.card h3 { margin: 0; font-size: 16px; font-weight: 800; }
+
+/* ---------- Profile Header ---------- */
+.MPHead { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.mph-left { display: flex; align-items: center; gap: 12px; }
+.mph-avatar {
+  width: 56px; height: 56px; border-radius: 999px; object-fit: cover;
+  border: 1px solid var(--line);
+}
+.mph-name { font-size: 20px; font-weight: 800; color: var(--ink); }
+.mph-sub { font-size: 13px; }
+.mph-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.mph-actions { display: flex; gap: 8px; }
+
+/* ---------- Grid (content) ---------- */
+.MPGrid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }
+
+
+/* ---------- Review Information ---------- */
+.mp-info { display: grid; gap: 8px; }
+.mp-row {
+  display: flex; justify-content: space-between; gap: 14px;
+  border-bottom: 1px dashed var(--line); padding: 8px 0;
+}
+.mp-row:last-child { border-bottom: 0; }
+.mp-key { color: var(--muted); min-width: 190px; }
+.mp-val { font-weight: 700; color: var(--ink); }
+
+/* ---------- Documents ---------- */
+.mp-docs { display: grid; gap: 10px; }
+.doc-tile {
+  display: flex; align-items: center; gap: 12px;
+  border: 1px solid var(--line); border-radius: 12px; padding: 10px;
+  background: #fff;
+}
+.doc-ico {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; letter-spacing: .5px;
+}
+.doc-ico.pdf { background: #ef4444; } /* red */
+.doc-ico.img { background: var(--primary); } /* blue */
+.doc-meta { flex: 1; min-width: 0; }
+.doc-name { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-sub { font-size: 12px; }
+.doc-actions { display: flex; gap: 8px; }
+
+/* ---------- Timeline ---------- */
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { display: flex; gap: 10px; position: relative; padding: 8px 0; }
+.tl-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--slate); margin-top: 5px; }
+.tl-ok { background: var(--success); }
+.tl-block .tl-title { font-weight: 800; color: var(--ink); }
+.tl-block .tl-sub { font-size: 13px; color: var(--muted); }
+
+/* ---------- Modals (overlay + content) ---------- */
+.obd-overlay {
+  position: fixed; inset: 0;
+  background: rgba(2, 6, 23, .45);
+  display: none; align-items: center; justify-content: center;
+  padding: 16px; z-index: 9999;
+}
+.obd-overlay.show { display: flex; }
+
+.obd-modal {
+  width: 100%; max-width: 540px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  padding: 16px 16px 12px; position: relative;
+}
+.modal-close {
+  position: absolute; right: 16px; top: 12px;
+  width: 30px; height: 30px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: #fff; cursor: pointer;
+}
+
+/* ---------- Modal form ---------- */
+.rf-form { display: grid; gap: 10px; margin-top: 10px; }
+.rf-row { display: grid; gap: 6px; }
+.rf-row input,
+.rf-row select,
+.rf-row textarea {
+  min-height: 38px; padding: 8px 10px; font: inherit; color: var(--ink);
+  border: 1px solid #d0d5dd; border-radius: var(--radius-md);
+  background: #fff; outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.rf-row textarea { resize: vertical; }
+.rf-row input:focus,
+.rf-row select:focus,
+.rf-row textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.rf-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+
+/* ---------- Page title breadcrumb (optional style) ---------- */
+.pageTitleBox { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.pageTitleBox h4 { margin:0; font-weight:800; font-size:18px; }
+.pageTitleBox p { margin:0; color:var(--muted); }
+.pageTitleBox span { opacity:.6; margin:0 .25rem; }
+
+</style>
+
+
+<script>
+  // open / close helpers
+  const open = id => document.getElementById(id).classList.add('show');
+  const closeAll = () => document.querySelectorAll('.obd-overlay').forEach(o=>o.classList.remove('show'));
+
+  document.getElementById('openApprove').addEventListener('click', ()=> open('approveModal'));
+  document.getElementById('openDecline').addEventListener('click', ()=> open('declineModal'));
+  document.querySelectorAll('[data-close]').forEach(b=> b.addEventListener('click', closeAll));
+  document.querySelectorAll('.obd-overlay').forEach(ov=>{
+    ov.addEventListener('click', e=>{ if(e.target===ov) closeAll(); });
+  });
+
+  // Approve submit (assign staff)
+  document.getElementById('approveForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const staff = document.getElementById('apStaff').value;
+    if(!staff){ alert('Please select a staff to assign.'); return; }
+
+    // TODO: POST /Merchants/{id}/approve  { staffId, note }
+    console.log('Approve merchant with staff:', staff, 'note:', document.getElementById('apNote').value);
+
+    // demo UI feedback
+    document.getElementById('mpStatus').className = 'chip chip-paid';
+    document.getElementById('mpStatus').textContent = 'Approved';
+    closeAll();
+  });
+
+  // Decline submit
+  document.getElementById('declineForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const reason = document.getElementById('dcReason').value.trim();
+    if(!reason){ alert('Please provide a decline reason.'); return; }
+
+    // TODO: POST /Merchants/{id}/decline { reason }
+    console.log('Decline merchant reason:', reason);
+
+    // demo UI feedback
+    document.getElementById('mpStatus').className = 'chip chip-failed';
+    document.getElementById('mpStatus').textContent = 'Declined';
+    closeAll();
+  });
+</script>

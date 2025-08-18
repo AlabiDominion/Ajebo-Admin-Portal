@@ -1,0 +1,360 @@
+﻿<div class="p-4">
+    <div class="OBD">
+        <div class="obd-head">
+            <div>
+                <div class="obd-kicker">Transactions / Settlements</div>
+                <h2 class="obd-title">Batch <span class="mono">SET-20250812-01</span></h2>
+                <div class="obd-sub">Created: 2025-08-12 16:05 · Range: 08–10 Aug</div>
+            </div>
+            <div class="obd-actions">
+                <button class="btn btn-light">Download CSV</button>
+                <button class="btn btn-light">Download Receipt</button>
+                <button class="btn btn-danger" id="markAsPaidBtn">Mark as Paid</button>
+            </div>
+        </div>
+
+        <div class="obd-chips">
+            <span class="chip chip-paid">Paid</span>
+            <span class="chip">Merchants: 3</span>
+            <span class="chip">Orders: 18</span>
+            <span class="chip">Net: <span class="mono">₦3,780,000</span></span>
+        </div>
+
+        <div class="obd-grid">
+            <!-- LEFT -->
+            <div class="obd-col">
+                <div class="card">
+                    <div class="card-h"><h3>Summary</h3></div>
+                    <div class="stack">
+                        <div class="stack-row"><span>Gross</span><span class="mono">₦3,780,000</span></div>
+                        <div class="stack-row"><span>Fees</span><span class="mono">₦0</span></div>
+                        <div class="stack-row total"><span>Net Payable</span><span class="mono">₦3,780,000</span></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-h"><h3>Included Orders</h3></div>
+                    <div class="DTTableWrap">
+                        <table class="DTTable w-full">
+                            <thead>
+                                <tr class="DTHMain">
+                                    <th>Order ID</th>
+                                    <th>Merchant</th>
+                                    <th>Apartment</th>
+                                    <th>Customer</th>
+                                    <th>Paid</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>ORD-12001</td><td>Stellar Apartments</td><td>Unit A12</td><td>Adewale O.</td><td class="muted">2025-08-12</td><td class="mono">₦245,000</td></tr>
+                                <tr><td>ORD-12003</td><td>Urban Estates</td><td>Loft C9</td><td>Chioma A.</td><td class="muted">2025-08-11</td><td class="mono">₦300,000</td></tr>
+                                <!-- … -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="obd-col">
+                <div class="card">
+                    <div class="card-h"><h3>Merchants</h3></div>
+                    <div class="info">
+                        <div class="info-row"><span>Stellar Apartments</span><span class="mono">₦1,450,000</span></div>
+                        <div class="info-row"><span>Urban Estates</span><span class="mono">₦1,030,000</span></div>
+                        <div class="info-row"><span>Green Valley Condos</span><span class="mono">₦1,300,000</span></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-h"><h3>Payment</h3></div>
+                    <div class="info">
+                        <div class="info-row"><span>Method</span><span>Manual Bank Transfer</span></div>
+                        <div class="info-row"><span>Reference</span><span class="mono">TRX-PAYOUT-8921</span></div>
+                        <div class="info-row"><span>Paid Date</span><span>2025-08-12 16:32</span></div>
+                        <div class="info-row"><span>Notes</span><span>—</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MARK AS PAID MODAL -->
+<div class="pay-overlay" id="payOverlay" aria-hidden="true">
+    <div class="pay-modal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+        <button class="pay-close" id="payClose" aria-label="Close">×</button>
+
+        <div class="pay-head">
+            <h3 id="payTitle">Mark Batch as Paid</h3>
+            <div class="pay-sub muted">Confirm payout details below.</div>
+        </div>
+
+        <div class="pay-body">
+            <form id="payForm" class="pay-grid" novalidate>
+                <div class="pay-field">
+                    <label>Paid Date</label>
+                    <input type="date" id="payDate" required>
+                </div>
+                <div class="pay-field">
+                    <label>Paid Time</label>
+                    <input type="time" id="payTime" required>
+                </div>
+
+                <div class="pay-field">
+                    <label>Method</label>
+                    <select id="payMethod" required>
+                        <option value="Manual Bank Transfer">Manual Bank Transfer</option>
+                        <option value="Paystack Transfer">Paystack Transfer</option>
+                        <option value="Flutterwave Transfer">Flutterwave Transfer</option>
+                    </select>
+                </div>
+
+                <div class="pay-field">
+                    <label>Reference</label>
+                    <input type="text" id="payRef" placeholder="e.g., TRX-PAYOUT-8921" required>
+                </div>
+
+                <div class="pay-field">
+                    <label>Amount Paid (₦)</label>
+                    <input type="number" id="payAmount" min="0" step="1" placeholder="e.g., 3780000" required>
+                </div>
+
+                <div class="pay-field">
+                    <label>Receipt (optional)</label>
+                    <input type="file" id="payReceipt" accept=".pdf,.png,.jpg,.jpeg,.webp">
+                </div>
+
+                <div class="pay-field pay-full">
+                    <label>Notes (optional)</label>
+                    <input type="text" id="payNotes" placeholder="Additional payout remarks…">
+                </div>
+
+                <div class="pay-check pay-full">
+                    <label class="checkline">
+                        <input type="checkbox" id="payNotify" checked>
+                        <span>Notify included merchants by email</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="pay-actions">
+            <button class="btn btn-light" id="payCancel">Cancel</button>
+            <button class="btn btn-primary" id="payConfirm">Confirm Paid</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* =========================================================
+   Settlements / Payouts — List + Batch Details (Custom CSS)
+   - Works with your existing classes from previous snippets
+   - Tokens at top let you tweak the theme quickly
+   ========================================================= */
+:root {
+  --ink: #0f172a;
+  --muted: #64748b;
+  --bd: #e9edf4;
+  --bd-strong: #dfe6f1;
+  --bg: #ffffff;
+  --chip: #f1f5f9;
+  --primary: #0ea5e9;
+  --primary-600: #0284c7;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+  --slate: #94a3b8;
+  --shadow-1: 0 8px 24px rgba(15, 23, 42, .08);
+  --shadow-2: 0 16px 40px rgba(2, 6, 23, .12);
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+  --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --trans: .15s ease;
+}
+
+/* ============ Generic utilities ============ */
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.flex{display:flex}
+.gap-2{gap:.5rem}
+
+/* ============ Buttons ============ */
+.btn {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--bd);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--trans), border-color var(--trans), transform .06s ease;
+}
+.btn:hover { background: #f8fafc; }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
+
+.btn-soft-info {
+  background: #eef6ff;
+  border-color: #d7e9ff;
+  color: #1d4ed8;
+}
+.btn-light { background:#fff; }
+.btn-danger { background: var(--danger); border-color: var(--danger); color:#fff; }
+.btn-danger:hover { background:#b91c1c; border-color:#b91c1c; }
+
+/* Icon-only 3-dots */
+.icon-dot{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--bd);
+  background:#fff;cursor:pointer;font-size:18px;line-height:30px;text-align:center;
+}
+.icon-dot:hover{background:#f8fafc}
+
+/* ============ Chips / Status pills ============ */
+.chip{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.25rem .6rem;border-radius:999px;border:1px solid var(--bd);
+  background:var(--chip);font-weight:700;font-size:.75rem;color:#334155;
+}
+.chip-paid{ background:#e8fff1; border-color:#ccf3db; color:#117B34; }
+.chip-pending{ background:#fff8e6; border-color:#ffe4b3; color:#a16207; }
+.chip-failed{ background:#ffe8e8; border-color:#ffcfcf; color:#b91c1c; }
+.chip-open{ background:#eef6ff; border-color:#d7e9ff; color:#1d4ed8; }
+.chip-cancel{ background:#f1f5f9; border-color:#e2e8f0; color:#475569; }
+
+
+
+/* =========================================================
+   Batch Details page (OBD: Order/Booking/Detail layout reused)
+   ========================================================= */
+.OBD{--card: #fff; margin-top: 10px;}
+.OBD .obd-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  margin-bottom:10px;
+}
+.OBD .obd-kicker{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.04em}
+.OBD .obd-title{font-size:24px;font-weight:800;margin:2px 0}
+.OBD .obd-sub{font-size:13px;color:var(--muted)}
+.OBD .obd-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.OBD .obd-chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+
+/* Two-column content grid */
+.OBD .obd-grid{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:14px;
+}
+
+
+.OBD .obd-col{ display:grid; gap:14px; }
+
+/* Card */
+.OBD .card{
+  background:var(--card);border:1px solid var(--bd);
+  border-radius:var(--radius-lg);padding:14px 14px 10px;box-shadow: var(--shadow-1);
+}
+.OBD .card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.OBD .card h3{font-size:16px;margin:0;font-weight:700}
+
+/* KPI strip inside a card header */
+.OBD .kpi-row{display:flex;gap:14px;flex-wrap:wrap}
+.OBD .kpi-title{display:block;font-size:11px;color:#6b7280}
+.OBD .kpi-value{display:block;font-weight:800}
+.OBD .kpi-value.green{color:#117B34}
+
+/* Stack list (summary/prices) */
+.OBD .stack{display:grid;gap:8px}
+.OBD .stack-row{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.OBD .stack-row.total{border-top:1px dashed var(--bd);padding-top:10px;font-weight:800}
+
+/* Info list (key/value) */
+.OBD .info{display:grid;gap:8px}
+.OBD .info-row{display:flex;justify-content:space-between;gap:16px}
+.OBD .info-row .link{color:#2563eb;text-decoration:none;cursor:pointer}
+.OBD .info-row .link:hover{text-decoration:underline}
+
+/* Timeline */
+.OBD .timeline{list-style:none;margin:0;padding:0}
+.OBD .timeline li{display:flex;gap:10px;position:relative;padding:8px 0}
+.OBD .tl-dot{width:10px;height:10px;border-radius:999px;background:#94a3b8;margin-top:5px}
+.OBD .tl-ok{background:var(--success)}
+.OBD .tl-block{flex:1}
+.OBD .tl-title{font-weight:700}
+.OBD .tl-sub{font-size:13px;color:var(--muted)}
+
+/* Reuse your table styles inside cards on details page */
+.OBD .DTTableWrap{border:1px solid var(--bd);border-radius:var(--radius-md);overflow:auto}
+.OBD .DTTable thead th{background:#fafcff}
+
+/* =================== Modal base (reusable) =================== */
+.obd-overlay{
+  position:fixed;inset:0;background:rgba(2,6,23,.45);
+  display:none;align-items:center;justify-content:center;padding:16px;z-index:9999;
+}
+.obd-overlay.show{ display:flex; }
+.obd-modal{
+  width:100%;max-width:520px;background:#fff;border:1px solid var(--bd);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-2);padding:16px 16px 12px;position:relative;
+}
+.modal-close{
+  position:absolute;right:16px;top:12px;width:30px;height:30px;border:1px solid var(--bd);
+  border-radius:var(--radius-sm);background:#fff;cursor:pointer;
+}
+.refund-form{display:grid;gap:10px;margin-top:8px}
+.rf-row{display:grid;gap:6px}
+.rf-row input,.rf-row select{
+  height:38px;border:1px solid #d0d5dd;border-radius:var(--radius-md);padding:0 10px;
+}
+.rf-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+/* ===== Mark as Paid (pay-*) ===== */
+.muted{color:#64748b}
+
+.pay-overlay{
+  position:fixed; inset:0; background:rgba(2,6,23,.45);
+  display:none; align-items:center; justify-content:center; padding:16px; z-index:9999;
+}
+.pay-overlay.show{display:flex}
+
+.pay-modal{
+  width:100%; max-width:620px; background:#fff; border:1px solid #e9edf4;
+  border-radius:14px; box-shadow:0 20px 48px rgba(2,6,23,.18);
+  position:relative; padding:14px 14px 10px;
+}
+.pay-close{
+  position:absolute; right:12px; top:10px; width:32px; height:32px;
+  border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer;
+}
+.pay-head h3{margin:2px 0 2px; font-size:18px; font-weight:800}
+.pay-sub{font-size:13px}
+
+.pay-body{margin-top:8px}
+.pay-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.pay-full{grid-column:1/-1}
+
+
+.pay-field label{display:block; font-size:12px; color:#667085; margin-bottom:6px}
+.pay-field input, .pay-field select{
+  height:38px; border:1px solid #d0d5dd; border-radius:10px; padding:0 10px; width:100%;
+}
+.pay-field input:focus, .pay-field select:focus{
+  border-color:#0ea5e9; box-shadow:0 0 0 3px rgba(14,165,233,.22); outline:0;
+}
+
+.pay-check .checkline{display:inline-flex; align-items:center; gap:8px; user-select:none}
+
+.pay-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:10px}
+
+</style>
+
+<script>
+
+</script>

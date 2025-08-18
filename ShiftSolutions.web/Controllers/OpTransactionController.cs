@@ -12,5 +12,13 @@ namespace ShiftSolutions.web.Controllers
         {
             return View();
         }
+        public IActionResult Settlements()
+        {
+            return View();
+        }
+        public IActionResult BatchDetailes()
+        {
+            return View();
+        }
     }
 }
