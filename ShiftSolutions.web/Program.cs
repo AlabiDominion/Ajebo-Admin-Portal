@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 
 // DB
 builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Ajebos")));
 
 // Identity (users, roles, cookies)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
