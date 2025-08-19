@@ -1,4 +1,9 @@
-﻿<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
+﻿@{
+    ViewData["Title"] = "Merchants Submissions!";
+    ViewData["ActivePage"] = "Merchants";
+}
+
+<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
     <h4>All Merchants</h4>
     <p>Merchants <span>›</span> All Merchants</p>
 </div>
@@ -68,22 +73,27 @@
         </div>
 
         <!-- Table -->
-        <div class="DTTableWrap">
-            <table class="DTTable w-full">
-                <thead>
-                    <tr class="DTHMain">
-                        <th>Merchant</th>
-                        <th>Contact</th>
-                        <th>City</th>
-                        <th>Apartments</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th class="DTActionCol">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="mcBody"></tbody>
-            </table>
-        </div>
+      
+            <div class="DTTableWrap">
+                <table class="DTTable w-full">
+                    <thead>
+                        <tr class="DTHMain">
+                            <th>Merchant</th>
+                            <th>Contact</th>
+                            <th>City</th>
+                            <th>Apartments</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th class="DTActionCol">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mcBody">
+                        <tr</tr>
+                        
+                      
+                    </tbody>
+                </table>
+            </div> 
 
         <!-- Simple pagination (client-side) -->
         <div class="mc-pager">
@@ -364,6 +374,8 @@
         { id:'MER-1004', name:'Palmview Homes', email:'team@palmview.ng', phone:'+234 801 900 4433', city:'Port Harcourt', apartments:3, status:'Declined', created:'2025-08-01', avatar:'/images/users/avatar-3.jpg' },
         { id:'MER-1005', name:'Harbour Suites', email:'ops@harboursuites.com', phone:'+234 801 990 5511', city:'Lagos', apartments:14, status:'Approved', created:'2025-08-11', avatar:'/images/users/avatar-8.jpg' },
       ];
+
+
 
       // --- State ---
       let page = 1, pageSize = 8;

@@ -33,6 +33,6 @@ namespace ShiftSolutions.web.Models
         public string? BankCode { get; set; }
 
         public List<Property> Properties { get; set; } = new List<Property>();
-        public List<Notification> Notifications { get; set; } = new List<Notification>();
+        //public List<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

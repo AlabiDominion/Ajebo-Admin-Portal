@@ -1,11 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShiftSolutions.web.Data;
+using System.Data.Entity;
 
 namespace ShiftSolutions.web.Controllers
 {
     public class OpTransactionController : Controller
     {
-        public IActionResult OrdersBooking()
+        private readonly AppDbContext _appDbContext;
+        public OpTransactionController(AppDbContext appDbContext)
         {
+            _appDbContext = appDbContext;
+        }
+        public async Task<IActionResult> OrdersBooking()
+        {
+            var apartments =await _appDbContext.Apartments.ToListAsync();
+            ViewBag.Apartments = apartments;
             return View();
         }
         public IActionResult OrdersDetailes()
@@ -20,5 +29,9 @@ namespace ShiftSolutions.web.Controllers
         {
             return View();
         }
+    }
+
+    public class Async
+    {
     }
 }
