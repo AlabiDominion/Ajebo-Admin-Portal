@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftSolutions.web.Data;
-using System.Data.Entity;
 
 namespace ShiftSolutions.web.Controllers
 {
@@ -13,8 +12,6 @@ namespace ShiftSolutions.web.Controllers
         }
         public async Task<IActionResult> OrdersBooking()
         {
-            var apartments =await _appDbContext.Apartments.ToListAsync();
-            ViewBag.Apartments = apartments;
             return View();
         }
         public IActionResult OrdersDetailes()

@@ -2,19 +2,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using ShiftSolutions.web.Data;
-using ShiftSolutions.Web.Data;
+
+using ShiftSolutions.web.Data;          // AppDbContext, ApplicationUser
+using ShiftSolutions.web.Services;      // IMerchantService, MerchantService, IPropertyService, PropertyService
+using ShiftSolutions.web.Seeding;      // IdentitySeeder
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-// DB
+// === DbContext ===
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Ajebos")));
 
-// Identity (users, roles, cookies)
+// === Identity ===
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
 {
     opt.Password.RequiredLength = 6;
@@ -23,7 +22,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// Cookie behavior (where to redirect if not signed in / forbidden)
+// === Cookies ===
 builder.Services.ConfigureApplicationCookie(opt =>
 {
     opt.LoginPath = "/Auth/Login";
@@ -31,34 +30,46 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.Cookie.Name = "ShiftSolutions.Auth";
 });
 
-// MVC with a **global authorize filter**
+// === MVC + global auth ===
 builder.Services.AddControllersWithViews(opt =>
 {
     var policy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
-    opt.Filters.Add(new AuthorizeFilter(policy)); // <-- everything requires auth by default
+    opt.Filters.Add(new AuthorizeFilter(policy));
 });
+
+// === Your domain services ===
+builder.Services.AddScoped<IMerchantService, MerchantService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// === Pipeline ===
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
+// === Routes ===
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await IdentitySeeder.SeedAsync(app.Services);
+// === Seed (optional) ===
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentitySeeder.SeedAsync(services); // uncomment if you have this class
+}
 
 app.Run();

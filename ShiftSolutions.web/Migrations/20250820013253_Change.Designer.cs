@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShiftSolutions.web.Data;
 
@@ -11,9 +12,11 @@ using ShiftSolutions.web.Data;
 namespace ShiftSolutions.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250820013253_Change")]
+    partial class Change
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,9 +241,8 @@ namespace ShiftSolutions.web.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("ApprovalStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ApprovalStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ApprovedAtUtc")
                         .HasColumnType("datetime2");
@@ -504,7 +506,7 @@ namespace ShiftSolutions.web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apartments");
+                    b.ToTable("ApartmentsOnLine");
                 });
 
             modelBuilder.Entity("ShiftSolutions.web.Models.Complaint", b =>
@@ -551,55 +553,6 @@ namespace ShiftSolutions.web.Migrations
                     b.HasIndex("PropertyId", "CreatedDate");
 
                     b.ToTable("Complaints", (string)null);
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.MerchantDecision", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Action")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AffectedApartments")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("AtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ByIp")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
-
-                    b.Property<string>("ByUserId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("MetadataJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AgentId");
-
-                    b.HasIndex("AtUtc");
-
-                    b.HasIndex("AgentId", "AtUtc");
-
-                    b.ToTable("MerchantDecisions");
                 });
 
             modelBuilder.Entity("ShiftSolutions.web.Models.Notification", b =>
@@ -673,10 +626,6 @@ namespace ShiftSolutions.web.Migrations
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("Images")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Inquiries")
                         .HasColumnType("int");
@@ -877,7 +826,7 @@ namespace ShiftSolutions.web.Migrations
             modelBuilder.Entity("ShiftSolutions.web.Models.PropertyImage", b =>
                 {
                     b.HasOne("ShiftSolutions.web.Models.Property", "Property")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -903,6 +852,8 @@ namespace ShiftSolutions.web.Migrations
 
             modelBuilder.Entity("ShiftSolutions.web.Models.Property", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618

@@ -6,7 +6,7 @@
 
     <div class="sideMenus">
         @* Merchants section: SuperAdmin or Ops *@
-        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Ops")){
+        @if (User.IsInRole("Admin") || User.IsInRole("Ops")){
         <p>General</p>
         <div class="sideMenusLinks" data-dropdown>
             <!-- Trigger -->

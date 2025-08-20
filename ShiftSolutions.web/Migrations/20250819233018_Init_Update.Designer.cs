@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShiftSolutions.web.Data;
 
@@ -11,9 +12,11 @@ using ShiftSolutions.web.Data;
 namespace ShiftSolutions.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250819233018_Init_Update")]
+    partial class Init_Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,15 +241,11 @@ namespace ShiftSolutions.web.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("ApprovalStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ApprovalStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ApprovedAtUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ApprovedById")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BankCode")
                         .HasMaxLength(32)
@@ -317,6 +316,10 @@ namespace ShiftSolutions.web.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovalStatus");
+
+                    b.HasIndex("City");
 
                     b.HasIndex("CreatedAt");
 
@@ -504,10 +507,10 @@ namespace ShiftSolutions.web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apartments");
+                    b.ToTable("ApartmentsOnLine");
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.Complaint", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+Complaint", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -520,89 +523,35 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("CustomerEmail")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(48)
-                        .HasColumnType("nvarchar(48)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subject")
                         .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyId", "CreatedDate");
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Complaints", (string)null);
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.MerchantDecision", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("Action")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AffectedApartments")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("AtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ByIp")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
-
-                    b.Property<string>("ByUserId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("MetadataJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AgentId");
-
-                    b.HasIndex("AtUtc");
-
-                    b.HasIndex("AgentId", "AtUtc");
-
-                    b.ToTable("MerchantDecisions");
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.Notification", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -612,8 +561,7 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("AgentId")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -623,29 +571,24 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RelatedPropertyId")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AgentId");
-
                     b.ToTable("Notifications", (string)null);
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.Property", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+Property", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -655,12 +598,10 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AgentId")
                         .IsRequired()
-                        .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime?>("ApprovedDate")
@@ -671,8 +612,7 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Images")
                         .IsRequired()
@@ -688,8 +628,7 @@ namespace ShiftSolutions.web.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RejectionReason")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -699,8 +638,7 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("nvarchar(160)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -712,47 +650,10 @@ namespace ShiftSolutions.web.Migrations
 
                     b.HasIndex("AgentId");
 
-                    b.HasIndex("Status");
-
-                    b.HasIndex("SubmittedDate");
-
                     b.ToTable("Properties", (string)null);
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BlobKey")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<DateTime>("CreatedUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FileName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PropertyId", "SortOrder");
-
-                    b.ToTable("PropertyImages", (string)null);
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyRating", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+PropertyRating", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -765,13 +666,11 @@ namespace ShiftSolutions.web.Migrations
 
                     b.Property<string>("CustomerEmail")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
@@ -780,12 +679,11 @@ namespace ShiftSolutions.web.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Review")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PropertyId", "CreatedDate");
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("PropertyRatings", (string)null);
                 });
@@ -841,9 +739,9 @@ namespace ShiftSolutions.web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.Complaint", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+Complaint", b =>
                 {
-                    b.HasOne("ShiftSolutions.web.Models.Property", "Property")
+                    b.HasOne("ShiftSolutions.web.Models.PropertyModels+Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -852,42 +750,18 @@ namespace ShiftSolutions.web.Migrations
                     b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.Notification", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+Property", b =>
                 {
-                    b.HasOne("ShiftSolutions.web.Models.Agents", "Agent")
-                        .WithMany()
-                        .HasForeignKey("AgentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Agent");
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.Property", b =>
-                {
-                    b.HasOne("ShiftSolutions.web.Models.Agents", "Agent")
+                    b.HasOne("ShiftSolutions.web.Models.Agents", null)
                         .WithMany("Properties")
                         .HasForeignKey("AgentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Agent");
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyImage", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+PropertyRating", b =>
                 {
-                    b.HasOne("ShiftSolutions.web.Models.Property", "Property")
-                        .WithMany()
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Property");
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyRating", b =>
-                {
-                    b.HasOne("ShiftSolutions.web.Models.Property", "Property")
+                    b.HasOne("ShiftSolutions.web.Models.PropertyModels+Property", "Property")
                         .WithMany("Ratings")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -901,7 +775,7 @@ namespace ShiftSolutions.web.Migrations
                     b.Navigation("Properties");
                 });
 
-            modelBuilder.Entity("ShiftSolutions.web.Models.Property", b =>
+            modelBuilder.Entity("ShiftSolutions.web.Models.PropertyModels+Property", b =>
                 {
                     b.Navigation("Ratings");
                 });

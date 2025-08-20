@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Merchants Submissions!";
-    ViewData["ActivePage"] = "Merchants";
-}
-
+﻿
 <div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
     <h4>All Merchants</h4>
     <p>Merchants <span>›</span> All Merchants</p>
@@ -88,7 +84,7 @@
                         </tr>
                     </thead>
                     <tbody id="mcBody">
-                        <tr</tr>
+                        <tr></tr>
                         
                       
                     </tbody>
@@ -365,198 +361,200 @@
 
 
 <script>
-    (function(){
-      // --- Demo data (replace with your API result) ---
-      const merchants = [
-        { id:'MER-1001', name:'Stellar Apartments', email:'contact@stellarapt.com', phone:'+234 801 222 3333', city:'Lagos', apartments:12, status:'Approved', created:'2025-08-10', avatar:'/images/users/avatar-6.jpg' },
-        { id:'MER-1002', name:'Urban Estates', email:'hello@urbanestates.com', phone:'+234 801 777 8888', city:'Abuja', apartments:9, status:'Pending', created:'2025-08-12', avatar:'/images/users/avatar-7.jpg' },
-        { id:'MER-1003', name:'Green Valley Condos', email:'info@greenvalley.com', phone:'+234 801 555 1010', city:'Lagos', apartments:6, status:'Approved', created:'2025-07-30', avatar:'/images/users/avatar-4.jpg' },
-        { id:'MER-1004', name:'Palmview Homes', email:'team@palmview.ng', phone:'+234 801 900 4433', city:'Port Harcourt', apartments:3, status:'Declined', created:'2025-08-01', avatar:'/images/users/avatar-3.jpg' },
-        { id:'MER-1005', name:'Harbour Suites', email:'ops@harboursuites.com', phone:'+234 801 990 5511', city:'Lagos', apartments:14, status:'Approved', created:'2025-08-11', avatar:'/images/users/avatar-8.jpg' },
-      ];
+    (() => {
+        // ---------- state ----------
+        let page = 1, pageSize = 12;
+        let filters = { q: '', status: '', city: '', from: '', to: '', sort: 'status-desc' };
 
+        // ---------- elements ----------
+        const body = document.getElementById('mcBody');
+        const mcCount = document.getElementById('mcCount');
+        const pageInfo = document.getElementById('mcPageInfo');
+        const btnPrev = document.getElementById('mcPrev');
+        const btnNext = document.getElementById('mcNext');
 
+        const q = document.getElementById('mcQ');
+        const fStatus = document.getElementById('mcStatus');
+        const fCity = document.getElementById('mcCity');
+        const fFrom = document.getElementById('mcFrom');
+        const fTo = document.getElementById('mcTo');
+        const fSort = document.getElementById('mcSort');
 
-      // --- State ---
-      let page = 1, pageSize = 8;
-      let filters = { q:'', status:'', city:'', from:'', to:'', sort:'status-desc' };
-
-      // --- Elements ---
-      const body = document.getElementById('mcBody');
-      const mcCount = document.getElementById('mcCount');
-      const pageInfo = document.getElementById('mcPageInfo');
-      const btnPrev = document.getElementById('mcPrev');
-      const btnNext = document.getElementById('mcNext');
-
-      const q = document.getElementById('mcQ');
-      const fStatus = document.getElementById('mcStatus');
-      const fCity = document.getElementById('mcCity');
-      const fFrom = document.getElementById('mcFrom');
-      const fTo = document.getElementById('mcTo');
-      const fSort = document.getElementById('mcSort');
-
-      document.getElementById('mcApply').addEventListener('click', ()=>{
-        filters = {
-          q: q.value.trim().toLowerCase(),
-          status: fStatus.value,
-          city: fCity.value.trim().toLowerCase(),
-          from: fFrom.value,
-          to: fTo.value,
-          sort: fSort.value
+        // ---------- helpers ----------
+        const chip = (status) => {
+            const s = String(status || '').toLowerCase();
+            let cls = 'chip-open';
+            if (s === 'approved') cls = 'chip-paid';
+            else if (s === 'pending') cls = 'chip-pending';
+            else if (s === 'declined') cls = 'chip-failed';
+            return `<span class="chip ${cls}">${status || '—'}</span>`;
         };
-        page = 1;
-        render();
-      });
-      document.getElementById('mcReset').addEventListener('click', ()=>{
-        [q,fStatus,fCity,fFrom,fTo,fSort].forEach(el=>el.value='');
-        filters = { q:'', status:'', city:'', from:'', to:'', sort:'status-desc' };
-        page = 1;
-        render();
-      });
 
-      btnPrev.addEventListener('click', ()=>{ if(page>1){ page--; render(); } });
-      btnNext.addEventListener('click', ()=>{ page++; render(); });
-
-      // --- Helpers ---
-      const within = (d, from, to) => {
-        if (!from && !to) return true;
-        const x = new Date(d + 'T00:00:00');
-        if (from && x < new Date(from)) return false;
-        if (to && x > new Date(to + 'T23:59:59')) return false;
-        return true;
-      };
-      const chip = (status) => {
-        const s = String(status).toLowerCase();
-        let cls = 'chip-open';
-        if (s==='approved') cls='chip-paid';
-        else if (s==='pending') cls='chip-pending';
-        else if (s==='declined') cls='chip-failed';
-        return `<span class="chip ${cls}">${status}</span>`;
-      };
-
-      function applyFilters(list){
-        return list.filter(m=>{
-          if (filters.q) {
-            const blob = (m.id+' '+m.name+' '+m.email+' '+m.phone).toLowerCase();
-            if (!blob.includes(filters.q)) return false;
-          }
-          if (filters.status && m.status !== filters.status) return false;
-          if (filters.city && !m.city.toLowerCase().includes(filters.city)) return false;
-          if (!within(m.created, filters.from, filters.to)) return false;
-          return true;
-        });
-      }
-
-      function sortList(list){
-        const byName = (a,b)=> a.name.localeCompare(b.name);
-        const byCreated = (a,b)=> new Date(a.created)-new Date(b.created);
-        const statusRank = s => ({Approved:2, Pending:1, Declined:0}[s] ?? 0);
-
-        switch(filters.sort){
-          case 'name-asc': return list.sort(byName);
-          case 'name-desc': return list.sort((a,b)=> byName(b,a));
-          case 'created-asc': return list.sort(byCreated);
-          case 'created-desc': return list.sort((a,b)=> byCreated(b,a));
-          case 'status-asc': return list.sort((a,b)=> statusRank(a.status)-statusRank(b.status) || byName(a,b));
-          case 'status-desc':
-          default: return list.sort((a,b)=> statusRank(b.status)-statusRank(a.status) || byName(a,b));
-        }
-      }
-
-      function paginate(list){
-        const total = list.length;
-        const pages = Math.max(1, Math.ceil(total / pageSize));
-        if (page > pages) page = pages;
-        const start = (page-1)*pageSize;
-        const slice = list.slice(start, start+pageSize);
-        pageInfo.textContent = `Page ${page} of ${pages}`;
-        btnPrev.disabled = page<=1;
-        btnNext.disabled = page>=pages;
-        mcCount.textContent = total;
-        return slice;
-      }
-
-      function rowHtml(m){
-        const profileUrl = `/Merchant/MerchantProfile`;
-        return `
+        const html = (m) => {
+            const profileUrl = `/Merchant/Profile?id=${encodeURIComponent(m.agentId)}`;
+            return `
           <tr class="DTClickable" data-href="${profileUrl}">
             <td>
               <div class="merchantCell">
                 <img src="${m.avatar || '/images/users/avatar-5.jpg'}" alt="">
                 <div>
-                  <div class="m-name">${m.name}</div>
-                  <div class="m-id muted">${m.id}</div>
+                  <div class="m-name">${m.displayName || m.companyName || '—'}</div>
+                  <div class="m-id muted">${m.agentId || ''}</div>
                 </div>
               </div>
             </td>
             <td>
-              <div>${m.email || '—'}</div>
+              <div>${m.contact || '—'}</div>
               <div class="muted">${m.phone || ''}</div>
             </td>
             <td>${m.city || '—'}</td>
-            <td>${m.apartments ?? 0}</td>
-            <td>${chip(m.status)}</td>
-            <td class="muted">${m.created}</td>
+            <td>${m.apartmentsCount ?? 0}</td>
+            <td>${chip(m.approvalStatus)}</td>
+            <td class="muted">${(m.createdAt || '').substring(0, 10)}</td>
             <td class="DTActionCol">
               <div class="manual-dropdown">
                 <button class="icon-dot" data-dd-button>⋯</button>
                 <ul class="dd-menu">
                   <li><a class="dd-item" href="${profileUrl}">View Profile</a></li>
-                  <li><button class="dd-item" data-act="approve" data-id="${m.id}">Approve</button></li>
-                  <li><button class="dd-item" data-act="decline" data-id="${m.id}">Decline</button></li>
+                  <li><button class="dd-item" data-act="approve" data-id="${m.agentId}">Approve</button></li>
+                  <li><button class="dd-item" data-act="decline" data-id="${m.agentId}">Decline</button></li>
                 </ul>
               </div>
             </td>
-          </tr>
-        `;
-      }
+          </tr>`;
+        };
 
-      function wireRowBehaviors(container){
-        // clickable row
-        container.querySelectorAll('.DTClickable').forEach(tr=>{
-          tr.addEventListener('click', (e)=>{
-            // ignore clicks from dropdown button/links
-            if (e.target.closest('.manual-dropdown')) return;
-            const url = tr.getAttribute('data-href');
-            if (url) window.location.href = url;
-          });
-        });
-        // dropdowns
-        container.querySelectorAll('[data-dd-button]').forEach(btn=>{
-          btn.addEventListener('click', (e)=>{
-            e.stopPropagation();
-            const menu = btn.nextElementSibling;
-            document.querySelectorAll('.dd-menu').forEach(m=>m!==menu && m.classList.remove('show'));
-            menu.classList.toggle('show');
-          });
-        });
-        document.addEventListener('click', ()=> {
-          document.querySelectorAll('.dd-menu').forEach(m=>m.classList.remove('show'));
-        });
-        // actions (wire to backend later)
-        container.querySelectorAll('.dd-item[data-act]').forEach(b=>{
-          b.addEventListener('click', (e)=>{
-            e.stopPropagation();
-            const act = b.dataset.act, id = b.dataset.id;
-            console.log('merchant action:', act, id);
-            // TODO: POST /Merchants/{id}/approve or /decline then refresh list
-          });
-        });
-      }
+        function wireRowBehaviors(container) {
+            // row click -> profile
+            container.querySelectorAll('.DTClickable').forEach(tr => {
+                tr.addEventListener('click', (e) => {
+                    if (e.target.closest('.manual-dropdown')) return;
+                    const url = tr.getAttribute('data-href');
+                    if (url) window.location.href = url;
+                });
+            });
+            // 3-dot menus
+            container.querySelectorAll('[data-dd-button]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const menu = btn.nextElementSibling;
+                    document.querySelectorAll('.dd-menu').forEach(m => m !== menu && m.classList.remove('show'));
+                    menu.classList.toggle('show');
+                });
+            });
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.dd-menu').forEach(m => m.classList.remove('show'));
+            });
 
-      function render(){
-        const filtered = applyFilters([...merchants]);
-        const sorted = sortList(filtered);
-        const pageData = paginate(sorted);
-        body.innerHTML = pageData.map(rowHtml).join('');
-        wireRowBehaviors(body);
-      }
+            // approve / decline
+            container.querySelectorAll('.dd-item[data-act]').forEach(b => {
+                b.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const act = b.dataset.act, id = b.dataset.id;
+                    if (act === 'approve') {
+                        await postForm('/Merchant/Approve', { id });
+                        await load(); // refresh page data
+                    } else if (act === 'decline') {
+                        const reason = prompt('Reason for decline?');
+                        if (!reason) return;
+                        await postForm('/Merchant/Decline', { Id: id, Reason: reason });
+                        await load();
+                    }
+                });
+            });
+        }
 
-      render();
+        // get anti-forgery token if you render one on the page (recommended)
+        function getCsrf() {
+            const input = document.querySelector('input[name="__RequestVerificationToken"]');
+            return input ? input.value : null;
+        }
+        async function postForm(url, data) {
+            const token = getCsrf();
+            const form = new URLSearchParams(data);
+            if (token) form.append('__RequestVerificationToken', token);
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: form.toString()
+            });
+            if (!res.ok) {
+                const t = await res.text();
+                alert('Request failed: ' + t);
+            }
+        }
 
-      // Export (demo)
-      document.getElementById('mcExport').addEventListener('click', ()=>{
-        alert('Export CSV coming soon (hook to backend).');
-      });
+        // ---------- data loading from server ----------
+        async function load() {
+            const params = new URLSearchParams({
+                page, pageSize,
+                search: filters.q,
+                status: filters.status,
+                city: filters.city,
+                from: filters.from || '',
+                to: filters.to || '',
+                sort: mapSort(filters.sort) // map UI sort to server sort
+            });
+
+            const res = await fetch('/Merchant/ListData?' + params.toString(), { cache: 'no-store' });
+            if (!res.ok) {
+                body.innerHTML = `<tr><td colspan="7" class="muted">Failed to load merchants.</td></tr>`;
+                return;
+            }
+            const data = await res.json();
+            // data: { items, page, pageSize, totalItems }
+            mcCount.textContent = data.totalItems ?? 0;
+
+            const total = data.totalItems ?? 0;
+            const pages = Math.max(1, Math.ceil(total / (data.pageSize || pageSize)));
+            page = Math.min(Math.max(1, data.page || page), pages);
+
+            pageInfo.textContent = `Page ${page} of ${pages}`;
+            btnPrev.disabled = page <= 1;
+            btnNext.disabled = page >= pages;
+
+            body.innerHTML = (data.items || []).map(html).join('') || `
+          <tr><td colspan="7" class="muted">No merchants found.</td></tr>`;
+            wireRowBehaviors(body);
+        }
+
+        // map your UI sort values to the controller/service sort keys
+        function mapSort(val) {
+            switch (val) {
+                case 'name-asc': return 'name_asc';
+                case 'name-desc': return 'name_desc';
+                case 'created-asc': return 'created_asc';
+                case 'created-desc': return 'created_desc';
+                case 'status-asc': return 'status_asc';  // optional: implement in service if needed
+                case 'status-desc': return 'status_desc'; // optional
+                default: return 'created_desc';
+            }
+        }
+
+        // ---------- wire filters & pager ----------
+        document.getElementById('mcApply').addEventListener('click', () => {
+            filters = {
+                q: q.value.trim(),
+                status: fStatus.value,
+                city: fCity.value.trim(),
+                from: fFrom.value,
+                to: fTo.value,
+                sort: fSort.value || 'created-desc'
+            };
+            page = 1;
+            load();
+        });
+        document.getElementById('mcReset').addEventListener('click', () => {
+            [q, fStatus, fCity, fFrom, fTo, fSort].forEach(el => el.value = '');
+            filters = { q: '', status: '', city: '', from: '', to: '', sort: 'created-desc' };
+            page = 1;
+            load();
+        });
+        document.getElementById('mcPrev').addEventListener('click', () => { if (page > 1) { page--; load(); } });
+        document.getElementById('mcNext').addEventListener('click', () => { page++; load(); });
+
+        // initial
+        load();
     })();
 </script>
+

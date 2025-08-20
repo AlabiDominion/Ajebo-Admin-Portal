@@ -1,72 +1,83 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using ShiftSolutions.web.Data;
-using System.Data.Entity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using ShiftSolutions.web.Application.Merchants;  // MerchantFilter, DTOs, PagedResult
+using ShiftSolutions.web.Data;                   // ApplicationUser
+using ShiftSolutions.web.Services;               // IMerchantService
 
 namespace ShiftSolutions.web.Controllers
 {
+    [Authorize]
     public class MerchantController : Controller
     {
-        private readonly AppDbContext _appDbContext;
-        private readonly IConfiguration _configuration;
-        public MerchantController(AppDbContext appDbContext, IConfiguration configuration)
+        private readonly IMerchantService _svc;
+        private readonly UserManager<ApplicationUser> _users;
+
+        public MerchantController(IMerchantService svc, UserManager<ApplicationUser> users)
         {
-            _appDbContext = appDbContext;
-            _configuration = configuration;
+            _svc = svc;
+            _users = users;
         }
-        public async  Task<IActionResult> MerchantList()
+
+        // ==================== LIST PAGE ====================
+
+        // Renders the list page 
+        [HttpGet]
+        public IActionResult MerchantList() => View();
+
+        // Data endpoint the list page calls via fetch/Ajax
+        // Example query: /Merchant/ListData?page=1&pageSize=20&status=Approved&search=chi
+        [HttpGet]
+        public async Task<IActionResult> ListData([FromQuery] MerchantFilter filter, CancellationToken ct)
         {
-            GetMerchantsData();
-            return View();
-          
-        }        
-        public async Task<IActionResult> GetMerchantsData()
-        {
-            var merchants = new List<object>();
-
-            string connectionString = _configuration.GetConnectionString("Ajebos");
-            string sql = @"                            
-                        SELECT [Name],
-                        [City],
-                        [Agent],
-                        [Statetext],
-                        [imagename],
-                        CONVERT(DATE, CreatedAt) as created,
-                        [status]
-                        FROM [dbo].[Apartments] 
-                        WHERE status='Pending'";
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                using (var command = new SqlCommand(sql, connection))
-                {
-                    await connection.OpenAsync();
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            merchants.Add(new
-                            {
-                                id = reader["Name"].ToString(),
-                                name = reader["City"].ToString(),
-                                email = reader["Agent"].ToString(),
-                                phone = reader["Statetext"].ToString(),
-                                city = reader["CreatedAt"].ToString(),
-                                status = reader["status"].ToString(),
-                                created = reader["created"].ToString(),
-                                avatar = "https://merchants.shifts.com.ng/SharedImages/apartments/"+"default2.jpg",
-                            });
-                        }
-                    }
-                }
-            }
-
-            return Json(merchants);
+            var result = await _svc.GetMerchantsAsync(filter, ct);
+            return Json(result); // { items, page, pageSize, totalItems }
         }
-        public IActionResult MerchantProfile()
+
+        // ==================== PROFILE ======================
+
+        [HttpGet]
+        public async Task<IActionResult> Profile(string id, CancellationToken ct)
         {
-            return View();
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            var dto = await _svc.GetMerchantAsync(id, ct);
+            if (dto == null) return NotFound();
+
+            return View("MerchantProfile", dto); 
+        }
+
+        // ==================== APPROVE / DECLINE ============
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Approve([FromForm] string id, CancellationToken ct)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest("Missing merchant id.");
+
+            var userId = _users.GetUserId(User) ?? "system";
+            await _svc.ApproveMerchantAsync(id, userId, ct);
+
+            return Ok(new { ok = true, message = "Merchant approved." });
+        }
+
+        public sealed class DeclineInput
+        {
+            public string Id { get; set; } = default!;
+            public string Reason { get; set; } = default!;
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Decline([FromForm] DeclineInput input, CancellationToken ct)
+        {
+            if (string.IsNullOrWhiteSpace(input?.Id) || string.IsNullOrWhiteSpace(input.Reason))
+                return BadRequest("Merchant id and reason are required.");
+
+            var userId = _users.GetUserId(User) ?? "system";
+            await _svc.DeclineMerchantAsync(input.Id, input.Reason, userId, ct);
+
+            return Ok(new { ok = true, message = "Merchant declined." });
         }
     }
 }
