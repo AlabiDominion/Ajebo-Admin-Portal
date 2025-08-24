@@ -51,12 +51,12 @@ namespace ShiftSolutions.web.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Approve([FromForm] string id, CancellationToken ct)
+        public async Task<IActionResult> Approve([FromForm] string agentId, int assignedStaffId, CancellationToken ct)
         {
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest("Missing merchant id.");
+            if (string.IsNullOrWhiteSpace(agentId)) return BadRequest("Missing merchant id.");
 
-            var userId = _users.GetUserId(User) ?? "system";
-            await _svc.ApproveMerchantAsync(id, userId, ct);
+            var approvedByUserId = _users.GetUserId(User) ?? "system";
+            await _svc.ApproveMerchantAsync(agentId, approvedByUserId, assignedStaffId, ct);
 
             return Ok(new { ok = true, message = "Merchant approved." });
         }

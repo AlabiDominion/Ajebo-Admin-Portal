@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShiftSolutions.web.Data;
 
@@ -11,9 +12,11 @@ using ShiftSolutions.web.Data;
 namespace ShiftSolutions.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250822214701_Staff")]
+    partial class Staff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -634,9 +637,6 @@ namespace ShiftSolutions.web.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("AssignedStaffId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("AtUtc")
                         .HasColumnType("datetime2");
 
@@ -665,37 +665,6 @@ namespace ShiftSolutions.web.Migrations
                     b.HasIndex("AgentId", "AtUtc");
 
                     b.ToTable("MerchantDecisions");
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.MerchantStaff", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AgentId")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("AssignedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AssignedByUserId")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StaffId", "AgentId")
-                        .IsUnique();
-
-                    b.ToTable("MerchantStaff");
                 });
 
             modelBuilder.Entity("ShiftSolutions.web.Models.Notification", b =>
@@ -1018,17 +987,6 @@ namespace ShiftSolutions.web.Migrations
                         .IsRequired();
 
                     b.Navigation("Property");
-                });
-
-            modelBuilder.Entity("ShiftSolutions.web.Models.MerchantStaff", b =>
-                {
-                    b.HasOne("ShiftSolutions.web.Models.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("ShiftSolutions.web.Models.Notification", b =>

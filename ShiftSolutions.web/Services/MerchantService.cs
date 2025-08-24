@@ -204,19 +204,46 @@ namespace ShiftSolutions.web.Services
         }
 
         // =============== AGENT-LEVEL APPROVAL (updates all rows for AgentId) ===============
-        public async Task ApproveMerchantAsync(string agentId, string approvedByUserId, CancellationToken ct = default)
+        // Services/MerchantService.cs (inside class)
+        public async Task ApproveMerchantAsync(
+            string agentId,
+            string approvedByUserId,
+            int assignedStaffId,
+            CancellationToken ct = default)
         {
-            var rows = await _db.Apartments.Where(a => a.AgentId == agentId).ToListAsync(ct);
-            if (rows.Count == 0) throw new KeyNotFoundException("Merchant (by AgentId) not found.");
+            // 1) Approve all apartments for this merchant
+            var aps = await _db.Apartments.Where(a => a.AgentId == agentId).ToListAsync(ct);
+            if (aps.Count == 0) throw new KeyNotFoundException("Merchant (AgentId) not found.");
 
-            foreach (var a in rows)
+            foreach (var a in aps)
             {
                 a.Status = "Approved";
                 a.IsApproved = true;
                 a.UpdatedAt = DateTime.UtcNow;
             }
+
+            // 2) Ensure staff exists
+            var staffExists = await _db.Staff.AnyAsync(s => s.Id == assignedStaffId, ct);
+            if (!staffExists) throw new KeyNotFoundException("Staff not found.");
+
+            // 3) Link staff ↔ merchant (if not already linked)
+            var linkExists = await _db.MerchantStaff
+                .AnyAsync(x => x.StaffId == assignedStaffId && x.AgentId == agentId, ct);
+
+            if (!linkExists)
+            {
+                _db.MerchantStaff.Add(new MerchantStaff
+                {
+                    StaffId = assignedStaffId,
+                    AgentId = agentId,
+                    AssignedAtUtc = DateTime.UtcNow,
+                    AssignedByUserId = approvedByUserId
+                });
+            }
+
             await _db.SaveChangesAsync(ct);
 
+            // 4) Audit (optional)
             _db.MerchantDecisions.Add(new MerchantDecision
             {
                 AgentId = agentId,
@@ -224,10 +251,22 @@ namespace ShiftSolutions.web.Services
                 Reason = null,
                 ByUserId = approvedByUserId,
                 AtUtc = DateTime.UtcNow,
-                AffectedApartments = rows.Count
+                AffectedApartments = aps.Count,
+                AssignedStaffId = assignedStaffId
             });
             await _db.SaveChangesAsync(ct);
         }
+        public async Task DetachStaffFromMerchantAsync(string agentId, int staffId, CancellationToken ct = default)
+        {
+            var link = await _db.MerchantStaff
+                .FirstOrDefaultAsync(x => x.AgentId == agentId && x.StaffId == staffId, ct);
+            if (link != null)
+            {
+                _db.MerchantStaff.Remove(link);
+                await _db.SaveChangesAsync(ct);
+            }
+        }
+
 
         public async Task DeclineMerchantAsync(string agentId, string reason, string declinedByUserId, CancellationToken ct = default)
         {

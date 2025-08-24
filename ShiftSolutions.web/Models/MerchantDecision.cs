@@ -29,5 +29,6 @@ namespace ShiftSolutions.web.Models
 
         // Free-form JSON for future-proofing (requires nvarchar(max))
         public string? MetadataJson { get; set; }         // e.g. { "apartmentIds": [1,2,3] }
+        public int AssignedStaffId { get; set; }
     }
 }

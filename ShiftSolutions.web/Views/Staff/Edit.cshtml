@@ -1,36 +1,37 @@
-﻿@model ShiftSolutions.web.Application.Org.StaffCreateWithUserVm
+﻿@model ShiftSolutions.web.Application.Org.StaffEditVm
 @{
-    ViewData["Title"] = "Add New Staff";
+    ViewData["Title"] = "Edit Staff";
 }
 
 <div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
-    <h4>Add New Staff</h4>
-    <p>Staff <span>></span> <span>Add New Staff</span></p>
+    <h4>Edit Staff</h4>
+    <p>Staff <span>></span> <span>Edit</span></p>
 </div>
 
 <div class="AddNewStaff">
-    <h1 class="mb-2">Add New Staff</h1>
+    <h1 class="mb-2">Edit Staff</h1>
 
     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-    <form asp-action="NewStaff" method="post" class="NewStaffInputField flex" enctype="multipart/form-data">
+    <form asp-action="Edit" method="post" class="NewStaffInputField flex" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ExistingAvatarUrl" />
 
         <div class="NSIF1">
             <div class="avatarUploader">
                 <div class="mainavatar">
-                    <svg viewBox="0 0 128 128" aria-hidden="true">
+                    <svg viewBox="0 0 128 128" aria-hidden="true" style="display:@(string.IsNullOrWhiteSpace(Model.ExistingAvatarUrl) ? "block" : "none")">
                         <circle cx="64" cy="64" r="62" fill="#F5F7FA" stroke="#E5EAF0" />
                         <circle cx="64" cy="50" r="22" fill="none" stroke="#B8C2CC" stroke-width="6" />
                         <path d="M25,108c9-18,25-28,39-28s30,10,39,28" fill="none" stroke="#B8C2CC" stroke-width="6" stroke-linecap="round" />
                     </svg>
-                    <img id="avatarPreview" alt="Avatar preview" />
+                    <img id="avatarPreview" alt="Avatar preview" src="@(string.IsNullOrWhiteSpace(Model.ExistingAvatarUrl) ? "" : Model.ExistingAvatarUrl)" style="display:@(string.IsNullOrWhiteSpace(Model.ExistingAvatarUrl) ? "none" : "block")" />
                 </div>
 
                 <label class="uploadBtn">
-                    <!-- change here -->
                     <input asp-for="Avatar" type="file" id="avatarInput" accept="image/*" hidden />
-                    Upload Image
+                    Change Image
                 </label>
                 <span asp-validation-for="Avatar" class="text-danger"></span>
             </div>
@@ -59,57 +60,47 @@
                 <span asp-validation-for="DateJoined" class="text-danger"></span>
             </div>
 
+            <div class="flex flex-column NSIF11">
+                <label for="Status">Status</label>
+                <select asp-for="Status">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>On Leave</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
             <button type="submit" class="mt-2 btn btn-success custom-toggle">
-                <span class="icon-on"><i class="ri-thumb-up-line align-bottom me-1"></i> Submit</span>
+                <span class="icon-on"><i class="ri-thumb-up-line align-bottom me-1"></i> Save</span>
             </button>
         </div>
 
-        <!-- second side -->
         <div class="NSIF2">
             <h4>Personal Information</h4>
             <div class="flex column-gap-2">
                 <div class="flex flex-column NSIF11">
                     <label for="FirstName">First Name</label>
-                    <input asp-for="FirstName" type="text" placeholder="Input First Name.." />
+                    <input asp-for="FirstName" type="text" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
 
                 <div class="flex flex-column NSIF11">
                     <label for="LastName">Last Name</label>
-                    <input asp-for="LastName" type="text" placeholder="Input Last Name.." />
+                    <input asp-for="LastName" type="text" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="flex flex-column NSIF11">
                 <label for="Email">Email</label>
-                <input asp-for="Email" type="email" placeholder="ajebo@example.com" />
+                <input asp-for="Email" type="email" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="flex flex-column NSIF11">
-                <label for="PhoneNumber">Phone</label>
-                <input asp-for="PhoneNumber" type="text" placeholder="(123) 456-7890" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-
-            <h4>Login Credentials</h4>
-            <div class="flex flex-column NSIF11">
-                <label for="UserName">Username</label>
-                <input asp-for="UserName" type="text" placeholder="Enter Username" autocomplete="new-username" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-
-            <div class="flex flex-column NSIF11">
-                <label for="Password">Password</label>
-                <input asp-for="Password" type="password" placeholder="Enter Password" autocomplete="new-password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
-            <div class="flex flex-column NSIF11">
-                <label for="ConfirmPassword">Confirm Password</label>
-                <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" autocomplete="off" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <label for="Phone">Phone</label>
+                <input asp-for="Phone" type="text" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
         </div>
     </form>
@@ -120,7 +111,6 @@
     <script>
         const input = document.getElementById('avatarInput');
         const preview = document.getElementById('avatarPreview');
-
         input?.addEventListener('change', () => {
             const file = input.files?.[0];
             if (!file) return;

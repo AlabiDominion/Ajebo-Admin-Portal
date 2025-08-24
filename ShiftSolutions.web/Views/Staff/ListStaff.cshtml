@@ -1,37 +1,44 @@
-﻿<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
+﻿@model ShiftSolutions.web.Application.Org.StaffListPageVm
+@{
+    ViewData["Title"] = "All Staff";
+}
+
+<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
     <h4>All Staff</h4>
     <p>Staff <span>></span> <span>All Staff</span></p>
 </div>
-
 
 <div class="p-4 mt-2">
     <div class="card">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-sm-4">
-                    <div class="search-box">
-                        <input type="text" class="form-control" id="searchMemberList" placeholder="Search for name or designation...">
-                        <i class="ri-search-line search-icon"></i>
-                    </div>
+                    <form asp-action="ListStaff" asp-controller="Staff" method="get">
+                        <div class="search-box">
+                            <input type="text" name="q" value="@Model.Q"
+                                   class="form-control" id="searchMemberList"
+                                   placeholder="Search name, email or phone..." />
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
+                    </form>
                 </div>
-                <!--end col-->
+
                 <div class="col-sm-auto ms-auto">
                     <div class="list-grid-nav hstack gap-1">
                         <button type="button" id="list-view-button"
-                                class="btn btn-soft-info nav-link btn-icon fs-14 active filter-button">
+                                class="btn btn-soft-info nav-link btn-icon fs-14 active filter-button"
+                                title="List view">
                             <i class="ri-list-unordered"></i>
                         </button>
+
                         <a asp-controller="Staff" asp-action="NewStaff" class="btn btn-success addMembers-modal">
                             <i class="ri-add-fill me-1 align-bottom"></i> Add Members
                         </a>
                     </div>
                 </div>
-
-                <!--end col-->
             </div>
-            
+        </div>
     </div>
-</div>
 
     <div class="table-responsive">
         <table class="table align-middle mb-0">
@@ -46,402 +53,174 @@
                     <th scope="col">Visit</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button id="DisplayPopup" class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>    
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="flex-shrink-0">
-                                <img src="~/images/users/avatar-3.jpg" alt="" class="avatar-xs rounded-circle" />
-                            </div>
-                            <div class="flex-grow-1">
-                                Alabi Dominion
-                            </div>
-                        </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Administrator</td>
-                    <td>alabidominion@gmail.com</td>
-                    <td>07061061211</td>
-                    <td>Active</td>
-                    <td>
-                        <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                            <button class="btn btn-outline-success btn-border">Visit</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>  
+            <tbody id="staffTableBody">
+                @if (Model.Items?.Any() == true)
+                {
+                    foreach (var s in Model.Items)
+                    {
+                        <tr data-staff='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(new
+                            {
+                                id = s.Id,
+                                name = s.FullName,
+                                role = s.RoleName,
+                                dept = s.DepartmentName,
+                                email = s.Email,
+                                phone = s.Phone,
+                                status = s.Status,
+                                avatar = s.AvatarUrl
+                            }))'>
+                            <td>
+                                <div class="d-flex gap-2 align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <img src="@s.AvatarUrl" alt="" class="avatar-xs rounded-circle" />
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        @s.FullName
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@s.RoleName</td>
+                            <td>@s.DepartmentName</td>
+                            <td>@s.Email</td>
+                            <td>@s.Phone</td>
+                            <td>@s.Status</td>
+                            <td>
+                                <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
+                                    <button type="button" class="btn btn-outline-success btn-border btn-visit">Visit</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            No staff found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
-
 </div>
-
 
 <div class="Footer flex justify-center">
     <p>
         <script>document.write(new Date().getFullYear())</script>
-            &copy; Ajebo
+        &copy; Ajebo
     </p>
-
-
 </div>
 
-<!--Pop ups-->
-
+<!-- Pop up (data-driven now) -->
 <div id="StaffProfilePopUP" class="StaffProfile hidden">
     <div class="StaffProfileInner">
         <div class="SPI1">
-            <img src="~/images/users/avatar-3.jpg" alt="" />
+            <img id="spAvatar" src="~/images/users/avatar-3.jpg" alt="" />
             <div class="SPI11">
-                <h2>Thomas Anderson</h2>
-                <p class="mb-0">Senior Sales Associate</p>
-                <p class="mb-0">Real Estate</p>
+                <h2 id="spName">—</h2>
+                <p id="spRole" class="mb-0">—</p>
+                <p id="spDept" class="mb-0">—</p>
             </div>
         </div>
         <p>
             <i class='bx bxs-envelope'></i>
-            ajebo@example.comm
+            <span id="spEmail">—</span>
         </p>
         <p>
             <i class='bx bx-phone-call'></i>
-            (234) 456-7890
+            <span id="spPhone">—</span>
         </p>
         <div>
-            <button id="OpenStaffEdit" class="btn btn-primary btn-border">Edit Staff</button>
+            <a id="OpenStaffEdit" class="btn btn-primary btn-border" href="javascript:void(0)">Edit Staff</a>
             <button id="deleteStaffBtn" class="btn btn-outline-danger btn-border">Delete Staff</button>
-            <button id="closeProfile"  class="btn btn-soft-dark btn-border">Close</button>
+            <button id="closeProfile" class="btn btn-soft-dark btn-border">Close</button>
         </div>
     </div>
 
+    <!-- keep your Merchants table or replace with real data later -->
     <div class="StaffProfileInner2">
         <h3>Merchants</h3>
         <table class="table">
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-            </tr>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
             <tbody>
-                <tr>
-                    <td>Stella Apartments</td>
-                    <td>Ajebo@example.com</td>
-                    <td>(234) 456 7890</td>
-                </tr>
-                <tr>
-                    <td>Stella Apartments</td>
-                    <td>Ajebo@example.com</td>
-                    <td>(234) 456 7890</td>
-                </tr>
-                <tr>
-                    <td>Stella Apartments</td>
-                    <td>Ajebo@example.com</td>
-                    <td>(234) 456 7890</td>
-                </tr>
-                <tr>
-                    <td>Stella Apartments</td>
-                    <td>Ajebo@example.com</td>
-                    <td>(234) 456 7890</td>
-                </tr>
-                <tr>
-                    <td>Stella Apartments</td>
-                    <td>Ajebo@example.com</td>
-                    <td>(234) 456 7890</td>
-                </tr>
-                <tr>
-                    <td>Stella Apartments</td>
-                    <td>Ajebo@example.com</td>
-                    <td>(234) 456 7890</td>
-                </tr>
-                
+                <tr><td>Stella Apartments</td><td>Ajebo@example.com</td><td>(234) 456 7890</td></tr>
+                <tr><td>Stella Apartments</td><td>Ajebo@example.com</td><td>(234) 456 7890</td></tr>
             </tbody>
         </table>
     </div>
-
-
 </div>
 
+<!-- Edit panel (you can wire this to a real Edit action later) -->
 <div id="StaffEditpage" class="StaffProfileEdit hidden">
-  <div class="spe-card">
-    <h1 class="spe-title">Edit Staff</h1>
+    <div class="spe-card">
+        <h1 class="spe-title">Edit Staff</h1>
 
-    <form class="spe-form" action="#" method="post" autocomplete="off">
-      <!-- Avatar -->
-      <div class="spe-avatar">
-        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=240&h=240&fit=crop"
-             alt="Staff photo">
-      </div>
+        <form class="spe-form" action="#" method="post" autocomplete="off">
+            <div class="spe-avatar">
+                <img id="editAvatar" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=240&h=240&fit=crop" alt="Staff photo">
+            </div>
 
-      <!-- Two-column fields -->
-      <div class="spe-grid">
-        <div class="spe-field">
-          <label for="firstName">First Name</label>
-          <input id="firstName" name="FirstName" type="text" value="Sarah">
-        </div>
+            <div class="spe-grid">
+                <div class="spe-field">
+                    <label for="firstName">First Name</label>
+                    <input id="firstName" name="FirstName" type="text">
+                </div>
 
-        <div class="spe-field">
-          <label for="lastName">Last Name</label>
-          <input id="lastName" name="LastName" type="text" value="Holland">
-        </div>
+                <div class="spe-field">
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" name="LastName" type="text">
+                </div>
 
-        <div class="spe-field">
-          <label for="email">Email Address</label>
-          <input id="email" name="Email" type="email" value="sarah@example.com" autocomplete="new-password">
-        </div>
+                <div class="spe-field">
+                    <label for="email">Email Address</label>
+                    <input id="email" name="Email" type="email" autocomplete="new-password">
+                </div>
 
-        <div class="spe-field">
-          <label for="phone">Phone Number</label>
-          <input id="phone" name="Phone" type="tel" value="(405) 555-0123">
-        </div>
+                <div class="spe-field">
+                    <label for="phone">Phone Number</label>
+                    <input id="phone" name="Phone" type="tel">
+                </div>
 
-        <div class="spe-field">
-          <label for="department">Department</label>
-          <div class="spe-select">
-            <select id="department" name="Department">
-              <option>Marketing</option>
-              <option>Operations</option>
-              <option>Sales</option>
-              <option>Support</option>
-            </select>
-          </div>
-        </div>
+                <div class="spe-field">
+                    <label for="department">Department</label>
+                    <div class="spe-select">
+                        <select id="department" name="Department"></select>
+                    </div>
+                </div>
 
-        <div class="spe-field">
-          <label for="role">Role</label>
-          <div class="spe-select">
-            <select id="role" name="Role">
-              <option>Team Lead</option>
-              <option>Manager</option>
-              <option>Analyst</option>
-              <option>Associate</option>
-            </select>
-          </div>
-        </div>
+                <div class="spe-field">
+                    <label for="role">Role</label>
+                    <div class="spe-select">
+                        <select id="role" name="Role"></select>
+                    </div>
+                </div>
 
                 <div class="spe-field">
                     <label for="Status">Status</label>
                     <div class="spe-select">
-                        <select name="Status">
+                        <select id="statusSelect" name="Status">
                             <option>Active</option>
                             <option>Inactive</option>
                             <option>On Leave</option>
                         </select>
                     </div>
                 </div>
-      </div>
+            </div>
 
-      <!-- Actions -->
-      <div class="spe-actions">
-        <button type="submit" class="spe-btn spe-btn-primary">Save Changes</button>
-        <a id="CloseEdit" href="#" class="spe-btn spe-btn-ghost" role="button">Cancel</a>
-      </div>
-    </form>
-  </div>
+            <div class="spe-actions">
+                <button type="submit" class="spe-btn spe-btn-primary">Save Changes</button>
+                <a id="CloseEdit" href="#" class="spe-btn spe-btn-ghost" role="button">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete Confirmation Modal (kept as-is, action can be updated to real route) -->
 <div class="dc-overlay" id="dcOverlay" aria-hidden="true">
     <div class="dc-modal" role="dialog" aria-modal="true" aria-labelledby="dcTitle" aria-describedby="dcDesc">
         <button class="dc-close" type="button" aria-label="Close" id="dcClose">×</button>
-
         <div class="dc-icon">
-            <!-- warning icon -->
             <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true">
                 <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
                       fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -453,241 +232,132 @@
             This action cannot be undone. The staff member and any related assignments will be removed.
         </p>
 
-        
-        <form id="deleteForm" action="/Staff/Delete/123" method="post" class="dc-actions">
-           
-            <input type="hidden" name="StaffId" value="123" />
-
+        <form id="deleteForm" action="/Staff/Delete/0" method="post" class="dc-actions">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="StaffId" id="deleteStaffId" value="0" />
             <button type="submit" class="dc-btn dc-btn-danger" id="dcConfirm">Yes, Delete</button>
             <button type="button" class="dc-btn dc-btn-ghost" id="dcCancel">Cancel</button>
         </form>
     </div>
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // --- Search submit on Enter ---
+        document.getElementById('searchMemberList')?.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') e.target.closest('form').submit();
+        });
 
-<style>
+        // --- Elements
+        const tableBody = document.getElementById('staffTableBody');
+        const popup = document.getElementById('StaffProfilePopUP');
+        const editPanel = document.getElementById('StaffEditpage');
 
+        // Popup fields
+        const spAvatar = document.getElementById('spAvatar');
+        const spName = document.getElementById('spName');
+        const spRole = document.getElementById('spRole');
+        const spDept = document.getElementById('spDept');
+        const spEmail = document.getElementById('spEmail');
+        const spPhone = document.getElementById('spPhone');
 
-.StaffProfileEdit {
-  --spe-bg: #ffffff;
-  --spe-card: #ffffff;
-  --spe-border: #e5e7eb;
-  --spe-muted: #64748b;
-  --spe-text: #0f172a;
-  --spe-input-bg: #fff;
-  --spe-input-bd: #d0d5dd;
-  --spe-ring: #94a3b8;
-  --spe-primary: #0ea5e9;   /* teal/blue */
-  --spe-primary-dark: #0284c7;
-  --spe-shadow: 0 8px 24px rgba(15, 23, 42, .08);
-
-  padding: 12px;
-  background: var(--spe-bg);
-  color: var(--spe-text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-position: absolute;
-top: 300px;
-right: 200px;
-}
-
-.StaffProfileEdit .spe-card{
-  max-width: 720px;
-  margin: 0 auto;
-  background: var(--spe-card);
-  border: 1px solid var(--spe-border);
-  border-radius: 14px;
-  box-shadow: var(--spe-shadow);
-  padding: 28px 28px 22px;
-}
-
-.StaffProfileEdit .spe-title{
-  text-align: center;
-  font-size: 34px;
-  font-weight: 700;
-  margin: 4px 0 18px;
-}
-
-.StaffProfileEdit .spe-form{
-  display: grid;
-  gap: 18px;
-}
-
-/* Avatar */
-.StaffProfileEdit .spe-avatar{
-  display: grid;
-  place-items: center;
-  margin: 6px 0 6px;
-}
-.StaffProfileEdit .spe-avatar img{
-  width: 104px;
-  height: 104px;
-  border-radius: 999px;
-  object-fit: cover;
-  border: 4px solid #f1f5f9;
-  box-shadow: 0 4px 14px rgba(15,23,42,.12);
-}
-
-/* Grid */
-.StaffProfileEdit .spe-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 16px;
-}
-
-
-/* Field */
-.StaffProfileEdit .spe-field label{
-  display:block;
-  font-size: 13px;
-  color: var(--spe-muted);
-  margin: 0 0 6px;
-}
-.StaffProfileEdit input[type="text"],
-.StaffProfileEdit input[type="email"],
-.StaffProfileEdit input[type="tel"],
-.StaffProfileEdit select{
-  width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  background: var(--spe-input-bg);
-  border: 1px solid var(--spe-input-bd);
-  padding: 0 12px;
-  font-size: 14px;
-  color: var(--spe-text);
-  outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
-}
-.StaffProfileEdit input:focus,
-.StaffProfileEdit select:focus{
-  border-color: var(--spe-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--spe-primary) 20%, transparent);
-}
-
-/* Custom select wrapper (for clean corners) */
-.StaffProfileEdit .spe-select{
-  position: relative;
-}
-
-
-/* Actions */
-.StaffProfileEdit .spe-actions{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  margin-top: 8px;
-}
-.StaffProfileEdit .spe-btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  min-width: 160px;
-  height: 42px;
-  border-radius: 10px;
-  padding: 0 16px;
-  font-weight: 600;
-  font-size: 15px;
-  border: 1px solid var(--spe-border);
-  background: #fff;
-  color: var(--spe-text);
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform .06s ease, box-shadow .15s ease, background .15s ease;
-}
-.StaffProfileEdit .spe-btn:hover{ background:#f8fafc; }
-.StaffProfileEdit .spe-btn:active{ transform: translateY(1px); }
-
-.StaffProfileEdit .spe-btn-primary{
-  background: var(--spe-primary);
-  border-color: var(--spe-primary);
-  color:#fff;
-}
-.StaffProfileEdit .spe-btn-primary:hover{ background: var(--spe-primary-dark); border-color: var(--spe-primary-dark); }
-
-.StaffProfileEdit .spe-btn-ghost{
-  background:#fff;
-}
-
-/* Reduce iOS autofill yellow */
-.StaffProfileEdit input:-webkit-autofill,
-.StaffProfileEdit input:-webkit-autofill:focus,
-.StaffProfileEdit select:-webkit-autofill{
-  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
-  -webkit-text-fill-color: var(--spe-text) !important;
-}
-</style>
-
-
-
-
-<!--javascript-->
-<script>
-    let Popup = document.getElementById('StaffProfilePopUP')
-    let DisplayPopup = document.getElementById('DisplayPopup')
-    let Closeprofile = document.getElementById('closeProfile')
-
-    let EditPage = document.getElementById('StaffEditpage')
-    let DisplayEdit = document.getElementById('OpenStaffEdit')
-    let CloseEdit = document.getElementById('CloseEdit')
-
-    function ShowPopUp(){
-        Popup.classList.remove('hidden')
-    }
-    function HidePopUp() {
-        Popup.classList.toggle('hidden')
-    }
-    function ShowEdit() {
-        EditPage.classList.remove('hidden')
-    }
-    function CloseEditPage() {
-        EditPage.classList.toggle('hidden')
-    }
-
-    DisplayPopup.addEventListener('click', () => ShowPopUp())
-    Closeprofile.addEventListener('click', () => HidePopUp())
-    DisplayEdit.addEventListener('click', () => ShowEdit())
-    CloseEdit.addEventListener('click', () => CloseEditPage())
-</script>
-<script>
-    (function () {
+        // Delete modal
         const overlay = document.getElementById('dcOverlay');
-        const openBtn = document.getElementById('deleteStaffBtn');
-        const closeBtn = document.getElementById('dcClose');
-        const cancelBtn = document.getElementById('dcCancel');
+        const dcClose = document.getElementById('dcClose');
+        const dcCancel = document.getElementById('dcCancel');
+        const dcConfirm = document.getElementById('dcConfirm');
+        const deleteForm = document.getElementById('deleteForm');
+        const deleteStaffId = document.getElementById('deleteStaffId');
 
-        function openModal() {
+        // Inline edit fields (if you want to use the inline edit panel)
+        const eFirst = document.getElementById('firstName');
+        const eLast = document.getElementById('lastName');
+        const eEmail = document.getElementById('email');
+        const ePhone = document.getElementById('phone');
+        const eDept = document.getElementById('department');
+        const eRole = document.getElementById('role');
+        const eStatus = document.getElementById('statusSelect');
+        const eAvatar = document.getElementById('editAvatar');
+
+        function show(el) { el?.classList.remove('hidden'); }
+        function hide(el) { el?.classList.add('hidden'); }
+
+        // === 2a) Delegate "Visit" button clicks (WORKING already) ===
+        tableBody?.addEventListener('click', function (e) {
+            const btn = e.target.closest('.btn-visit');
+            if (!btn) return;
+
+            const tr = btn.closest('tr');
+            const data = JSON.parse(tr.getAttribute('data-staff'));
+
+            // Fill popup
+            spAvatar.src = data.avatar || '/images/users/avatar-3.jpg';
+            spName.textContent = data.name || '—';
+            spRole.textContent = data.role || '—';
+            spDept.textContent = data.dept || '—';
+            spEmail.textContent = data.email || '—';
+            spPhone.textContent = data.phone || '—';
+
+            // Prepare Delete action
+            deleteStaffId.value = data.id || '0';
+            deleteForm.setAttribute('action', '/Staff/Delete/' + (data.id || '0'));
+
+            // Also stash the current staff id on the popup for Edit
+            popup.dataset.staffId = data.id || '0';
+
+            show(popup);
+        });
+
+        // === 2b) Delegate clicks INSIDE the popup (Close, Delete, Edit) ===
+        popup?.addEventListener('click', function (e) {
+            const closeBtn = e.target.closest('#closeProfile');
+            const delBtn = e.target.closest('#deleteStaffBtn');
+            const editBtn = e.target.closest('#OpenStaffEdit');
+
+            if (closeBtn) {
+                hide(popup);
+                return;
+            }
+
+            if (delBtn) {
+                openDelete();
+                return;
+            }
+
+            if (editBtn) {
+                
+                const id = popup.dataset.staffId || '0';
+                window.location.href = '/Staff/Edit/' + id;
+
+                return;
+            }
+        });
+        document.getElementById('CloseEdit')?.addEventListener('click', function (e) {
+            e.preventDefault();
+            hide(editPanel);
+        });
+        function openDelete() {
             overlay.classList.add('show');
             overlay.removeAttribute('aria-hidden');
-            // Move focus into modal for accessibility
-            document.getElementById('dcConfirm').focus();
-            // Prevent body scroll (optional)
+            dcConfirm?.focus();
             document.body.style.overflow = 'hidden';
         }
-        function closeModal() {
+        function closeDelete() {
             overlay.classList.remove('show');
             overlay.setAttribute('aria-hidden', 'true');
-            // Restore focus to trigger
-            openBtn.focus();
             document.body.style.overflow = '';
         }
 
-        openBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
+        dcClose?.addEventListener('click', closeDelete);
+        dcCancel?.addEventListener('click', closeDelete);
+        overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeDelete(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('show')) closeDelete(); });
 
-        // Click outside to close
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeModal();
+        deleteForm?.addEventListener('submit', () => {
+            dcConfirm.setAttribute('disabled', 'disabled');
+            dcConfirm.textContent = 'Deleting…';
         });
+    </script>
+}
 
-        // Escape to close
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && overlay.classList.contains('show')) closeModal();
-        });
-
-        // Optional: disable confirm after submit to prevent double-post
-        const form = document.getElementById('deleteForm');
-        form?.addEventListener('submit', () => {
-            const btn = document.getElementById('dcConfirm');
-            btn.setAttribute('disabled', 'disabled');
-            btn.textContent = 'Deleting…';
-        });
-    })();
-</script>

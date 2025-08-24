@@ -14,7 +14,7 @@ namespace ShiftSolutions.web.Services
             string agentId, CancellationToken ct = default);
 
         // Agent-level decision: updates ALL apartments for that AgentId
-        Task ApproveMerchantAsync(string agentId, string approvedByUserId, CancellationToken ct = default);
+        Task ApproveMerchantAsync(string agentId, string approvedByUserId, int assignedStaffId, CancellationToken ct = default);
         Task DeclineMerchantAsync(string agentId, string reason, string declinedByUserId, CancellationToken ct = default);
 
         // (Optional) Per-apartment moderation if you need it

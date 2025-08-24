@@ -20,9 +20,46 @@ namespace ShiftSolutions.web.Data
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<MerchantDecision> MerchantDecisions { get; set; } = default!;
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<BusinessRole> BusinessRoles { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<MerchantStaff> MerchantStaff { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Department>()
+        .HasIndex(x => x.Name).IsUnique();
+
+            builder.Entity<BusinessRole>()
+                .HasIndex(x => x.Name).IsUnique();
+
+            builder.Entity<Staff>(e =>
+            {
+                e.HasIndex(x => x.Email);
+                e.HasIndex(x => x.Username);
+                e.Property(x => x.Status).HasMaxLength(32);
+                e.Property(x => x.FirstName).HasMaxLength(80).IsRequired();
+                e.Property(x => x.LastName).HasMaxLength(80).IsRequired();
+                e.Property(x => x.Email).HasMaxLength(160).IsRequired();
+                e.Property(x => x.AvatarUrl).HasMaxLength(400);
+                e.Property(x => x.Username).HasMaxLength(80);
+                e.Property(x => x.PasswordHash).HasMaxLength(400);
+            });
+            builder.Entity<MerchantStaff>(e =>
+            {
+                e.Property(x => x.AgentId).HasMaxLength(64).IsRequired();
+
+                // A staff can be linked to a given merchant only once.
+                e.HasIndex(x => new { x.StaffId, x.AgentId }).IsUnique();
+
+                // (optional) FK for Staff
+                e.HasOne(ms => ms.Staff)
+                 .WithMany()                 // add a collection on Staff if you want: .WithMany(s => s.Merchants)
+                 .HasForeignKey(ms => ms.StaffId)
+                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
 
             // === Agents ===
             builder.Entity<Agents>(e =>
