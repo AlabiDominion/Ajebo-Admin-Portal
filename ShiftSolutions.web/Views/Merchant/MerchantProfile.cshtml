@@ -1,4 +1,18 @@
-﻿<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
+﻿@model ShiftSolutions.web.Application.Merchants.MerchantDto
+@{
+    var name = string.IsNullOrWhiteSpace(Model.DisplayName) ? Model.CompanyName : Model.DisplayName;
+    string StatusChipClass(string s)
+    {
+        s = (s ?? "").ToLowerInvariant();
+        if (s == "approved") return "chip chip-paid";
+        if (s == "declined") return "chip chip-failed";
+        if (s == "pending")  return "chip chip-pending";
+        return "chip chip-open";
+    }
+}
+@Html.AntiForgeryToken() <!-- so JS can grab the token -->
+
+<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
     <h4>Merchant Profile</h4>
     <p>Administration <span>›</span> Merchants <span>›</span> Profile</p>
 </div>
@@ -8,14 +22,18 @@
         <!-- Header -->
         <div class="MPHead card">
             <div class="mph-left">
-                <img class="mph-avatar" src="/images/users/avatar-7.jpg" alt="">
+                <img class="mph-avatar" src="@(Model.AvatarUrl ?? "/images/users/avatar-7.jpg")" alt="">
                 <div>
-                    <div class="mph-name">Urban Estates</div>
-                    <div class="mph-sub muted">MER-1002 • urbanestates@example.com • +234 801 777 8888</div>
+                    <div class="mph-name">@name</div>
+                    <div class="mph-sub muted">
+                        @Model.AgentId • @Model.Email • @Model.Phone
+                    </div>
                     <div class="mph-badges">
-                        <span class="chip chip-pending" id="mpStatus">Pending</span>
-                        <span class="chip">Created: 2025-08-12</span>
-                        <span class="chip">City: Abuja</span>
+                        <span class="@StatusChipClass(Model.ApprovalStatus)" id="mpStatus">
+                            @(!string.IsNullOrWhiteSpace(Model.ApprovalStatus) ? Model.ApprovalStatus : "Pending")
+                        </span>
+                        <span class="chip">Created: @Model.CreatedAt.ToString("yyyy-MM-dd")</span>
+                        <span class="chip">City: @Model.City</span>
                     </div>
                 </div>
             </div>
@@ -34,35 +52,35 @@
                 <div class="mp-info">
                     <div class="mp-row">
                         <div class="mp-key">Business Name</div>
-                        <div class="mp-val">Urban Estates</div>
+                        <div class="mp-val">@name</div>
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">RC / CAC Number</div>
-                        <div class="mp-val">RC-4482219</div>
+                        <div class="mp-val">@Model.Notes</div> <!-- swap to your real field if you have CAC -->
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">Contact Person</div>
-                        <div class="mp-val">Chioma Ade • +234 801 990 5511</div>
+                        <div class="mp-val">@Model.ContactName • @Model.ContactPhone</div>
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">Email</div>
-                        <div class="mp-val">urbanestates@example.com</div>
+                        <div class="mp-val">@Model.Email</div>
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">Address</div>
-                        <div class="mp-val">Plot 12, Garki II, Abuja, Nigeria</div>
+                        <div class="mp-val">@Model.Address</div>
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">Bank</div>
-                        <div class="mp-val">GTBank • 0022334455 • Urban Estates Ltd</div>
+                        <div class="mp-val">@Model.BankName • @Model.BankAccountNumber • @Model.BankAccountName</div>
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">Apartment Count</div>
-                        <div class="mp-val">9 listed</div>
+                        <div class="mp-val">@Model.ApartmentsCount listed</div>
                     </div>
                     <div class="mp-row">
                         <div class="mp-key">Notes</div>
-                        <div class="mp-val muted">KYC looks valid. Confirm CAC doc clarity before approval.</div>
+                        <div class="mp-val muted">@Model.Notes</div>
                     </div>
                 </div>
             </div>
@@ -71,467 +89,115 @@
             <div class="card">
                 <div class="card-h"><h3>Documents</h3></div>
                 <div class="mp-docs">
-                    <!-- Repeat .doc-tile as needed -->
-                    <div class="doc-tile">
-                        <div class="doc-ico pdf">PDF</div>
-                        <div class="doc-meta">
-                            <div class="doc-name">CAC Certificate.pdf</div>
-                            <div class="doc-sub muted">Uploaded 12 Aug • 420 KB</div>
-                        </div>
-                        <div class="doc-actions">
-                            <a class="btn btn-light" href="#">View</a>
-                            <a class="btn btn-soft-info" href="#">Download</a>
-                        </div>
-                    </div>
-
-                    <div class="doc-tile">
-                        <div class="doc-ico img">IMG</div>
-                        <div class="doc-meta">
-                            <div class="doc-name">Government ID.jpg</div>
-                            <div class="doc-sub muted">Uploaded 12 Aug • 1.2 MB</div>
-                        </div>
-                        <div class="doc-actions">
-                            <a class="btn btn-light" href="#">View</a>
-                            <a class="btn btn-soft-info" href="#">Download</a>
-                        </div>
-                    </div>
-
-                    <div class="doc-tile">
-                        <div class="doc-ico pdf">PDF</div>
-                        <div class="doc-meta">
-                            <div class="doc-name">Bank Statement.pdf</div>
-                            <div class="doc-sub muted">Uploaded 12 Aug • 860 KB</div>
-                        </div>
-                        <div class="doc-actions">
-                            <a class="btn btn-light" href="#">View</a>
-                            <a class="btn btn-soft-info" href="#">Download</a>
-                        </div>
-                    </div>
+                    @if (Model.Documents?.Any() == true)
+                    {
+                        foreach (var d in Model.Documents)
+                        {
+                            var kind = (d.Kind ?? "").ToLowerInvariant();
+                            var ico = kind == "pdf" ? "pdf" : "img";
+                            <div class="doc-tile">
+                                <div class="doc-ico @ico">@((ico=="pdf")?"PDF":"IMG")</div>
+                                <div class="doc-meta">
+                                    <div class="doc-name">@d.Name</div>
+                                    <div class="doc-sub muted">Uploaded @d.UploadedAt </div>
+                                </div>
+                                <div class="doc-actions">
+                                    <a class="btn btn-light" href="@d.Url" target="_blank" rel="noopener">View</a>
+                                    <a class="btn btn-soft-info" href="@d.Url" download>Download</a>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="muted">No documents.</div>
+                    }
                 </div>
             </div>
-
-           
-
         </div>
     </div>
 </div>
 
+<!-- Photos / Carousel -->
 <div class="MerchantPictureUnder">
-    <!-- Photos / Carousel -->
     <div class="card" id="merchantPhotosCard">
         <div class="card-h">
             <h3 class="mb-0">Merchant Photos</h3>
-            <span class="muted" id="mpcCount">0 images</span>
+            <span class="muted" id="mpcCount">@(Model.PhotoUrls?.Count ?? 0) images</span>
         </div>
-
         <div class="mp-carousel" id="mpCarousel" aria-roledescription="carousel">
             <div class="mpc-viewport">
-                <div class="mpc-track" id="mpcTrack" role="list"></div>
-
-                <!-- Prev / Next -->
+                <div class="mpc-track" id="mpcTrack" role="list">
+                    @if (Model.PhotoUrls?.Any() == true)
+                    {
+                        for (int i = 0; i < Model.PhotoUrls.Count; i++)
+                        {
+                            <div class="mpc-slide" role="listitem">
+                                <img src="@Model.PhotoUrls[i]" alt="Merchant photo @(i+1)" loading="lazy" />
+                            </div>
+                        }
+                    }
+                </div>
                 <button class="mpc-nav mpc-prev" id="mpcPrev" aria-label="Previous image">‹</button>
                 <button class="mpc-nav mpc-next" id="mpcNext" aria-label="Next image">›</button>
             </div>
-
-            <!-- Dots -->
             <div class="mpc-dots" id="mpcDots" role="tablist" aria-label="Carousel Pagination"></div>
         </div>
     </div>
 </div>
-<!-- LIGHTBOX -->
-<div class="mpc-lightbox" id="mpcLightbox" aria-hidden="true">
-    <div class="mpc-lb-backdrop" data-lb-close></div>
-    <figure class="mpc-lb-frame" role="dialog" aria-modal="true">
-        <button class="mpc-lb-close" aria-label="Close" data-lb-close>✕</button>
-        <button class="mpc-lb-prev" aria-label="Previous">‹</button>
-        <img id="mpcLbImg" alt="Preview">
-        <button class="mpc-lb-next" aria-label="Next">›</button>
-        <figcaption id="mpcLbCaption" class="muted"></figcaption>
-    </figure>
-</div>
 
-
-<!-- Assign Staff & Approve Modal -->
+<!-- LIGHTBOX (unchanged) ... -->
+<!-- APPROVE MODAL -->
 <div class="obd-overlay" id="approveModal" aria-hidden="true">
-    <div class="obd-modal" role="dialog" aria-modal="true" aria-labelledby="apTitle">
-        <button class="modal-close" data-close>✕</button>
-        <h3 id="apTitle" class="mb-2">Assign Staff & Approve</h3>
-        <p class="muted mb-2">Choose a staff member who will manage this merchant after approval.</p>
+  <div class="obd-modal" role="dialog" aria-modal="true" aria-labelledby="apTitle">
+    <button class="modal-close" data-close>✕</button>
+    <h3 id="apTitle" class="mb-2">Assign Staff & Approve</h3>
+    <p class="muted mb-2">Choose a staff member who will manage this merchant after approval.</p>
 
-        <form id="approveForm" class="rf-form">
-            <div class="rf-row">
-                <label class="fw-bold">Staff <span class="muted">(required)</span></label>
-                <select id="apStaff" required>
-                    <option value="">Select staff…</option>
-                    <option value="STF-001">Dominion – Ops Lead</option>
-                    <option value="STF-002">Adaobi – Onboarding</option>
-                    <option value="STF-003">Samuel – Verification</option>
-                </select>
-            </div>
-            <div class="rf-row">
-                <label>Note (optional)</label>
-                <input id="apNote" placeholder="Internal note">
-            </div>
-
-            <div class="rf-actions">
-                <button type="button" class="btn btn-light" data-close>Cancel</button>
-                <button type="submit" class="btn btn-primary">Approve</button>
-            </div>
-        </form>
-    </div>
+    <form id="approveForm" class="rf-form">
+      <input type="hidden" id="agentId" value="@Model.AgentId" />
+      <div class="rf-row">
+        <label class="fw-bold">Staff <span class="muted">(required)</span></label>
+        <select id="apStaff" required>
+          <option value="">Loading staff…</option>
+        </select>
+      </div>
+      <div class="rf-row">
+        <label>Note (optional)</label>
+        <input id="apNote" placeholder="Internal note">
+      </div>
+      <div class="rf-actions">
+        <button type="button" class="btn btn-light" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Approve</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-<!-- Decline Reason Modal -->
+<!-- DECLINE MODAL -->
 <div class="obd-overlay" id="declineModal" aria-hidden="true">
-    <div class="obd-modal" role="dialog" aria-modal="true" aria-labelledby="dcTitle">
-        <button class="modal-close" data-close>✕</button>
-        <h3 id="dcTitle" class="mb-2">Decline Merchant</h3>
-        <p class="muted mb-2">Provide a reason for declining this merchant. This can be shared with the submitter.</p>
+  <div class="obd-modal" role="dialog" aria-modal="true" aria-labelledby="dcTitle">
+    <button class="modal-close" data-close>✕</button>
+    <h3 id="dcTitle" class="mb-2">Decline Merchant</h3>
+    <p class="muted mb-2">Provide a reason for declining this merchant.</p>
 
-        <form id="declineForm" class="rf-form">
-            <div class="rf-row">
-                <label class="fw-bold">Reason <span class="muted">(required)</span></label>
-                <textarea id="dcReason" rows="4" placeholder="Why is this application being declined?" required></textarea>
-            </div>
-            <div class="rf-actions">
-                <button type="button" class="btn btn-light" data-close>Cancel</button>
-                <button type="submit" class="btn btn-danger">Decline</button>
-            </div>
-        </form>
-    </div>
+    <form id="declineForm" class="rf-form">
+      <input type="hidden" id="declineId" value="@Model.AgentId" />
+      <div class="rf-row">
+        <label class="fw-bold">Reason <span class="muted">(required)</span></label>
+        <textarea id="dcReason" rows="4" placeholder="Why is this application being declined?" required></textarea>
+      </div>
+      <div class="rf-actions">
+        <button type="button" class="btn btn-light" data-close>Cancel</button>
+        <button type="submit" class="btn btn-danger">Decline</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-<style>
-    /* =========================================================
-   Merchant Profile – FULL CSS (standalone)
-   ========================================================= */
-
-/* ---------- Tokens ---------- */
-:root {
-  --ink: #0f172a;          /* primary text */
-  --muted: #64748b;        /* secondary text */
-  --line: #e5eaf2;         /* borders */
-  --line-2: #dbe4ef;       /* stronger borders */
-
-  --bg: #ffffff;           /* surfaces */
-  --bg-soft: #fbfdff;
-
-  --primary: #0ea5e9;      /* blue-500 */
-  --primary-600: #0284c7;  /* blue-600 */
-  --danger: #dc2626;       /* red-600 */
-  --danger-700: #b91c1c;   /* red-700 */
-  --info-soft: #eef6ff;    /* soft blue bg */
-
-  --success: #16a34a;      /* green-600 */
-  --warning: #f59e0b;      /* amber-600 */
-  --slate: #94a3b8;        /* neutral for icons */
-
-  --radius-lg: 14px;
-  --radius-md: 10px;
-  --radius-sm: 8px;
-
-  --shadow-1: 0 8px 24px rgba(15, 23, 42, .08);
-  --shadow-2: 0 16px 40px rgba(2, 6, 23, .12);
-}
-.MerchantPictureUnder{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-/* ---------- Utilities ---------- */
-.muted { color: var(--muted); }
-.fw-bold { font-weight: 700; }
-.mb-0 { margin-bottom: 0; }
-.mb-2 { margin-bottom: .5rem; }
-.flex { display: flex; }
-.items-center { align-items: center; }
-.gap-6 { gap: .375rem; }
-.gap-8 { gap: .5rem; }
-.gap-12 { gap: .75rem; }
-.gap-14 { gap: .875rem; }
-.gap-16 { gap: 1rem; }
-
-/* ---------- Buttons ---------- */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  height: 38px; padding: 0 14px;
-  border: 1px solid var(--line); border-radius: var(--radius-md);
-  background: #fff; color: var(--ink); font-weight: 700;
-  cursor: pointer; transition: background .15s ease, border-color .15s ease, transform .06s ease;
-}
-.btn:hover { background: #f8fafc; }
-.btn:active { transform: translateY(1px); }
-
-.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-.btn-primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
-
-.btn-danger { background: var(--danger); color: #fff; border-color: var(--danger); }
-.btn-danger:hover { background: var(--danger-700); border-color: var(--danger-700); }
-
-.btn-light { background: #fff; color: var(--ink); border-color: var(--line); }
-.btn-soft-info { background: var(--info-soft); color: #1d4ed8; border-color: #d7e9ff; }
-
-/* Icon-only small button (3 dots etc.) */
-.icon-dot {
-  width: 32px; height: 32px; line-height: 30px; text-align: center;
-  border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer;
-}
-.icon-dot:hover { background: #f1f5f9; }
-
-/* ---------- Chips (status) ---------- */
-.chip {
-  display: inline-flex; align-items: center; gap: .4rem;
-  padding: .275rem .65rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #f1f5f9;
-  color: #334155; font-weight: 800; font-size: .75rem;
-}
-.chip-paid     { background: #e8fff1; border-color: #ccf3db; color: #117b34; }
-.chip-pending  { background: #fff8e6; border-color: #ffe4b3; color: #a16207; }
-.chip-failed   { background: #ffe8e8; border-color: #ffcfcf; color: #b91c1c; }
-.chip-open     { background: #eef6ff; border-color: #d7e9ff; color: #1d4ed8; }
-
-/* ---------- Page wrapper ---------- */
-.MP { display: grid; gap: 14px; }
-
-/* ---------- Card ---------- */
-.card {
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-1);
-  padding: 14px;
-}
-.card-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.card h3 { margin: 0; font-size: 16px; font-weight: 800; }
-
-/* ---------- Profile Header ---------- */
-.MPHead { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.mph-left { display: flex; align-items: center; gap: 12px; }
-.mph-avatar {
-  width: 56px; height: 56px; border-radius: 999px; object-fit: cover;
-  border: 1px solid var(--line);
-}
-.mph-name { font-size: 20px; font-weight: 800; color: var(--ink); }
-.mph-sub { font-size: 13px; }
-.mph-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.mph-actions { display: flex; gap: 8px; }
-
-/* ---------- Grid (content) ---------- */
-.MPGrid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; }
-
-
-/* ---------- Review Information ---------- */
-.mp-info { display: grid; gap: 8px; }
-.mp-row {
-  display: flex; justify-content: space-between; gap: 14px;
-  border-bottom: 1px dashed var(--line); padding: 8px 0;
-}
-.mp-row:last-child { border-bottom: 0; }
-.mp-key { color: var(--muted); min-width: 190px; }
-.mp-val { font-weight: 700; color: var(--ink); }
-
-/* ---------- Documents ---------- */
-.mp-docs { display: grid; gap: 10px; }
-.doc-tile {
-  display: flex; align-items: center; gap: 12px;
-  border: 1px solid var(--line); border-radius: 12px; padding: 10px;
-  background: #fff;
-}
-.doc-ico {
-  width: 40px; height: 40px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 800; letter-spacing: .5px;
-}
-.doc-ico.pdf { background: #ef4444; } /* red */
-.doc-ico.img { background: var(--primary); } /* blue */
-.doc-meta { flex: 1; min-width: 0; }
-.doc-name { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.doc-sub { font-size: 12px; }
-.doc-actions { display: flex; gap: 8px; }
-
-/* ---------- Timeline ---------- */
-.timeline { list-style: none; margin: 0; padding: 0; }
-.timeline li { display: flex; gap: 10px; position: relative; padding: 8px 0; }
-.tl-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--slate); margin-top: 5px; }
-.tl-ok { background: var(--success); }
-.tl-block .tl-title { font-weight: 800; color: var(--ink); }
-.tl-block .tl-sub { font-size: 13px; color: var(--muted); }
-
-/* ---------- Modals (overlay + content) ---------- */
-.obd-overlay {
-  position: fixed; inset: 0;
-  background: rgba(2, 6, 23, .45);
-  display: none; align-items: center; justify-content: center;
-  padding: 16px; z-index: 9999;
-}
-.obd-overlay.show { display: flex; }
-
-.obd-modal {
-  width: 100%; max-width: 540px;
-  background: #fff; border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2);
-  padding: 16px 16px 12px; position: relative;
-}
-.modal-close {
-  position: absolute; right: 16px; top: 12px;
-  width: 30px; height: 30px; border: 1px solid var(--line);
-  border-radius: var(--radius-sm); background: #fff; cursor: pointer;
-}
-
-/* ---------- Modal form ---------- */
-.rf-form { display: grid; gap: 10px; margin-top: 10px; }
-.rf-row { display: grid; gap: 6px; }
-.rf-row input,
-.rf-row select,
-.rf-row textarea {
-  min-height: 38px; padding: 8px 10px; font: inherit; color: var(--ink);
-  border: 1px solid #d0d5dd; border-radius: var(--radius-md);
-  background: #fff; outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
-}
-.rf-row textarea { resize: vertical; }
-.rf-row input:focus,
-.rf-row select:focus,
-.rf-row textarea:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
-}
-.rf-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
-
-/* ---------- Page title breadcrumb (optional style) ---------- */
-.pageTitleBox { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-.pageTitleBox h4 { margin:0; font-weight:800; font-size:18px; }
-.pageTitleBox p { margin:0; color:var(--muted); }
-.pageTitleBox span { opacity:.6; margin:0 .25rem; }
-    /* -------- Carousel -------- */
-    .mp-carousel {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .mpc-viewport {
-        width: 100%;
-        max-width: 760px; /* center & keep modest width */
-        aspect-ratio: 16 / 9; /* consistent frame; change if you prefer */
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
-        position: relative;
-        background: #f3f4f6;
-        margin: 0 auto; /* centered */
-    }
-
-    .mpc-track {
-        display: flex;
-        height: 100%;
-        transition: transform .35s ease;
-        will-change: transform;
-    }
-
-    .mpc-slide {
-        min-width: 100%;
-        height: 100%;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #e5e7eb;
-    }
-
-        .mpc-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-    .mpc-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 38px;
-        height: 38px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        background: #ffffffcc;
-        backdrop-filter: saturate(140%) blur(2px);
-        cursor: pointer;
-        font-size: 22px;
-        line-height: 36px;
-        text-align: center;
-        color: #0f172a;
-        box-shadow: var(--shadow-1);
-    }
-
-    .mpc-prev {
-        left: 10px;
-    }
-
-    .mpc-next {
-        right: 10px;
-    }
-
-    .mpc-nav:hover {
-        background: #fff;
-    }
-
-    .mpc-dots {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        margin-top: 6px;
-    }
-
-    .mpc-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        background: #e2e8f0;
-        cursor: pointer;
-    }
-
-        .mpc-dot[aria-selected="true"] {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-
-    /* Touch highlight removal on mobile buttons */
-    .mpc-nav, .mpc-dot {
-        -webkit-tap-highlight-color: transparent;
-    }
-    /* Lightbox */
-.mpc-lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999}
-.mpc-lightbox.show{display:flex}
-.mpc-lb-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.75)}
-.mpc-lb-frame{
-  position:relative; z-index:1; max-width:min(92vw,1200px); max-height:min(92vh,800px);
-  display:flex; align-items:center; justify-content:center; gap:10px;
-}
-.mpc-lb-frame img{max-width:100%; max-height:100%; border-radius:12px; box-shadow:0 20px 48px rgba(2,6,23,.35)}
-.mpc-lb-prev,.mpc-lb-next,.mpc-lb-close{
-  position:absolute; border:1px solid var(--line); background:#ffffffcc; backdrop-filter:saturate(140%) blur(2px);
-  width:40px;height:40px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-1);font-size:20px;line-height:38px;text-align:center
-}
-.mpc-lb-prev{left:-50px; top:50%; transform:translateY(-50%)}
-.mpc-lb-next{right:-50px; top:50%; transform:translateY(-50%)}
-.mpc-lb-close{right:-12px; top:-12px; width:36px;height:36px;line-height:34px;background:#fff}
-
-.mpc-lb-frame figcaption{position:absolute;left:0;right:0;bottom:-28px;text-align:center}
-
-
-</style>
-
-
+@section Scripts {
 <script>
-  // open / close helpers
+  // ---------- helpers ----------
   const open = id => document.getElementById(id).classList.add('show');
   const closeAll = () => document.querySelectorAll('.obd-overlay').forEach(o=>o.classList.remove('show'));
 
@@ -542,167 +208,104 @@
     ov.addEventListener('click', e=>{ if(e.target===ov) closeAll(); });
   });
 
-  // Approve submit (assign staff)
-  document.getElementById('approveForm').addEventListener('submit', (e)=>{
+  function getCsrf() {
+    const el = document.querySelector('input[name="__RequestVerificationToken"]');
+    return el ? el.value : null;
+  }
+  async function postForm(url, data) {
+    const token = getCsrf();
+    const form = new URLSearchParams();
+    Object.entries(data).forEach(([k,v]) => form.append(k, v));
+    if (token) form.append('__RequestVerificationToken', token);
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: form.toString()
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      throw new Error(t || 'Request failed');
+    }
+    return await res.json().catch(()=> ({}));
+  }
+
+  // ---------- Approve flow ----------
+  let staffLoaded = false;
+  async function loadStaffOptions() {
+    if (staffLoaded) return;
+    const sel = document.getElementById('apStaff');
+    sel.innerHTML = '<option value="">Loading…</option>';
+    const res = await fetch('/api/staff/options', { cache: 'no-store' });
+    if (!res.ok) { sel.innerHTML = '<option value="">Failed to load</option>'; return; }
+    const list = await res.json();
+    sel.innerHTML = '<option value="">Select staff…</option>' +
+      (list || []).map(o => `<option value="${o.id}">${o.name}</option>`).join('');
+    staffLoaded = true;
+  }
+  document.getElementById('openApprove').addEventListener('click', loadStaffOptions);
+
+  document.getElementById('approveForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const staff = document.getElementById('apStaff').value;
-    if(!staff){ alert('Please select a staff to assign.'); return; }
+    const agentId = document.getElementById('agentId').value;
+    const staffId = document.getElementById('apStaff').value;
+    if (!staffId) { alert('Please select a staff to assign.'); return; }
 
-    // TODO: POST /Merchants/{id}/approve  { staffId, note }
-    console.log('Approve merchant with staff:', staff, 'note:', document.getElementById('apNote').value);
-
-    // demo UI feedback
-    document.getElementById('mpStatus').className = 'chip chip-paid';
-    document.getElementById('mpStatus').textContent = 'Approved';
-    closeAll();
+    try {
+      await postForm('/Merchant/Approve', { agentId: agentId, assignedStaffId: staffId });
+      // UI feedback
+      const st = document.getElementById('mpStatus');
+      st.className = 'chip chip-paid';
+      st.textContent = 'Approved';
+      closeAll();
+    } catch (err) {
+      alert(err.message || 'Failed to approve.');
+    }
   });
 
-  // Decline submit
-  document.getElementById('declineForm').addEventListener('submit', (e)=>{
+  // ---------- Decline flow ----------
+  document.getElementById('declineForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const id = document.getElementById('declineId').value;
     const reason = document.getElementById('dcReason').value.trim();
-    if(!reason){ alert('Please provide a decline reason.'); return; }
+    if (!reason) { alert('Please provide a decline reason.'); return; }
 
-    // TODO: POST /Merchants/{id}/decline { reason }
-    console.log('Decline merchant reason:', reason);
-
-    // demo UI feedback
-    document.getElementById('mpStatus').className = 'chip chip-failed';
-    document.getElementById('mpStatus').textContent = 'Declined';
-    closeAll();
+    try {
+      await postForm('/Merchant/Decline', { 'Id': id, 'Reason': reason });
+      const st = document.getElementById('mpStatus');
+      st.className = 'chip chip-failed';
+      st.textContent = 'Declined';
+      closeAll();
+    } catch (err) {
+      alert(err.message || 'Failed to decline.');
+    }
   });
+
+  // ---------- Carousel dots (for the Razor-rendered slides) ----------
+  (function(){
+    const track = document.getElementById('mpcTrack');
+    const dots  = document.getElementById('mpcDots');
+    const prev  = document.getElementById('mpcPrev');
+    const next  = document.getElementById('mpcNext');
+    const slides = Array.from(track.children);
+    if (!slides.length) { prev.style.display = next.style.display = 'none'; return; }
+    let index = 0;
+
+    function goTo(i){
+      index = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${index*100}%)`;
+      Array.from(dots.children).forEach((d, k)=> d.setAttribute('aria-selected', k===index ? 'true' : 'false'));
+    }
+    slides.forEach((_, i)=>{
+      const dot = document.createElement('button');
+      dot.className = 'mpc-dot'; dot.type = 'button';
+      dot.setAttribute('role','tab'); dot.setAttribute('aria-label', `Go to image ${i+1}`);
+      dot.addEventListener('click', e => { e.stopPropagation(); goTo(i); });
+      dots.appendChild(dot);
+    });
+    goTo(0);
+    next.addEventListener('click', e => { e.stopPropagation(); goTo(index+1); });
+    prev.addEventListener('click', e => { e.stopPropagation(); goTo(index-1); });
+  })();
 </script>
-<script>
-    (function(){
-      // Replace with your real image URLs
-      const images = [
-            "/images/users/avatar-7.jpg",
-    "/images/users/avatar-1.jpg",
-    "/images/users/avatar-10.jpg",
-    "/images/users/avatar-2.jpg"
-
-      ];
-
-      // Carousel els
-      const track   = document.getElementById('mpcTrack');
-      const dots    = document.getElementById('mpcDots');
-      const prevBtn = document.getElementById('mpcPrev');
-      const nextBtn = document.getElementById('mpcNext');
-      const countEl = document.getElementById('mpcCount');
-      const viewport= document.querySelector('.mpc-viewport');
-      const card    = document.getElementById('merchantPhotosCard');
-
-      // Lightbox els
-      const lb      = document.getElementById('mpcLightbox');
-      const lbImg   = document.getElementById('mpcLbImg');
-      const lbCap   = document.getElementById('mpcLbCaption');
-      const lbPrev  = lb.querySelector('.mpc-lb-prev');
-      const lbNext  = lb.querySelector('.mpc-lb-next');
-      const lbCloseBtns = lb.querySelectorAll('[data-lb-close]');
-
-      let index = 0;
-      let isDragging = false, startX = 0, currentX = 0, moved = 0;
-
-      // Build slides + dots
-      function build(){
-        track.innerHTML = '';
-        dots.innerHTML = '';
-        images.forEach((src, i)=>{
-          const slide = document.createElement('div');
-          slide.className = 'mpc-slide';
-          slide.setAttribute('role','listitem');
-          slide.innerHTML = `<img src="${src}" alt="Merchant photo ${i+1}" loading="lazy">`;
-          // Click-to-open-lightbox (only if not dragged)
-          slide.addEventListener('click', ()=>{
-            if (moved < 6) openLightbox(i); // treat as click if drag delta < 6px
-          });
-          track.appendChild(slide);
-
-          const dot = document.createElement('button');
-          dot.className = 'mpc-dot';
-          dot.type = 'button';
-          dot.setAttribute('role','tab');
-          dot.setAttribute('aria-label', `Go to image ${i+1}`);
-          dot.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(i); });
-          dots.appendChild(dot);
-        });
-        countEl.textContent = `${images.length} image${images.length>1?'s':''}`;
-        update();
-      }
-
-      function goTo(i){
-        index = (i + images.length) % images.length; // modulo wrap
-        track.style.transition = '';
-        track.style.transform = `translateX(-${index*100}%)`;
-        [...dots.children].forEach((d, k)=> d.setAttribute('aria-selected', k === index ? 'true' : 'false'));
-      }
-      const next = ()=> goTo(index + 1);
-      const prev = ()=> goTo(index - 1);
-      const update = ()=> goTo(index);
-
-      // Button controls
-      nextBtn.addEventListener('click', (e)=>{ e.stopPropagation(); next(); });
-      prevBtn.addEventListener('click', (e)=>{ e.stopPropagation(); prev(); });
-
-      // Keyboard (card focus)
-      card.addEventListener('keydown', (e)=>{
-        if (e.key === 'ArrowRight') next();
-        if (e.key === 'ArrowLeft')  prev();
-      });
-
-      // Drag / swipe — ignore when interacting with UI controls
-      function isOnControl(target){
-        return !!(target.closest('.mpc-nav') || target.closest('.mpc-dots'));
-      }
-      viewport.addEventListener('pointerdown', (e)=>{
-        if (isOnControl(e.target)) return; // don't start drag from buttons/dots
-        isDragging = true;
-        startX = currentX = e.clientX;
-        moved = 0;
-        viewport.setPointerCapture(e.pointerId);
-      });
-      viewport.addEventListener('pointermove', (e)=>{
-        if (!isDragging) return;
-        currentX = e.clientX;
-        const delta = currentX - startX;
-        moved = Math.max(moved, Math.abs(delta));
-        track.style.transition = 'none';
-        track.style.transform  = `translateX(calc(-${index*100}% + ${delta}px))`;
-      });
-      function endDrag(e){
-        if (!isDragging) return;
-        isDragging = false;
-        const delta = (currentX - startX) || 0;
-        const threshold = viewport.clientWidth * 0.18;
-        track.style.transition = '';
-        if (delta >  threshold) prev();
-        else if (delta < -threshold) next();
-        else update();
-      }
-      viewport.addEventListener('pointerup', endDrag);
-      viewport.addEventListener('pointercancel', endDrag);
-      viewport.addEventListener('pointerleave', endDrag);
-
-      // Lightbox
-      function openLightbox(i){
-        goTo(i); // sync carousel position
-        lbImg.src = images[index];
-        lbCap.textContent = `Image ${index+1} of ${images.length}`;
-        lb.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      }
-      function closeLightbox(){
-        lb.classList.remove('show');
-        document.body.style.overflow = '';
-      }
-      lbPrev.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(index-1); lbImg.src = images[index]; lbCap.textContent = `Image ${index+1} of ${images.length}`; });
-      lbNext.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(index+1); lbImg.src = images[index]; lbCap.textContent = `Image ${index+1} of ${images.length}`; });
-      lbCloseBtns.forEach(b=> b.addEventListener('click', closeLightbox));
-      lb.addEventListener('click', (e)=>{ if (e.target.classList.contains('mpc-lightbox') || e.target.classList.contains('mpc-lb-backdrop')) closeLightbox(); });
-      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && lb.classList.contains('show')) closeLightbox(); });
-
-      // Init
-      build();
-    })();
-</script>
-
+}

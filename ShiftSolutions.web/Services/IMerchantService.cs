@@ -10,7 +10,7 @@ namespace ShiftSolutions.web.Services
             MerchantFilter filter, CancellationToken ct = default);
 
         // MERCHANT PROFILE (aggregated from that agent's apartments)
-        Task<MerchantProfileDto?> GetMerchantAsync(
+        Task<MerchantDto?> GetMerchantAsync(
             string agentId, CancellationToken ct = default);
 
         // Agent-level decision: updates ALL apartments for that AgentId

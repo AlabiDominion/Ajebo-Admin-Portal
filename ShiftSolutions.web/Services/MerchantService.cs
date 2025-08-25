@@ -136,7 +136,7 @@ namespace ShiftSolutions.web.Services
         }
 
         // =============== PROFILE (aggregate apartments by AgentId) ===============
-        public async Task<MerchantProfileDto?> GetMerchantAsync(string agentId, CancellationToken ct = default)
+        public async Task<MerchantDto?> GetMerchantAsync(string agentId, CancellationToken ct = default)
         {
             if (string.IsNullOrWhiteSpace(agentId)) return null;
 
@@ -167,13 +167,17 @@ namespace ShiftSolutions.web.Services
             var approvalStatus =
                 apts.Any(x => x.Status == "Pending") ? "Pending" :
                 apts.Any(x => !x.IsApproved) ? "Declined" :
-                                                         "Approved";
+                                                        "Approved";
 
+            // Build photos as DTOs first
             var photos = new List<MerchantPhotoDto>();
             void add(string? url, string caption)
             {
-                if (!string.IsNullOrWhiteSpace(url) && !string.Equals(url, "NA", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(url) &&
+                    !string.Equals(url, "NA", StringComparison.OrdinalIgnoreCase))
+                {
                     photos.Add(new MerchantPhotoDto { Url = url!, Caption = caption });
+                }
             }
             foreach (var ap in apts)
             {
@@ -184,24 +188,55 @@ namespace ShiftSolutions.web.Services
                 add(ap.SupportImage4, ap.Name);
             }
 
-            return new MerchantProfileDto
+            // Convert photos -> plain URL list for MerchantDto.PhotoUrls
+            var photoUrls = photos
+                .Select(p => p.Url)
+                .Where(u => !string.IsNullOrWhiteSpace(u))
+                .Distinct()
+                .ToList();
+
+            // Build docs (empty for now; fill from DB if/when you have a source)
+            var docs = new List<MerchantDocDto>();
+            // Example when you add a table for merchant documents:
+            // docs = await _db.MerchantDocuments
+            //     .Where(d => d.AgentId == agentId)
+            //     .OrderByDescending(d => d.UploadedAt)
+            //     .Select(d => new MerchantDocDto
+            //     {
+            //         Name = d.FileName,
+            //         Url = d.Url,
+            //         Kind = d.Kind,     // "pdf", "image", ...
+            //         UploadedAt = d.UploadedAt
+            //     })
+            //     .ToListAsync(ct);
+
+            // Pick an avatar from the newest apartment images (optional)
+            string? newestImage = apts
+                .OrderByDescending(x => x.CreatedAt)
+                .Select(x => PickImage(x.ImageUrl, x.SupportImage1, x.SupportImage2, x.SupportImage3, x.SupportImage4))
+                .FirstOrDefault();
+            var avatarUrl = BuildAvatarUrl(newestImage);
+
+            return new MerchantDto
             {
                 AgentId = agentId,
                 DisplayName = apts[0].Agent ?? "(Unknown)",
-                CompanyName = null,
-                Email = null,
-                Phone = null,
-                Address = null,
-                City = apts[0].City,
+                CompanyName = "",
+                Email = "",
+                Phone = "",
+                Address = "",
+                City = apts[0].City ?? "",
                 ApprovalStatus = approvalStatus,
-                DeclineReason = null, // not in schema
+                DeclineReason = "",
                 CreatedAt = apts.Min(x => x.CreatedAt),
-                ProfilePicture = null,
+                AvatarUrl = avatarUrl,
                 ApartmentsCount = apts.Count,
-                Documents = Array.Empty<MerchantDocDto>(),
-                Photos = photos
+
+                Documents = docs,       // List<MerchantDocDto>
+                PhotoUrls = photoUrls    // List<string>
             };
         }
+
 
         // =============== AGENT-LEVEL APPROVAL (updates all rows for AgentId) ===============
         // Services/MerchantService.cs (inside class)

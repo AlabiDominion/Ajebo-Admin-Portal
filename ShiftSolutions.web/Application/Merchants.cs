@@ -29,24 +29,31 @@ public class MerchantPhotoDto
     public string Caption { get; set; }
 }
 
-public class MerchantProfileDto
+public class MerchantDto
 {
-    public string AgentId { get; set; }
-    public string DisplayName { get; set; }
-    public string? CompanyName { get; set; }
-    public string Email { get; set; }
-    public string Phone { get; set; }
-    public string? Address { get; set; }
-    public string? City { get; set; }
-    public string ApprovalStatus { get; set; }
-    public string? DeclineReason { get; set; }
+    public string AgentId { get; set; } = "";
+    public string DisplayName { get; set; } = "";
+    public string CompanyName { get; set; } = "";
+    public string Email { get; set; } = "";
+    public string Phone { get; set; } = "";
+    public string City { get; set; } = "";
+    public string ApprovalStatus { get; set; } = "Pending";
     public DateTime CreatedAt { get; set; }
-    public string? ProfilePicture { get; set; }
+    public string ContactName { get; set; } = "";
+    public string ContactPhone { get; set; } = "";
+    public string Address { get; set; } = "";
+    public string BankName { get; set; } = "";
+    public string BankAccountNumber { get; set; } = "";
+    public string BankAccountName { get; set; } = "";
     public int ApartmentsCount { get; set; }
+    public string? Notes { get; set; }
+    public string AvatarUrl { get; set; } = "";
+    public string DeclineReason { get; set; } = "";
 
-    public IReadOnlyList<MerchantDocDto> Documents { get; set; } = Array.Empty<MerchantDocDto>();
-    public IReadOnlyList<MerchantPhotoDto> Photos { get; set; } = Array.Empty<MerchantPhotoDto>();
+    public List<string> PhotoUrls { get; set; } = new();
+    public List<MerchantDocDto> Documents { get; set; } = new();
 }
+
 
 // simple page envelope
 public class PagedResult<T>
