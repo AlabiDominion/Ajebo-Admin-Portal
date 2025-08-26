@@ -1,4 +1,7 @@
-﻿<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
+﻿@model ShiftSolutions.web.Models.Booking
+
+
+<div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">
     <h4>Orders / Bookings</h4>
     <p>Transactions <span>></span> <span>Orders / Bookings</span></p>
 </div>
@@ -9,8 +12,10 @@
     <!-- Breadcrumb / Header strip -->
     <div class="obd-head">
         <div>
-            <h2 class="obd-title">Order <span class="mono">ORD-12001</span></h2>
-            <div class="obd-sub">Created: 2025-08-12 14:21 · Payment: Card (VISA)</div>
+            <h2 class="obd-title">Order <span class="mono">@Model.BookingId</span></h2>
+            <div class="obd-sub">
+                Created: @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm") · Payment: @Model.PaymentMethod
+            </div>
         </div>
         <div class="obd-actions">
             <button class="btn btn-light" id="resendReceipt">Resend Receipt</button>
@@ -30,9 +35,11 @@
     <!-- Top summary chips -->
     <div class="obd-chips">
         <span class="chip chip-type">Booking</span>
-        <span class="chip chip-status chip-paid">Paid</span>
-        <span class="chip">Stay: 12 Aug → 15 Aug (3 nights)</span>
-        <span class="chip">Gateway Ref: <span class="mono">GW-9X2C7</span></span>
+        <span class="chip chip-status @(Model.PaymentStatus == "Paid" ? "chip-paid" : "chip-pending")">
+            @Model.PaymentStatus
+        </span>
+        <span class="chip">Stay: @Model.ApartmentStayDuration</span>
+        <span class="chip">Gateway Ref: <span class="mono">@Model.TransactionReferenceId</span></span>
     </div>
 
     <!-- Two-column layout -->
@@ -44,9 +51,9 @@
                 <div class="card-h">
                     <h3>Price Breakdown</h3>
                     <div class="kpi-row">
-                        <div><span class="kpi-title">Selling</span><span class="kpi-value">₦245,000</span></div>
-                        <div><span class="kpi-title">Base</span><span class="kpi-value">₦210,000</span></div>
-                        <div><span class="kpi-title">Margin</span><span class="kpi-value green">+16.7% (₦35,000)</span></div>
+                        <div><span class="kpi-title">Selling</span><span class="kpi-value">₦@Model.TotalAmount</span></div>
+                        <div><span class="kpi-title">Base</span><span class="kpi-value">₦@Model.SubTotal</span></div>
+                        <div><span class="kpi-title">VAT</span><span class="kpi-value">₦@Model.Vat (@Model.VatPercentage%)</span></div>
                     </div>
                 </div>
                 <div class="stack">
@@ -62,10 +69,8 @@
             <div class="card">
                 <div class="card-h"><h3>Customer</h3></div>
                 <div class="info">
-                    <div class="info-row"><span>Name</span><span>Adewale O.</span></div>
-                    <div class="info-row"><span>Email</span><span class="link">adewale@example.com</span></div>
-                    <div class="info-row"><span>Phone</span><span>+234 803 555 0123</span></div>
-                    <div class="info-row"><span>Notes</span><span>—</span></div>
+                    <div class="info-row"><span>Name</span><span>@Model.ClientName</span></div>
+                    <div class="info-row"><span>Email</span><span class="link">@Model.ClientEmailAddress</span></div>
                 </div>
             </div>
 
@@ -88,17 +93,17 @@
                 <div class="card-h"><h3>Timeline</h3></div>
                 <ol class="timeline">
                     <li>
-                        <div class="tl-dot tl-ok"></div>
+                        <div class="tl-dot @(Model.PaymentStatus == "Paid" ? "tl-ok" : "")"></div>
                         <div class="tl-block">
-                            <div class="tl-title">Paid</div>
-                            <div class="tl-sub">2025-08-12 14:22 · Auth code: <span class="mono">A6FZ2</span></div>
+                            <div class="tl-title">@Model.PaymentStatus</div>
+                            <div class="tl-sub">@Model.UpdatedAt?.ToString("yyyy-MM-dd HH:mm")</div>
                         </div>
                     </li>
                     <li>
                         <div class="tl-dot"></div>
                         <div class="tl-block">
                             <div class="tl-title">Created</div>
-                            <div class="tl-sub">2025-08-12 14:21</div>
+                            <div class="tl-sub">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</div>
                         </div>
                     </li>
                 </ol>

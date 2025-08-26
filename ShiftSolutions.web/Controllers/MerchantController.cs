@@ -79,5 +79,7 @@ namespace ShiftSolutions.web.Controllers
 
             return Ok(new { ok = true, message = "Merchant declined." });
         }
+        [HttpGet]
+        public IActionResult ApprovalQueue() => View();
     }
 }

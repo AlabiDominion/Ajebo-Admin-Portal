@@ -1,5 +1,6 @@
 ﻿// Application/Merchants/IMerchantService.cs
 using ShiftSolutions.web.Application.Merchants;
+using System.Threading;
 
 namespace ShiftSolutions.web.Services
 {
@@ -20,5 +21,9 @@ namespace ShiftSolutions.web.Services
         // (Optional) Per-apartment moderation if you need it
         Task ApproveApartmentAsync(int apartmentId, string approvedByUserId, CancellationToken ct = default);
         Task DeclineApartmentAsync(int apartmentId, string reason, string declinedByUserId, CancellationToken ct = default);
+
+        // 🔹 NEW: list merchants assigned to a specific staff member
+        Task<PagedResult<MerchantListItemDto>> GetMerchantsForStaffAsync(
+            int staffId, MerchantFilter filter, CancellationToken ct = default);
     }
 }

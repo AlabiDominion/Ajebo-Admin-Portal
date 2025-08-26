@@ -1,0 +1,286 @@
+﻿@{
+    Layout = "_Layout";
+}
+@Html.AntiForgeryToken()
+
+<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
+    <h4>Approval Queue</h4>
+    <p>Merchants <span>›</span> Approval Queue</p>
+</div>
+
+<div class="p-4">
+    <div class="DashboardTableContainerE" id="approvalQueue">
+        <!-- Header -->
+        <div class="DTH">
+            <div class="flex items-center gap-2">
+                <h5 class="mb-0">Merchants awaiting approval</h5>
+                <span class="chip"><strong id="aqCount">0</strong>&nbsp;pending</span>
+            </div>
+           
+        </div>
+
+        <!-- Filters (search, city, date, sort) -->
+        <div class="DTFilters">
+            <div class="DTFilterRow">
+                <div class="DTField">
+                    <label>Search</label>
+                    <input id="aqQ" placeholder="Name, email, phone…">
+                </div>
+                <div class="DTField">
+                    <label>City</label>
+                    <input id="aqCity" placeholder="e.g., Lagos">
+                </div>
+                <div class="DTField">
+                    <label>From</label>
+                    <input type="date" id="aqFrom">
+                </div>
+                <div class="DTField">
+                    <label>To</label>
+                    <input type="date" id="aqTo">
+                </div>
+                <div class="DTButtons">
+                    <button class="btn btn-primary" id="aqApply">Apply</button>
+                    <button class="btn btn-light" id="aqReset">Reset</button>
+                </div>
+            </div>
+            <div class="DTFilterRow" style="grid-template-columns:repeat(6,minmax(0,1fr))">
+                <div class="DTField">
+                    <label>Sort by</label>
+                    <select id="aqSort">
+                        <option value="created_desc">Newest</option>
+                        <option value="created_asc">Oldest</option>
+                        <option value="name_asc">Name A → Z</option>
+                        <option value="name_desc">Name Z → A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="DTTableWrap">
+            <table class="DTTable w-full">
+                <thead>
+                    <tr class="DTHMain">
+                        <th>Merchant</th>
+                        <th>Contact</th>
+                        <th>City</th>
+                        <th>Apartments</th>
+                        <th>Created</th>
+                        <th class="DTActionCol">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="aqBody">
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pager -->
+        <div class="mc-pager">
+            <button class="btn" id="aqPrev">Prev</button>
+            <span id="aqPageInfo" class="muted"></span>
+            <button class="btn" id="aqNext">Next</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            // ---------- state ----------
+            let page = 1, pageSize = 12;
+            const forcedStatus = 'Pending'; // always queue = pending
+            let filters = { q: '', city: '', from: '', to: '', sort: 'created_desc' };
+
+            // ---------- els ----------
+            const body = document.getElementById('aqBody');
+            const countEl = document.getElementById('aqCount');
+            const pageInfo = document.getElementById('aqPageInfo');
+            const btnPrev = document.getElementById('aqPrev');
+            const btnNext = document.getElementById('aqNext');
+
+            const q = document.getElementById('aqQ');
+            const fCity = document.getElementById('aqCity');
+            const fFrom = document.getElementById('aqFrom');
+            const fTo = document.getElementById('aqTo');
+            const fSort = document.getElementById('aqSort');
+
+            // ---------- helpers ----------
+            const chip = (status) => `<span class="chip chip-pending">${status || 'Pending'}</span>`;
+
+            const rowHtml = (m) => {
+                const profileUrl = `/Merchant/Profile?id=${encodeURIComponent(m.agentId)}`;
+                return `
+                <tr class="DTClickable" data-href="${profileUrl}">
+                    <td>
+                        <div class="merchantCell">
+                            <img src="${m.avatar || '/images/users/avatar-5.jpg'}" alt="">
+                            <div>
+                                <div class="m-name">${m.displayName || m.companyName || '—'}</div>
+                                <div class="m-id muted">${m.agentId || ''}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>${m.contact || '—'}</div>
+                        <div class="muted">${m.phone || ''}</div>
+                    </td>
+                    <td>${m.city || '—'}</td>
+                    <td>${m.apartmentsCount ?? 0}</td>
+                    <td class="muted">${(m.createdAt || '').substring(0,10)}</td>
+                    <td class="DTActionCol">
+                        <div class="manual-dropdown">
+                            <button class="icon-dot" data-dd-button>⋯</button>
+                            <ul class="dd-menu">
+                                <li><a class="dd-item" href="${profileUrl}">Review</a></li>
+                                <li><button class="dd-item" data-act="approve" data-id="${m.agentId}">Approve…</button></li>
+                                <li><button class="dd-item" data-act="decline" data-id="${m.agentId}">Decline…</button></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>`;
+            };
+
+            function wireRowBehaviors(container) {
+                // row click → profile
+                container.querySelectorAll('.DTClickable').forEach(tr => {
+                    tr.addEventListener('click', (e) => {
+                        if (e.target.closest('.manual-dropdown')) return;
+                        const url = tr.getAttribute('data-href');
+                        if (url) window.location.href = url;
+                    });
+                });
+                // dropdown
+                container.querySelectorAll('[data-dd-button]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const menu = btn.nextElementSibling;
+                        document.querySelectorAll('.dd-menu').forEach(m => m !== menu && m.classList.remove('show'));
+                        menu.classList.toggle('show');
+                    });
+                });
+                document.addEventListener('click', () => {
+                    document.querySelectorAll('.dd-menu').forEach(m => m.classList.remove('show'));
+                });
+                // actions
+                container.querySelectorAll('.dd-item[data-act]').forEach(b => {
+                    b.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const act = b.dataset.act, id = b.dataset.id;
+                        if (act === 'approve') {
+                            // go to profile to select staff & approve
+                            window.location.href = '/Merchant/Profile?id=' + encodeURIComponent(id);
+                        } else if (act === 'decline') {
+                            const reason = prompt('Reason for decline?');
+                            if (!reason) return;
+                            await postForm('/Merchant/Decline', { Id: id, Reason: reason });
+                            await load(); // refresh
+                        }
+                    });
+                });
+            }
+
+            function getCsrf() {
+                const input = document.querySelector('input[name="__RequestVerificationToken"]');
+                return input ? input.value : null;
+            }
+            async function postForm(url, data) {
+                const token = getCsrf();
+                const form = new URLSearchParams(data);
+                if (token) form.append('__RequestVerificationToken', token);
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: form.toString()
+                });
+                if (!res.ok) {
+                    const t = await res.text();
+                    alert('Request failed: ' + t);
+                }
+            }
+
+            // ---------- data load ----------
+            async function load() {
+                const params = new URLSearchParams({
+                    page, pageSize,
+                    search: filters.q,
+                    status: forcedStatus,          // <- force Pending
+                    city: filters.city,
+                    from: filters.from || '',
+                    to: filters.to || '',
+                    sort: filters.sort || 'created_desc'
+                });
+
+                const res = await fetch('/Merchant/ListData?' + params.toString(), { cache: 'no-store' });
+                if (!res.ok) {
+                    body.innerHTML = `<tr><td colspan="6" class="muted">Failed to load queue.</td></tr>`;
+                    return;
+                }
+                const data = await res.json();
+
+                countEl.textContent = data.totalItems ?? 0;
+
+                const total = data.totalItems ?? 0;
+                const pages = Math.max(1, Math.ceil(total / (data.pageSize || pageSize)));
+                page = Math.min(Math.max(1, data.page || page), pages);
+
+                pageInfo.textContent = `Page ${page} of ${pages}`;
+                btnPrev.disabled = page <= 1;
+                btnNext.disabled = page >= pages;
+
+                body.innerHTML = (data.items || []).map(rowHtml).join('') ||
+                    `<tr><td colspan="6" class="muted">No items awaiting approval.</td></tr>`;
+                wireRowBehaviors(body);
+            }
+
+            // ---------- wire filters & pager ----------
+            document.getElementById('aqApply').addEventListener('click', () => {
+                filters = {
+                    q: q.value.trim(),
+                    city: fCity.value.trim(),
+                    from: fFrom.value,
+                    to: fTo.value,
+                    sort: fSort.value || 'created_desc'
+                };
+                page = 1; load();
+            });
+            document.getElementById('aqReset').addEventListener('click', () => {
+                [q, fCity, fFrom, fTo].forEach(el => el.value = '');
+                fSort.value = 'created_desc';
+                filters = { q: '', city: '', from: '', to: '', sort: 'created_desc' };
+                page = 1; load();
+            });
+            document.getElementById('aqPrev').addEventListener('click', () => { if (page > 1) { page--; load(); } });
+            document.getElementById('aqNext').addEventListener('click', () => { page++; load(); });
+
+            // initial
+            load();
+
+            // optional: export current queue to CSV
+            document.getElementById('aqExport').addEventListener('click', async () => {
+                const params = new URLSearchParams({
+                    page: 1, pageSize: 1000,
+                    search: filters.q, status: forcedStatus, city: filters.city,
+                    from: filters.from || '', to: filters.to || '', sort: filters.sort || 'created_desc'
+                });
+                const res = await fetch('/Merchant/ListData?' + params.toString(), { cache: 'no-store' });
+                if (!res.ok) return alert('Export failed');
+                const data = await res.json();
+                const rows = (data.items || []).map(m => [
+                    m.agentId, m.displayName || m.companyName || '',
+                    m.city || '', m.apartmentsCount || 0, m.approvalStatus || '', (m.createdAt || '').substring(0,10)
+                ]);
+                const csv = [
+                    ['AgentId','Name','City','Apartments','Status','Created'].join(','),
+                    ...rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(','))
+                ].join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'approval-queue.csv';
+                document.body.appendChild(a); a.click(); a.remove();
+                URL.revokeObjectURL(url);
+            });
+        })();
+    </script>
+}

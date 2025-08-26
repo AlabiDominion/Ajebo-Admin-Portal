@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ShiftSolutions.web.Models.Booking>
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<div class="pageTitleBox d-sm-flex align-items-center justify-content-between">
+    <h4>All Bookings</h4>
+    <p>Bookings <span>></span> <span>List</span></p>
+</div>
+
+<div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Booking Id</th>
+                <th>Booking Date</th>
+                <th>Client Name</th>
+                <th>Client Email</th>
+                <th>Apartment Id</th>
+                <th>Apartment Name</th>
+                <th>Apartment Address</th>
+                <th>Description</th>
+                <th>City</th>
+                <th>Price/Night</th>
+                <th>Star Ratings</th>
+                <th>Stay Duration</th>
+                <th>Transaction Id</th>
+                <th>Total Amount</th>
+                <th>No. of Nights</th>
+                <th>Payment Method</th>
+                <th>Transaction Ref</th>
+                <th>Payment Status</th>
+                <th>VAT %</th>
+                <th>VAT</th>
+                <th>SubTotal</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>@b.Id</td>
+                    <td>@b.BookingId</td>
+                    <td>@b.BookingDate.ToString("yyyy-MM-dd")</td>
+                    <td>@b.ClientName</td>
+                    <td>@b.ClientEmailAddress</td>
+                    <td>@b.ApartmentId</td>
+                    <td>@b.ApartmentName</td>
+                    <td>@b.ApartmentAddress</td>
+                    <td>@b.ApartmentDescription</td>
+                    <td>@b.ApartmentCity</td>
+                    <td>@b.ApartmentPricePerNight</td>
+                    <td>@b.ApartmentStarRatings</td>
+                    <td>@b.ApartmentStayDuration</td>
+                    <td>@b.TransactionId</td>
+                    <td>@b.TotalAmount</td>
+                    <td>@b.NumberOfNights</td>
+                    <td>@b.PaymentMethod</td>
+                    <td>@b.TransactionReferenceId</td>
+                    <td>@b.PaymentStatus</td>
+                    <td>@b.VatPercentage</td>
+                    <td>@b.Vat</td>
+                    <td>@b.SubTotal</td>
+                    <td>@b.CreatedAt</td>
+                    <td>@b.UpdatedAt?.ToString("yyyy-MM-dd")</td>
+                    <td>@(b.IsActive ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -116,7 +116,7 @@
 <div id="StaffProfilePopUP" class="StaffProfile hidden">
     <div class="StaffProfileInner">
         <div class="SPI1">
-            <img id="spAvatar" src="~/images/users/avatar-3.jpg" alt="" />
+            <img id="spAvatar" src='@Url.Content("~/images/users/avatar-3.jpg")' alt="" />
             <div class="SPI11">
                 <h2 id="spName">—</h2>
                 <p id="spRole" class="mb-0">—</p>
@@ -142,13 +142,15 @@
     <div class="StaffProfileInner2">
         <h3>Merchants</h3>
         <table class="table">
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
-            <tbody>
-                <tr><td>Stella Apartments</td><td>Ajebo@example.com</td><td>(234) 456 7890</td></tr>
-                <tr><td>Stella Apartments</td><td>Ajebo@example.com</td><td>(234) 456 7890</td></tr>
+            <thead>
+                <tr><th>Merchant</th><th>City</th><th>Apartments</th><th>Status</th><th>Created</th></tr>
+            </thead>
+            <tbody id="spMerchantsBody">
+                <tr><td colspan="5" class="muted">Loading…</td></tr>
             </tbody>
         </table>
     </div>
+
 </div>
 
 <!-- Edit panel (you can wire this to a real Edit action later) -->
@@ -244,6 +246,72 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
+        async function loadStaffMerchants(staffId) {
+            const tbody = document.getElementById('spMerchantsBody');
+            tbody.innerHTML = `<tr><td colspan="5" class="muted">Loading…</td></tr>`;
+
+            const params = new URLSearchParams({
+                page: 1,
+                pageSize: 50,
+                sort: 'created_desc'
+                // you can also pass search/city/status if you add UI for it
+            });
+
+            const res = await fetch(`/api/staff/${staffId}/merchants?` + params.toString(), { cache: 'no-store' });
+            if (!res.ok) {
+                tbody.innerHTML = `<tr><td colspan="5" class="muted">Failed to load.</td></tr>`;
+                return;
+            }
+            const data = await res.json();
+            const items = data.items || [];
+
+            const chip = (status) => {
+                const s = String(status || '').toLowerCase();
+                let cls = 'chip chip-open';
+                if (s === 'approved') cls = 'chip chip-paid';
+                else if (s === 'pending') cls = 'chip chip-pending';
+                else if (s === 'declined') cls = 'chip chip-failed';
+                return `<span class="${cls}">${status || '—'}</span>`;
+            };
+
+            const rows = items.map(m => {
+                const url = `/Merchant/Profile?id=${encodeURIComponent(m.agentId)}`;
+                return `<tr class="DTClickable" data-href="${url}">
+              <td>
+                <div class="merchantCell">
+                  <img src="${m.avatar || '/images/users/avatar-5.jpg'}" alt="">
+                  <div>
+                    <div class="m-name">${m.displayName || m.companyName || '—'}</div>
+                    <div class="m-id muted">${m.agentId || ''}</div>
+                  </div>
+                </div>
+              </td>
+              <td>${m.city || '—'}</td>
+              <td>${m.apartmentsCount ?? 0}</td>
+              <td>${chip(m.approvalStatus)}</td>
+              <td class="muted">${(m.createdAt || '').substring(0, 10)}</td>
+            </tr>`;
+            }).join('');
+
+            tbody.innerHTML = rows || `<tr><td colspan="5" class="muted">No merchants assigned.</td></tr>`;
+
+            // row click → profile
+            tbody.querySelectorAll('.DTClickable').forEach(tr => {
+                tr.addEventListener('click', (e) => {
+                    const url = tr.getAttribute('data-href');
+                    if (url) window.location.href = url;
+                });
+            });
+        }
+
+        // Example: when opening the staff popup elsewhere
+        // openStaffProfile(staff) {
+        //   ...fill name/email...
+        //   loadStaffMerchants(staff.id);
+        // }
+    </script>
+
+    <script>
         // --- Search submit on Enter ---
         document.getElementById('searchMemberList')?.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') e.target.closest('form').submit();
@@ -307,6 +375,7 @@
             popup.dataset.staffId = data.id || '0';
 
             show(popup);
+            loadStaffMerchants(data.id);
         });
 
         // === 2b) Delegate clicks INSIDE the popup (Close, Delete, Edit) ===

@@ -24,6 +24,8 @@ namespace ShiftSolutions.web.Data
         public DbSet<BusinessRole> BusinessRoles { get; set; }
         public DbSet<Staff> Staff { get; set; }
         public DbSet<MerchantStaff> MerchantStaff { get; set; } = default!;
+        public DbSet<Booking> Bookings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

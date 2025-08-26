@@ -1,9 +1,10 @@
 ﻿// Services/MerchantService.cs
+
 using Microsoft.EntityFrameworkCore;
 using ShiftSolutions.web.Application.Merchants; // DTOs + PagedResult + MerchantFilter
 using ShiftSolutions.web.Data;
 using ShiftSolutions.web.Models;
-using System.IO;
+
 
 namespace ShiftSolutions.web.Services
 {
@@ -115,9 +116,9 @@ namespace ShiftSolutions.web.Services
             {
                 AgentId = m.AgentId ?? m.DisplayName, // fallback if AgentId is null
                 DisplayName = m.DisplayName,
-                CompanyName = null,
-                Email = null,
-                Phone = null,
+                CompanyName = "",
+                Email = "",
+                Phone = "",
                 City = m.City,
                 ApartmentsCount = m.ApartmentsCount,
                 ApprovalStatus = m.ApprovalStatus,
@@ -170,30 +171,14 @@ namespace ShiftSolutions.web.Services
                                                         "Approved";
 
             // Build photos as DTOs first
-            var photos = new List<MerchantPhotoDto>();
-            void add(string? url, string caption)
-            {
-                if (!string.IsNullOrWhiteSpace(url) &&
-                    !string.Equals(url, "NA", StringComparison.OrdinalIgnoreCase))
-                {
-                    photos.Add(new MerchantPhotoDto { Url = url!, Caption = caption });
-                }
-            }
-            foreach (var ap in apts)
-            {
-                add(ap.ImageUrl, ap.Name);
-                add(ap.SupportImage1, ap.Name);
-                add(ap.SupportImage2, ap.Name);
-                add(ap.SupportImage3, ap.Name);
-                add(ap.SupportImage4, ap.Name);
-            }
-
-            // Convert photos -> plain URL list for MerchantDto.PhotoUrls
-            var photoUrls = photos
-                .Select(p => p.Url)
-                .Where(u => !string.IsNullOrWhiteSpace(u))
-                .Distinct()
-                .ToList();
+            var photoUrls = apts
+            .SelectMany(ap => new[] { ap.ImageUrl, ap.SupportImage1, ap.SupportImage2, ap.SupportImage3, ap.SupportImage4 })
+            .Where(u => !string.IsNullOrWhiteSpace(u) && !string.Equals(u, "NA", StringComparison.OrdinalIgnoreCase))
+            .Select(u => BuildAvatarUrl(u))   // <<--- make absolute
+            .Distinct()
+            .ToList();
+            
+                
 
             // Build docs (empty for now; fill from DB if/when you have a source)
             var docs = new List<MerchantDocDto>();
@@ -229,12 +214,19 @@ namespace ShiftSolutions.web.Services
                 ApprovalStatus = approvalStatus,
                 DeclineReason = "",
                 CreatedAt = apts.Min(x => x.CreatedAt),
-                AvatarUrl = avatarUrl,
+                
                 ApartmentsCount = apts.Count,
+                // ↓ put these two here
+                AvatarUrl = avatarUrl,
+                PhotoUrls = photoUrls,   // <- the List<string> you built earlier
+
+                
+                
 
                 Documents = docs,       // List<MerchantDocDto>
-                PhotoUrls = photoUrls    // List<string>
+                
             };
+
         }
 
 
@@ -349,5 +341,90 @@ namespace ShiftSolutions.web.Services
             // Optionally store reason in a free text field if you have one (e.g., InternalService)
             await _db.SaveChangesAsync(ct);
         }
+
+        public async Task<PagedResult<MerchantListItemDto>> GetMerchantsForStaffAsync(
+     int staffId, MerchantFilter filter, CancellationToken ct = default)
+        {
+            var agentIdsQ = _db.MerchantStaff
+                .AsNoTracking()
+                .Where(ms => ms.StaffId == staffId)
+                .Select(ms => ms.AgentId);
+
+            var q = _db.Apartments.AsNoTracking()
+                .Where(a => agentIdsQ.Contains(a.AgentId));
+
+            if (!string.IsNullOrWhiteSpace(filter.Search))
+            {
+                var s = filter.Search.Trim().ToLower();
+                q = q.Where(a =>
+                    (a.Agent ?? "").ToLower().Contains(s) ||
+                    (a.Name ?? "").ToLower().Contains(s) ||
+                    (a.City ?? "").ToLower().Contains(s));
+            }
+            if (!string.IsNullOrWhiteSpace(filter.Status)) q = q.Where(a => a.Status == filter.Status);
+            if (!string.IsNullOrWhiteSpace(filter.City)) q = q.Where(a => a.City == filter.City);
+            if (filter.From.HasValue) q = q.Where(a => a.CreatedAt >= filter.From.Value);
+            if (filter.To.HasValue) q = q.Where(a => a.CreatedAt <= filter.To.Value);
+
+            var merch = q.GroupBy(a => new { a.AgentId, a.Agent });
+
+            var projected = merch.Select(g => new
+            {
+                g.Key.AgentId,
+                DisplayName = g.Key.Agent ?? "(Unknown)",
+                Contact = g.Key.Agent ?? "(Unknown)",
+                City = g.Max(x => x.City),
+                CreatedAt = g.Min(x => x.CreatedAt),
+                ApartmentsCount = g.Count(),
+                ApprovalStatus =
+                    g.Any(x => x.Status == "Pending") ? "Pending" :
+                    g.Any(x => !x.IsApproved) ? "Declined" : "Approved",
+                RawImage = g.OrderByDescending(x => x.CreatedAt)
+                            .Select(x => PickImage(x.ImageUrl, x.ImageName, x.SupportImage1, x.SupportImage2, x.SupportImage3, x.SupportImage4))
+                            .FirstOrDefault()
+            });
+
+            projected = filter.Sort switch
+            {
+                "name_asc" => projected.OrderBy(m => m.DisplayName),
+                "name_desc" => projected.OrderByDescending(m => m.DisplayName),
+                "created_asc" => projected.OrderBy(m => m.CreatedAt),
+                "created_desc" => projected.OrderByDescending(m => m.CreatedAt),
+                "status_asc" => projected.OrderBy(m => m.ApprovalStatus).ThenBy(m => m.DisplayName),
+                "status_desc" => projected.OrderByDescending(m => m.ApprovalStatus).ThenBy(m => m.DisplayName),
+                _ => projected.OrderByDescending(m => m.CreatedAt)
+            };
+
+            var total = await projected.CountAsync(ct);
+            var page = Math.Max(1, filter.Page);
+            var size = Math.Clamp(filter.PageSize, 5, 200);
+            var skip = (page - 1) * size;
+
+            var rows = await projected.Skip(skip).Take(size).ToListAsync(ct);
+
+            var items = rows.Select(m => new MerchantListItemDto
+            {
+                AgentId = m.AgentId ?? m.DisplayName,
+                DisplayName = m.DisplayName,
+                CompanyName = null,
+                Email = "",               
+                Phone = "",
+                City = m.City,
+                ApartmentsCount = m.ApartmentsCount,
+                ApprovalStatus = m.ApprovalStatus,
+                CreatedAt = m.CreatedAt,
+                Avatar = BuildAvatarUrl(m.RawImage),
+                Contact = m.Contact
+            }).ToList();
+
+            return new PagedResult<MerchantListItemDto>
+            {
+                Items = items,
+                Page = page,
+                PageSize = size,
+                TotalItems = total
+            };
+        }
+
     }
 }
