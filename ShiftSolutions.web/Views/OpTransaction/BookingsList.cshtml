@@ -1,4 +1,17 @@
 ﻿@model IEnumerable<ShiftSolutions.web.Models.Booking>
+@* debug only *@
+@if (Model == null)
+{
+    <div class="alert alert-danger">Model is NULL</div>
+}
+else if (!Model.Any())
+{
+    <div class="alert alert-warning">No bookings found.</div>
+}
+else
+{
+    <div class="alert alert-info">Loaded @Model.Count() bookings.</div>
+}
 
 
 <div class="pageTitleBox  d-sm-flex align-items-center justify-content-between">

@@ -22,7 +22,7 @@ namespace ShiftSolutions.web.Controllers
                 .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
 
-            return View("OrdersBooking", bookings); 
+            return View("BookingsList", bookings); 
         }
 
         // DETAILS
@@ -30,7 +30,7 @@ namespace ShiftSolutions.web.Controllers
         {
             var booking = await _db.Bookings.FirstOrDefaultAsync(b => b.Id == id);
             if (booking == null) return NotFound();
-            return View("OrderDetails", booking); 
+            return View("BookingsList", booking); 
         }
 
         // EXCEL EXPORT
