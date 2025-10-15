@@ -24,51 +24,87 @@ else
 <div class="p-4 mb-4">
     <div class="DashboardTableContainerE ">
         <!-- FILTERS -->
-        <div class="DTFilters">
-            <div class="DTFilterRow">
-                <div class="DTField">
-                    <label>Search</label>
-                    <input type="text" id="obSearch" placeholder="Order ID, merchant, apartment, customer…" />
-                </div>
+        <form asp-action="OrdersBooking" asp-controller="OpTransaction" method="get" class="DTFilters">
+  <div class="DTFilterRow">
+    <div class="DTField">
+      <label>Search</label>
+      <input type="text" id="obSearch" name="q"
+             value="@ViewBag.Q"
+             placeholder="Order ID, merchant, apartment, customer…" />
+    </div>
 
-                <div class="DTField">
-                    <label>Type</label>
-                    <select id="obType">
+    <div class="DTField">
+      <label>Type</label>
+                    <select id="obType" name="type">
                         <option value="">All</option>
-                        <option>Order</option>
-                        <option>Booking</option>
+                        <option value="Order"
+                                selected="@(string.Equals(ViewBag.Type as string, "Order", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Order
+                        </option>
+                        <option value="Booking"
+                                selected="@(string.Equals(ViewBag.Type as string, "Booking", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Booking
+                        </option>
                     </select>
-                </div>
 
-                <div class="DTField">
-                    <label>Status</label>
-                    <select id="obStatus">
+    </div>
+
+    <div class="DTField">
+      <label>Status</label>
+                    <select id="obStatus" name="status">
                         <option value="">All</option>
-                        <option>Paid</option>
-                        <option>Pending</option>
-                        <option>Cancelled</option>
-                        <option>Refunded</option>
-                        <option>Failed</option>
+                        <option value="Paid"
+                                selected="@(string.Equals(ViewBag.Status as string, "Paid", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Paid
+                        </option>
+                        <option value="Pending"
+                                selected="@(string.Equals(ViewBag.Status as string, "Pending", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Pending
+                        </option>
+                        <option value="Cancelled"
+                                selected="@(string.Equals(ViewBag.Status as string, "Cancelled", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Cancelled
+                        </option>
+                        <option value="Refunded"
+                                selected="@(string.Equals(ViewBag.Status as string, "Refunded", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Refunded
+                        </option>
+                        <option value="Failed"
+                                selected="@(string.Equals(ViewBag.Status as string, "Failed", StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
+                            Failed
+                        </option>
                     </select>
-                </div>
 
-                <div class="DTField">
-                    <label>From</label>
-                    <input type="date" id="obFrom" />
-                </div>
+    </div>
 
-                <div class="DTField">
-                    <label>To</label>
-                    <input type="date" id="obTo" />
-                </div>
+    <div class="DTField">
+      <label>From</label>
+      <input type="date" id="obFrom" name="from" value="@ViewBag.From" />
+    </div>
 
-                <div class="DTButtons">
-                    <button type="button" id="obApply" class="btn btn-primary">Apply</button>
-                    <button type="button" id="obReset" class="btn btn-light">Reset</button>
-                    <button type="button" id="obExport" class="btn btn-soft-info">Export Excel</button>
-                </div>
-            </div>
-        </div>
+    <div class="DTField">
+      <label>To</label>
+      <input type="date" id="obTo" name="to" value="@ViewBag.To" />
+    </div>
+
+    <div class="DTButtons">
+      <button type="submit" class="btn btn-primary">Apply</button>
+                    <button class="btn btn-light">
+                        <a href="@Url.Action("OrdersBooking","OpTransaction")">Reset</a>
+      </button>
+      
+
+      <!-- Export (preserve filters) -->
+      <button class="btn btn-soft-info">
+           <a href="@Url.Action("ExportExcel","OpTransaction", new { q = ViewBag.Q, type = ViewBag.Type, status = ViewBag.Status, from = ViewBag.From, to = ViewBag.To })">
+                            Export Excel
+           </a>
+      </button>
+      
+    </div>
+  </div>
+</form>
+
 
         <div class="table-responsive mt-3">
             <table class="table table-bordered table-striped align-middle">
@@ -141,14 +177,7 @@ else
 </div>
 
 
-<div class="Footer flex justify-center">
-    <p>
-        <script>document.write(new Date().getFullYear())</script>
-        &copy; Ajebo
-    </p>
 
-
-</div>
 
 
 
@@ -446,17 +475,6 @@ else
         });
         document.addEventListener('keydown', e => e.key === 'Escape' && closeAll());
     })();
-
-    // Filter hooks (wire to backend later)
-    document.getElementById('obApply').addEventListener('click', () => {
-        const q = document.getElementById('obSearch').value.trim();
-        const type = document.getElementById('obType').value;
-        const status = document.getElementById('obStatus').value;
-        const from = document.getElementById('obFrom').value;
-        const to = document.getElementById('obTo').value;
-        console.log('Apply OB filters', { q, type, status, from, to });
-        // TODO: fetch with these params and rebuild tbody
-    });
     document.getElementById('obReset').addEventListener('click', () => {
         ['obSearch', 'obType', 'obStatus', 'obFrom', 'obTo'].forEach(id => document.getElementById(id).value = '');
         // TODO: reload default dataset

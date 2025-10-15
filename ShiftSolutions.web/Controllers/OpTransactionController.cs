@@ -10,17 +10,23 @@ namespace ShiftSolutions.web.Controllers
     public class OpTransactionController : Controller
     {
         private readonly AppDbContext _db;
-        public OpTransactionController(AppDbContext db)
-        {
-            _db = db;
-        }
+        public OpTransactionController(AppDbContext db) => _db = db;
 
-        // LIST
-        public async Task<IActionResult> OrdersBooking()
+        // LIST + FILTERS
+        public async Task<IActionResult> OrdersBooking(string? q, string? type, string? status, DateTime? from, DateTime? to)
         {
-            var bookings = await _db.Bookings
+            var query = ApplyFilters(_db.Bookings.AsQueryable(), q, type, status, from, to);
+
+            var bookings = await query
                 .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
+
+            // keep selected values for the view
+            ViewBag.Q = q;
+            ViewBag.Type = type;
+            ViewBag.Status = status;
+            ViewBag.From = from?.ToString("yyyy-MM-dd");
+            ViewBag.To = to?.ToString("yyyy-MM-dd");
 
             return View("BookingsList", bookings); 
         }
@@ -30,14 +36,18 @@ namespace ShiftSolutions.web.Controllers
         {
             var booking = await _db.Bookings.FirstOrDefaultAsync(b => b.Id == id);
             if (booking == null) return NotFound();
-            return View("BookingsList", booking); 
+            return View("OrdersDetailes", booking); 
         }
 
-        // EXCEL EXPORT
+        // EXCEL EXPORT (respects same filters)
         [HttpGet]
-        public async Task<FileResult> ExportExcel()
+        public async Task<FileResult> ExportExcel(string? q, string? type, string? status, DateTime? from, DateTime? to)
         {
-            var bookings = await _db.Bookings.AsNoTracking().ToListAsync();
+            var query = ApplyFilters(_db.Bookings.AsNoTracking().AsQueryable(), q, type, status, from, to);
+
+            var bookings = await query
+                .OrderByDescending(b => b.CreatedAt)
+                .ToListAsync();
 
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Bookings");
@@ -86,7 +96,6 @@ namespace ShiftSolutions.web.Controllers
                 worksheet.Cell(r, 25).Value = b.IsActive ? "Yes" : "No";
             }
 
-            // basic formatting
             worksheet.Column(3).Style.DateFormat.Format = "yyyy-mm-dd";
             worksheet.Column(24).Style.DateFormat.Format = "yyyy-mm-dd";
             worksheet.Columns().AdjustToContents();
@@ -102,9 +111,45 @@ namespace ShiftSolutions.web.Controllers
             );
         }
 
-        // (Your other pages can remain)
+        // Other pages (if you still use them)
         public IActionResult OrdersDetailes() => View();
         public IActionResult Settlements() => View();
         public IActionResult BatchDetailes() => View();
+
+        // ---------- helpers ----------
+        private static IQueryable<Booking> ApplyFilters(
+            IQueryable<Booking> query,
+            string? q, string? type, string? status, DateTime? from, DateTime? to)
+        {
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                q = q.Trim();
+                query = query.Where(b =>
+                    (b.BookingId ?? "").Contains(q) ||
+                    (b.ClientName ?? "").Contains(q) ||
+                    (b.ClientEmailAddress ?? "").Contains(q) ||
+                    (b.ApartmentName ?? "").Contains(q) ||
+                    (b.ApartmentCity ?? "").Contains(q) ||
+                    (b.TransactionId ?? "").Contains(q) ||
+                    (b.TransactionReferenceId ?? "").Contains(q));
+            }
+
+            // reserved for future use (orders vs bookings)
+            if (!string.IsNullOrWhiteSpace(type) && type != "All")
+            {
+                // e.g., query = query.Where(b => type == "Booking");
+            }
+
+            if (!string.IsNullOrWhiteSpace(status) && status != "All")
+                query = query.Where(b => b.PaymentStatus == status);
+
+            if (from.HasValue)
+                query = query.Where(b => b.CreatedAt >= from.Value.Date);
+
+            if (to.HasValue)
+                query = query.Where(b => b.CreatedAt < to.Value.Date.AddDays(1));
+
+            return query;
+        }
     }
 }

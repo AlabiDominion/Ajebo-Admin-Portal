@@ -5,8 +5,7 @@
     </div>
 
     <div class="sideMenus">
-        @* Merchants section: SuperAdmin or Ops *@
-        @if (User.IsInRole("Admin") || User.IsInRole("Ops")){
+        
         <p>General</p>
         <div class="sideMenusLinks" data-dropdown>
             <!-- Trigger -->
@@ -211,7 +210,7 @@
                 <a asp-controller="Home" asp-action="index" class="sideMenuHiddenLink" role="menuitem">- Reports</a>
             </div>
         </div>
-        }
+        
     </div>
 
 </div>

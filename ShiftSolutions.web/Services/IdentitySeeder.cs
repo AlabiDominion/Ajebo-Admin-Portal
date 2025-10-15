@@ -8,31 +8,31 @@ namespace ShiftSolutions.web.Seeding
     {
         public static async Task SeedAsync(IServiceProvider services)
         {
-            using var scope = services.CreateScope();
+            //using var scope = services.CreateScope();
 
-            var userManager = scope.ServiceProvider
-                .GetRequiredService<UserManager<ApplicationUser>>();   // <-- FIX
-            var roleManager = scope.ServiceProvider
-                .GetRequiredService<RoleManager<IdentityRole>>();
+            //var userManager = scope.ServiceProvider
+            //    .GetRequiredService<UserManager<ApplicationUser>>();
+            //var roleManager = scope.ServiceProvider
+            //    .GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Seed roles
-            if (!await roleManager.RoleExistsAsync("Admin"))
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            //// Seed roles
+            //if (!await roleManager.RoleExistsAsync("Admin"))
+            //    await roleManager.CreateAsync(new IdentityRole("Admin"));
 
-            // Seed admin user
-            var admin = await userManager.FindByEmailAsync("admin@shift.local");
-            if (admin == null)
-            {
-                var newAdmin = new ApplicationUser  // <-- FIX
-                {
-                    UserName = "admin@shift.local",
-                    Email = "admin@shift.local",
-                    EmailConfirmed = true
-                };
+            //// Seed admin user
+            //var admin = await userManager.FindByEmailAsync("admin@shift.local");
+            //if (admin == null)
+            //{
+            //    var newAdmin = new ApplicationUser
+            //    {
+            //        UserName = "admin@shift.local",
+            //        Email = "admin@shift.local",
+            //        EmailConfirmed = true
+            //    };
 
-                await userManager.CreateAsync(newAdmin, "Admin#123");
-                await userManager.AddToRoleAsync(newAdmin, "Admin");
-            }
+            //    await userManager.CreateAsync(newAdmin, "Admin#123");
+            //    await userManager.AddToRoleAsync(newAdmin, "Admin");
+            //}
         }
     }
 }

@@ -57,11 +57,11 @@
                     </div>
                 </div>
                 <div class="stack">
-                    <div class="stack-row"><span>Base Price (Merchant)</span><span class="mono">₦210,000</span></div>
-                    <div class="stack-row"><span>Markup (Platform)</span><span class="mono">₦35,000</span></div>
+                    <div class="stack-row"><span>Base Price (Merchant)</span><span class="mono">₦@Model.TotalAmount</span></div>
+                    <div class="stack-row"><span>Markup (Platform)</span><span class="mono">₦@Model.TotalAmount</span></div>
                     <div class="stack-row"><span>Discount (Promo AJ-BACK2SCHOOL)</span><span class="mono">₦0</span></div>
-                    <div class="stack-row"><span>Taxes & Fees</span><span class="mono">₦0</span></div>
-                    <div class="stack-row total"><span>Total Paid</span><span class="mono">₦245,000</span></div>
+                    <div class="stack-row"><span>Taxes & Fees</span><span class="mono">₦@Model.Vat (@Model.VatPercentage%)</span></div>
+                    <div class="stack-row total"><span>Total Paid</span><span class="mono">₦@Model.SubTotal</span></div>
                 </div>
             </div>
 
@@ -78,9 +78,9 @@
             <div class="card">
                 <div class="card-h"><h3>Merchant & Apartment</h3></div>
                 <div class="info">
-                    <div class="info-row"><span>Merchant</span><span class="link">Stellar Apartments</span></div>
-                    <div class="info-row"><span>Apartment</span><span>Unit A12 · Victoria Island</span></div>
-                    <div class="info-row"><span>Payout (scheduled)</span><span class="mono">₦210,000</span></div>
+                    <div class="info-row"><span>Merchant</span><span class="link">@Model.ApartmentName</span></div>
+                    <div class="info-row"><span>Apartment</span><span>@Model.ApartmentAddress</span></div>
+                    <div class="info-row"><span>Payout (scheduled)</span><span class="mono">@Model.SubTotal</span></div>
                     <div class="info-row"><span>Settlement Batch</span><span class="muted">Not assigned</span></div>
                 </div>
             </div>
@@ -165,12 +165,6 @@
     .obd-title{font-size:24px;font-weight:800;margin:2px 0}
     .obd-sub{font-size:13px;color:var(--mut)}
     .obd-actions{display:flex;gap:8px;flex-wrap:wrap}
-
-    .btn{height:36px;border-radius:10px;padding:0 14px;font-weight:600;border:1px solid var(--bd);background:#fff;color:var(--ink);cursor:pointer}
-    .btn:hover{background:#f8fafc}
-    .btn-danger{background:var(--err);border-color:var(--err);color:#fff}
-    .btn-light{background:#fff}
-    .btn-ghost{background:#fff}
 
     .obd-chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
     .chip{padding:4px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--bd);font-weight:600;font-size:12px}

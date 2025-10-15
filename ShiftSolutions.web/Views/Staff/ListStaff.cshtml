@@ -138,7 +138,7 @@
         </div>
     </div>
 
-    <!-- keep your Merchants table or replace with real data later -->
+    
     <div class="StaffProfileInner2">
         <h3>Merchants</h3>
         <table class="table">
@@ -153,7 +153,7 @@
 
 </div>
 
-<!-- Edit panel (you can wire this to a real Edit action later) -->
+
 <div id="StaffEditpage" class="StaffProfileEdit hidden">
     <div class="spe-card">
         <h1 class="spe-title">Edit Staff</h1>
@@ -242,6 +242,30 @@
         </form>
     </div>
 </div>
+<style>
+    .merchantCell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .merchantCell img {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            object-fit: cover;
+            border: 1px solid #e5e7eb;
+        }
+
+        .merchantCell .m-name {
+            font-weight: 800
+        }
+
+        .merchantCell .m-id {
+            font-size: 12px;
+            color: #64748b
+        }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -279,7 +303,7 @@
                 return `<tr class="DTClickable" data-href="${url}">
               <td>
                 <div class="merchantCell">
-                  <img src="${m.avatar || '/images/users/avatar-5.jpg'}" alt="">
+                          <img src="${m.avatar || '/images/users/avatar-5.jpg'}" alt="">
                   <div>
                     <div class="m-name">${m.displayName || m.companyName || '—'}</div>
                     <div class="m-id muted">${m.agentId || ''}</div>
